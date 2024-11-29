@@ -1,24 +1,43 @@
+
+
 'use server';
 
 import { env } from 'next-runtime-env';
-
 import { authorizedApi } from '@/lib';
-
 import type { IProduct } from '@/dtos';
-
 import type { ServiceProductByCategoryProps } from './types';
 
-export async function ServiceProductByCategory({
+/**
+ * Serviço para buscar produtos com base em uma categoria.
+ * @param value Valor da categoria para filtrar os produtos.
+ * @returns Um objeto contendo a lista de produtos e o status da requisição.
+ */
+export async function fetchProductsByCategory({
 	value,
-}: ServiceProductByCategoryProps) {
-	const endpoint = `${env('NEXT_PUBLIC_CARBON_BASE_URL')}/hub-vendas-carbon/prestacao-servico/v1/produtos`;
+}: ServiceProductByCategoryProps): Promise<{ data: IProduct[]; status: number }> {
+	// Construir o endpoint
+	const baseUrl = env('NEXT_PUBLIC_CARBON_BASE_URL');
+	const endpoint = `${baseUrl}/hub-vendas-carbon/prestacao-servico/v1/produtos`;
 
-	const body = { type: 'categories', value };
+	// Construir o corpo da requisição
+	const requestBody = { type: 'categories', value };
 
-	const httpResponse = await authorizedApi.post<IProduct[]>(endpoint, body);
+	try {
+		// Fazer a requisição à API
+		const response = await authorizedApi.post<IProduct[]>(endpoint, requestBody);
 
-	if (httpResponse.status !== 200 || !Array.isArray(httpResponse.data))
-		return { data: [] as IProduct[], status: httpResponse.status };
+		// Validar a resposta e os dados
+		if (response.status === 200 && Array.isArray(response.data)) {
+			return { data: response.data, status: response.status };
+		}
 
-	return { data: httpResponse.data, status: httpResponse.status };
+		// Retornar uma lista vazia para status ou dados inválidos
+		return { data: [], status: response.status };
+	} catch (error) {
+		// Logar erros inesperados
+		console.error('Failed to fetch products by category:', error);
+
+		// Retornar uma lista vazia e status 500 em caso de erro
+		return { data: [], status: 500 };
+	}
 }

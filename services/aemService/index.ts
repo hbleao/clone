@@ -1,90 +1,100 @@
 import type { HttpResponseHomeProps } from './types';
 
-function removeNumbers(sectionName: string) {
-	const newSectionName = sectionName.replace(/[0-9]/g, '');
-
-	return newSectionName.endsWith('_')
-		? newSectionName.substring(0, newSectionName.length - 1)
-		: newSectionName;
+/**
+ * Remove números de um nome de seção e remove o caractere de sublinhado final, se existir.
+ * @param sectionName Nome da seção a ser formatado.
+ * @returns Nome da seção sem números e sem sublinhado final.
+ */
+function removeNumbers(sectionName: string): string {
+    const sanitized = sectionName.replace(/[0-9]/g, '');
+    return sanitized.endsWith('_') ? sanitized.slice(0, -1) : sanitized;
 }
 
-function findSectionHeader(obj: any): any {
-	if (!obj || typeof obj !== 'object') return null;
-	if (obj[':type'] === 'porto/react-components/section-header') {
-		return obj;
-	}
+/**
+ * Procura recursivamente por um objeto que contenha a propriedade ':type' com valor específico.
+ * @param obj Objeto no qual buscar.
+ * @returns O objeto encontrado ou null se não encontrado.
+ */
+function findSectionHeader(obj: Record<string, any>): any | null {
+    if (!obj || typeof obj !== 'object') return null;
 
-	for (const key of Object.keys(obj)) {
-		const result = findSectionHeader(obj[key]);
-		if (result) return result;
-	}
+    if (obj[':type'] === 'porto/react-components/section-header') {
+        return obj;
+    }
 
-	return null;
+    for (const key in obj) {
+        const result = findSectionHeader(obj[key]);
+        if (result) return result;
+    }
+
+    return null;
 }
 
+/**
+ * Gera um identificador único para ser usado como `_uid`.
+ * @returns String única gerada aleatoriamente.
+ */
+function generateId(): string {
+    return `${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`;
+}
+
+/**
+ * Serviço para manipular e formatar o conteúdo recebido de uma API AEM.
+ */
 export const AEMService = {
-	getContent: async (endpoint: any): Promise<HttpResponseHomeProps> => {
-		const response = await fetch(endpoint, {
-			next: {
-				revalidate: 1,
-			},
-		});
+    /**
+     * Obtém e formata o conteúdo da API AEM.
+     * @param endpoint URL do endpoint para buscar os dados.
+     * @returns Conteúdo formatado, incluindo cabeçalho, seções e rodapé.
+     */
+    getContent: async (endpoint: string): Promise<HttpResponseHomeProps> => {
+        const response = await fetch(endpoint, {
+            next: { revalidate: 1 },
+        });
 
-		const data = await response.json();
-		const rootProps = data[':items']?.root[':items'] || {};
+        const data = await response.json();
+        const rootItems = data[':items']?.root[':items'] || {};
 
-		const header =
-			rootProps?.experiencefragment?.[':items']?.root?.[':items']?.header;
-		const footer =
-			rootProps?.['experiencefragment-footer']?.[':items']?.root?.[':items']
-				?.footer;
+        // Extração das partes principais do conteúdo
+        const header = rootItems?.experiencefragment?.[':items']?.root?.[':items']?.header;
+        const footer = rootItems?.['experiencefragment-footer']?.[':items']?.root?.[':items']?.footer;
+        const sections = rootItems?.responsivegrid?.[':items'] || {};
 
-		const Sections = rootProps?.responsivegrid?.[':items'] || {};
+        // Identificação do cabeçalho da seção (se existir)
+        const sectionHeader = findSectionHeader(data);
 
-		const sectionHeader = findSectionHeader(data);
+        // Filtragem e formatação das seções
+        const formattedSections = Object.entries(sections)
+            .filter(([key]) => !key.includes('spacing')) // Remove seções de espaçamento
+            .map(([key, component]) => ({
+                _uid: generateId(),
+                name: removeNumbers(key),
+                component,
+            }));
 
-		const listSections = Object.entries(Sections);
+        // Construção da resposta final formatada
+        const formattedResponse = [
+            {
+                _uid: generateId(),
+                name: 'header',
+                component: header,
+            },
+            sectionHeader && {
+                _uid: generateId(),
+                name: 'section-header',
+                component: sectionHeader,
+            },
+            ...formattedSections,
+            {
+                _uid: generateId(),
+                name: 'footer',
+                component: footer,
+            },
+        ].filter(Boolean); // Remove elementos nulos ou indefinidos
 
-		const listSectionsWithoutSpacing = listSections.filter(
-			(section) => !section[0].includes('spacing'),
-		);
-
-		function generateId() {
-			return (
-				Math.random().toString(36).substring(2, 15) +
-				Math.random().toString(36).substring(2, 15)
-			);
-		}
-
-		const formattedListSections = listSectionsWithoutSpacing.map((section) => ({
-			_uid: generateId(),
-			name: removeNumbers(section[0]),
-			component: section[1],
-		}));
-
-		const formattedResponse = [
-			{
-				_uid: generateId(),
-				name: 'header',
-				component: header,
-			},
-
-			sectionHeader && {
-				_uid: generateId(),
-				name: 'section-header',
-				component: sectionHeader,
-			},
-			...formattedListSections,
-			{
-				_uid: generateId(),
-				name: 'footer',
-				component: footer,
-			},
-		].filter(Boolean);
-
-		return {
-			data,
-			sections: formattedResponse,
-		};
-	},
+        return {
+            data,
+            sections: formattedResponse,
+        };
+    },
 };

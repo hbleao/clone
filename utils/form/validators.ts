@@ -1,3 +1,4 @@
+
 import {
 	CPFValidation,
 	CnpjValidation,
@@ -9,29 +10,97 @@ import {
 	RequiredFieldValidation,
 } from '@/validation/validators';
 
-export const validators: any = {
-	required(fieldName: string) {
+/**
+ * Factory de validações para formulários.
+ */
+export const validators = {
+	/**
+	 * Validação de campo obrigatório.
+	 * @param fieldName Nome do campo.
+	 * @returns Instância de `RequiredFieldValidation`.
+	 */
+	required(fieldName: string): RequiredFieldValidation {
 		return new RequiredFieldValidation(fieldName);
 	},
-	email(fieldName: string, errorMessage?: string) {
+
+	/**
+	 * Validação de email.
+	 * @param fieldName Nome do campo.
+	 * @param errorMessage Mensagem de erro personalizada.
+	 * @returns Instância de `EmailValidation`.
+	 */
+	email(fieldName: string, errorMessage?: string): EmailValidation {
 		return new EmailValidation(fieldName, errorMessage);
 	},
-	min(fieldName: string, errorMessage?: string, validationValue?: number) {
+
+	/**
+	 * Validação de comprimento mínimo.
+	 * @param fieldName Nome do campo.
+	 * @param errorMessage Mensagem de erro personalizada.
+	 * @param validationValue Valor mínimo permitido.
+	 * @returns Instância de `MinLengthValidation`.
+	 */
+	min(fieldName: string, errorMessage?: string, validationValue?: number): MinLengthValidation {
 		return new MinLengthValidation(fieldName, errorMessage, validationValue);
 	},
-	minValue(fieldName: string, errorMessage?: string, validationValue?: number) {
+
+	/**
+	 * Validação de valor mínimo.
+	 * @param fieldName Nome do campo.
+	 * @param errorMessage Mensagem de erro personalizada.
+	 * @param validationValue Valor mínimo permitido.
+	 * @returns Instância de `MinValueValidation`.
+	 */
+	minValue(
+		fieldName: string,
+		errorMessage?: string,
+		validationValue?: number,
+	): MinValueValidation {
 		return new MinValueValidation(fieldName, errorMessage, validationValue);
 	},
-	max(fieldName: string, errorMessage?: string, validationValue?: number) {
+
+	/**
+	 * Validação de comprimento máximo.
+	 * @param fieldName Nome do campo.
+	 * @param errorMessage Mensagem de erro personalizada.
+	 * @param validationValue Valor máximo permitido.
+	 * @returns Instância de `MaxLengthValidation`.
+	 */
+	max(
+		fieldName: string,
+		errorMessage?: string,
+		validationValue?: number,
+	): MaxLengthValidation {
 		return new MaxLengthValidation(fieldName, errorMessage, validationValue);
 	},
-	cpf(fieldName: string, errorMessage?: string) {
+
+	/**
+	 * Validação de CPF.
+	 * @param fieldName Nome do campo.
+	 * @param errorMessage Mensagem de erro personalizada.
+	 * @returns Instância de `CPFValidation`.
+	 */
+	cpf(fieldName: string, errorMessage?: string): CPFValidation {
 		return new CPFValidation(fieldName, errorMessage);
 	},
-	cnpj(fieldName: string, errorMessage?: string) {
+
+	/**
+	 * Validação de CNPJ.
+	 * @param fieldName Nome do campo.
+	 * @param errorMessage Mensagem de erro personalizada.
+	 * @returns Instância de `CnpjValidation`.
+	 */
+	cnpj(fieldName: string, errorMessage?: string): CnpjValidation {
 		return new CnpjValidation(fieldName, errorMessage);
 	},
-	cpfOrCnpj(fieldName: string, errorMessage?: string) {
+
+	/**
+	 * Validação de CPF ou CNPJ.
+	 * @param fieldName Nome do campo.
+	 * @param errorMessage Mensagem de erro personalizada.
+	 * @returns Instância de `CpfOrCnpjValidation`.
+	 */
+	cpfOrCnpj(fieldName: string, errorMessage?: string): CpfOrCnpjValidation {
 		return new CpfOrCnpjValidation(fieldName, errorMessage);
 	},
 };

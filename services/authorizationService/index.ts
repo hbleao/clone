@@ -1,32 +1,44 @@
 'use server';
 
 import { env } from 'next-runtime-env';
-
 import { api } from '@/lib';
-
 import type { AuthorizationServiceResponse } from './types';
 
-export async function AuthorizationService() {
-	const endpoint = `${env('NEXT_PUBLIC_CARBON_BASE_URL')}/oauth/v2/access-token`;
+// Variáveis e constantes externas centralizadas
+const BASE_URL = env('NEXT_PUBLIC_CARBON_BASE_URL');
+const TOKEN_ENDPOINT = `${BASE_URL}/oauth/v2/access-token`;
 
-	const configHeaders = {
-		headers: {
-			Authorization: `Basic ${process.env.TOKEN}`,
-			'Content-Type': 'application/x-www-form-urlencoded',
-		},
-	};
+const getAuthorizationHeaders = () => ({
+    headers: {
+        Authorization: `Basic ${process.env.TOKEN}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+    },
+});
 
-	const body = { grant_type: 'client_credentials' };
+const createRequestBody = () => 
+    new URLSearchParams({
+        grant_type: 'client_credentials',
+    });
 
-	const httpResponse = await api.post<AuthorizationServiceResponse>(
-		endpoint,
-		body,
-		configHeaders,
-	);
+/**
+ * Serviço de autorização responsável por obter o token de acesso.
+ * @returns AuthorizationServiceResponse ou um objeto com access_token vazio.
+ */
+export async function AuthorizationService(): Promise<AuthorizationServiceResponse | { access_token: string }> {
+    const headers = getAuthorizationHeaders();
+    const body = createRequestBody();
 
-	if (httpResponse.status !== 200 || !httpResponse.data?.access_token) {
-		return { access_token: '' };
-	}
+    try {
+        const response = await api.post<AuthorizationServiceResponse>(TOKEN_ENDPOINT, body, headers);
 
-	return httpResponse.data;
+        if (response.status === 200 && response.data?.access_token) {
+            return response.data;
+        } 
+            console.error('Authorization failed:', { status: response.status, data: response.data });
+            return { access_token: '' };
+        
+    } catch (error) {
+        console.error('Error during authorization:', error);
+        return { access_token: '' };
+    }
 }

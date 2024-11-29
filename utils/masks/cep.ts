@@ -1,9 +1,13 @@
-export const cepMask = (value: string): string => {
-	let numericValue = value.replace(/\D/g, '');
+/**
+ * Aplica a máscara de CEP (XXXXX-XXX) a uma string fornecida.
+ * @param value Uma string representando um CEP com ou sem caracteres não numéricos.
+ * @returns Uma string formatada no padrão de CEP `XXXXX-XXX`.
+ */
 
-	if (numericValue.length > 8) {
-		numericValue = numericValue.substring(0, 8);
-	}
+export function applyCepMask(value: string): string {
+	// Remover caracteres não numéricos
+	const numericValue = value.replace(/\D/g, '').slice(0, 8);
 
+	// Aplicar a máscara de CEP
 	return numericValue.replace(/^(\d{5})(\d)/, '$1-$2');
-};
+}

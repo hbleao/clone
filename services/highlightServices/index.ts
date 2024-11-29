@@ -1,26 +1,42 @@
+
 'use server';
 
 import { env } from 'next-runtime-env';
-
 import { authorizedApi } from '@/lib';
-
 import type { IProduct } from '@/dtos';
 
-export async function HighlightService(): Promise<{
+/**
+ * Serviço para buscar os produtos destacados.
+ * @returns Um objeto contendo a lista de produtos e o status da requisição.
+ */
+export async function fetchHighlightedProducts(): Promise<{
 	data: IProduct[];
 	status: number;
 }> {
-	const endpoint = `${env('NEXT_PUBLIC_CARBON_BASE_URL')}/hub-vendas-carbon/prestacao-servico/v1/produtos`;
+	const baseUrl = env('NEXT_PUBLIC_CARBON_BASE_URL');
+	const endpoint = `${baseUrl}/hub-vendas-carbon/prestacao-servico/v1/produtos`;
 
-	const body = { type: 'highlights', value: '' };
+	const requestBody = { type: 'highlights', value: '' };
 
-	const httpResponse = await authorizedApi.post<IProduct[]>(endpoint, body);
+	try {
+		const response = await authorizedApi.post<IProduct[]>(endpoint, requestBody);
 
-	if (httpResponse.status !== 200) {
+		if (response.status !== 200) {
+			return {
+				data: [],
+				status: response.status,
+			};
+		}
+
 		return {
-			data: [] as IProduct[],
-			status: httpResponse.status,
+			data: response.data,
+			status: response.status,
+		};
+	} catch (error) {
+		console.error('Error in HighlightService:', error);
+		return {
+			data: [],
+			status: 500,
 		};
 	}
-	return { data: httpResponse.data, status: httpResponse.status };
 }

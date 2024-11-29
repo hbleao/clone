@@ -1,4 +1,4 @@
-import { type RefObject, useEffect, useRef, useState } from 'react';
+import { type RefObject, useState } from 'react';
 
 interface IntersectionObserverArgs {
 	root?: Element | null;
@@ -11,6 +11,13 @@ interface UseIntersectionObserverReturn {
 	entry: IntersectionObserverEntry | null;
 }
 
+/**
+ * Hook para gerenciar a interseção de um elemento DOM com base no Intersection Observer API.
+ * @param root O elemento raiz usado como contêiner de visualização. Padrão: `null`.
+ * @param rootMargin A margem ao redor do contêiner de visualização. Padrão: `'0px'`.
+ * @param threshold O nível de interseção necessário para disparar o callback. Padrão: `0`.
+ * @returns Um objeto contendo a referência do elemento e os detalhes da interseção.
+ */
 export const useIntersectionObserver = ({
 	root = null,
 	rootMargin = '0px',
@@ -23,16 +30,24 @@ export const useIntersectionObserver = ({
 		const node = ref.current;
 		if (!node) return;
 
-		const observer = new IntersectionObserver(([entry]) => setEntry(entry), {
+		// Callback chamado quando a interseção muda
+		const observerCallback: IntersectionObserverCallback = ([entry]) => {
+			setEntry(entry);
+		};
+
+		// Criar o observador
+		const observer = new IntersectionObserver(observerCallback, {
 			root,
 			rootMargin,
 			threshold,
 		});
 
+		// Observar o elemento
 		observer.observe(node);
 
+		// Limpar o observador quando o componente desmontar ou as dependências mudarem
 		return () => {
-			observer.unobserve(node);
+			observer.disconnect();
 		};
 	}, [root, rootMargin, threshold]);
 

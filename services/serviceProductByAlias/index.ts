@@ -7,27 +7,40 @@ import type {
 	ServiceProductByProductAliasResult,
 } from './types';
 
-export async function ServiceProductByProductAlias({
+/**
+ * Serviço para buscar informações de produtos com base em um alias de produto.
+ * @param value Alias do produto usado para a consulta.
+ * @returns Os dados do produto correspondente ou um objeto vazio em caso de erro.
+ */
+export async function fetchProductByAlias({
 	value,
 }: ServiceProductByProductAliasProps): Promise<ServiceProductByProductAliasResult> {
-	const endpoint = `${env('NEXT_PUBLIC_CARBON_BASE_URL')}/hub-vendas-carbon/prestacao-servico/v1/produtos`;
-	const body = JSON.stringify({ type: 'productAlias', value });
+	// Construir o endpoint da API
+	const baseUrl = env('NEXT_PUBLIC_CARBON_BASE_URL');
+	const endpoint = `${baseUrl}/hub-vendas-carbon/prestacao-servico/v1/produtos`;
+
+	// Construir o corpo da requisição
+	const requestBody = JSON.stringify({ type: 'productAlias', value });
 
 	try {
-		const httpResponse =
-			await authorizedApi.post<ServiceProductByProductAliasResult>(
-				endpoint,
-				body,
-			);
+		// Fazer a requisição à API
+		const response = await authorizedApi.post<ServiceProductByProductAliasResult>(
+			endpoint,
+			requestBody,
+		);
 
-		if (httpResponse.status === 200) {
-			return httpResponse.data;
+		// Verificar se a resposta foi bem-sucedida
+		if (response.status === 200) {
+			return response.data;
 		}
 
-		console.error(`Error: Received status ${httpResponse.status}`);
+		// Logar o erro em caso de status diferente de 200
+		console.error(`Error: Received status ${response.status}`);
 	} catch (error) {
-		console.error('Request failed:', error);
+		// Logar erros inesperados
+		console.error('Failed to fetch product by alias:', error);
 	}
 
+	// Retornar um objeto vazio em caso de erro
 	return {} as ServiceProductByProductAliasResult;
 }

@@ -22,13 +22,19 @@ type UseGeolocationResult = {
 	requestGeolocation: () => void;
 };
 
+/**
+ * Hook para obter informações de geolocalização do navegador.
+ * @returns Um objeto contendo as coordenadas, possíveis erros, estado de carregamento e uma função para solicitar a geolocalização.
+ */
 export const useGeolocation = (): UseGeolocationResult => {
-	const [coordinates, setCoordinates] = useState<GeolocationCoordinates | null>(
-		null,
-	);
+	const [coordinates, setCoordinates] = useState<GeolocationCoordinates | null>(null);
 	const [error, setError] = useState<GeolocationError | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
+	/**
+	 * Manipula o sucesso da solicitação de geolocalização.
+	 * @param position As coordenadas retornadas pela API de geolocalização.
+	 */
 	const handleSuccess = useCallback((position: GeolocationPosition) => {
 		const {
 			latitude,
@@ -53,6 +59,10 @@ export const useGeolocation = (): UseGeolocationResult => {
 		setIsLoading(false);
 	}, []);
 
+	/**
+	 * Manipula erros durante a solicitação de geolocalização.
+	 * @param error O erro retornado pela API de geolocalização.
+	 */
 	const handleError = useCallback((error: GeolocationPositionError) => {
 		setError({
 			code: error.code,
@@ -62,8 +72,13 @@ export const useGeolocation = (): UseGeolocationResult => {
 		setIsLoading(false);
 	}, []);
 
+	/**
+	 * Solicita a geolocalização do usuário.
+	 * Verifica se o navegador suporta a API de geolocalização.
+	 */
 	const requestGeolocation = useCallback(() => {
 		setIsLoading(true);
+
 		if (!('geolocation' in navigator)) {
 			setError({
 				code: 0,
