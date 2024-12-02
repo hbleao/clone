@@ -1,0 +1,32 @@
+{
+	"editor.rulers": [80, 120],
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "always",
+		"source.sortImports": "always",
+		"source.fixAll.biome": "always",
+		"source.fixAll.ts": "always"
+	},
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "biomejs.biome",
+	"[css]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[scss]": {
+		"editor.defaultFormatter": "vscode.css-language-features"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	}
+}

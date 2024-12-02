@@ -1,0 +1,37 @@
+.section-card-icon-side-by-side {
+  padding: 40px 0;
+
+  &__title {
+    margin-bottom: 24px;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 3.6rem;
+  }
+
+  &__content {
+    padding: 0;
+    display: flex;
+    gap: 1.6rem;
+  }
+
+  &__text {
+    margin-top: 10px;
+  }
+
+  @media screen and (min-width: 768px) {
+    padding: 64px 0;
+
+    &__container {
+      flex-direction: row;
+    }
+
+    &__content {
+      flex-direction: column;
+      gap: 0rem;
+      width: 100%;
+    }
+  }
+}

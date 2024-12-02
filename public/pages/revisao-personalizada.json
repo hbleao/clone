@@ -1,0 +1,256 @@
+[
+	{
+		"name": "section_custom_data",
+		"component": {
+			"pageName": "oficina",
+			"porto_product": "centro-automotivo",
+			"subproduct": "revisao-personalizada",
+			"category": "aquisicao",
+			"vertical": "servicos",
+			"funnel": "short-form"
+		}
+	},
+	{
+		"name": "section_breadcrumb",
+		"component": {
+			"marginBottom": "",
+			"theme": "light",
+			"links": [
+				{
+					"url": "https://www.portoseguro.com.br",
+					"name": "Home"
+				},
+				{
+					"url": "https://www.portoseguro.com.br/centros-automotivos-porto-seguro",
+					"name": "Centro Automotivo Porto"
+				},
+				{
+					"name": "Revisão customizada"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_banner_hero",
+		"component": {
+			"theme": "dark",
+			"variant": "caps",
+			"marginBottom": "margin-default",
+			"bannerHero": {
+				"bgColor": "#D9F1FF",
+				"title": "Revisão customizada",
+				"description": "<p><strong>Recomendação:</strong> a cada 12 meses ou 10 mil km<br><strong>Inclui:</strong> mão de obra</p>",
+				"headingTagTitle": "h1",
+				"ctaLabel": "Agende agora",
+				"subTitle": "Combo",
+				"image": {
+					"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/bh-servico-automotivo-revisao-customizada.webp",
+					"alt": "Revisão customizada"
+				}
+			}
+		}
+	},
+	{
+		"name": "section_card_price_with_text",
+		"component": {
+			"title": "Sobre o serviço",
+			"description": "Escolha entre revisão dos freios, suspensão, amortecedores, bateria, motor, alinhamento, balanceamento, higienização do ar-condicionado, entre outros serviços. Também é possível avaliar qualquer necessidade específica que você tenha.",
+			"price": 250,
+			"benefits": [
+				{
+					"icon": "icon-porto-ic-credit-card",
+					"text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+				},
+				{
+					"icon": "icon-porto-ic-discount",
+					"text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_banner_body",
+		"component": {
+			"marginBottom": "margin-default",
+			"bannerBody": {
+				"theme": "light",
+				"image": {
+					"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/bb-servico-automotivo-revisao-customizada.webp",
+					"alt": "prestador porto realizando manutenção no encanamento de uma pia"
+				},
+				"pretitle": "",
+				"title": "Por que é importante?",
+				"subtitle": "",
+				"bgColor": "white",
+				"textColor": "black75",
+				"benefits": [
+					{
+						"iconName": "icon-porto-ic-circle-check",
+						"text": "<p><strong>Conforto:</strong>  nosso time fará a avaliação necessária para você ficar sempre tranquilo com o desempenho do seu carro.</p>"
+					},
+					{
+						"iconName": "icon-porto-ic-circle-check",
+						"text": "<p><strong>Segurança:</strong>  mantenha as revisões em dia, evitando imprevistos e dores de cabeça</p>"
+					}
+				]
+			}
+		}
+	},
+	{
+		"name": "section_how_it_works",
+		"component": {
+			"theme": "light",
+			"sectionTitle": "Como funciona?",
+			"cardIcons": [
+				{
+					"title": "Encontre uma oficina",
+					"description": "Localize a unidade do Centro Automotivo de sua preferência.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info1"
+				},
+				{
+					"title": "Escolha o serviço",
+					"description": "Escolha um pacote de revisão ou o serviço avulso que seu carro precisa.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info2"
+				},
+				{
+					"title": "Agendamento",
+					"description": "Escolha o melhor dia e horário para a realização do serviço.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info3"
+				},
+				{
+					"title": "Execução do serviço",
+					"description": "Compareça na unidade no dia e horário agendado.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info4"
+				},
+				{
+					"title": "Pagamento",
+					"description": "Feito diretamente na unidade, após aprovação do diagnóstico e orçamento.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info5"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_card_content_side_by_side",
+		"component": {
+			"sectionTitle": "Nossos diferenciais",
+			"cardsContent": [
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-especialistas-centro-automotivo-porto.webp",
+						"alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+					},
+					"title": "Especialistas em mecânica",
+					"description": "Conte com profissionais treinados e mão de obra qualificada para cuidar do seu carro."
+				},
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-garantia-centro-automotivo-porto.webp",
+						"alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+					},
+					"title": "Garantia nacional Porto",
+					"description": "Garantia de até 90 dias após a realização do serviço."
+				},
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-flexibilidade-centro-automotivo-porto.webp",
+						"alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+					},
+					"title": "Flexibilidade",
+					"description": "Encontre a oficina mais próxima e agende serviços para seu carro no horário de sua preferência."
+				}
+			]
+		}
+	},
+	{
+		"name": "section_service_requirements",
+		"component": {
+			"title": "Informações importantes",
+			"variant": "fluid",
+			"requirements": [
+				{
+					"icon": "icon-porto-ic-car-alert1",
+					"title": "Diagnóstico",
+					"caption": "Todos os serviços agendados, passarão por um diagnóstico antes da execução.",
+					"details": {}
+				},
+				{
+					"icon": "icon-porto-ic-circle-dollar-sign",
+					"title": "Preços",
+					"caption": "Preços podem sofrer alteração de acordo com produto e/ou marca escolhidos.",
+					"details": {}
+				},
+				{
+					"icon": "icon-porto-ic-motorcycle",
+					"title": "Veículos não atendidos",
+					"caption": "Motos, vans, pesados e veículos a diesel.",
+					"details": {}
+				}
+			]
+		}
+	},
+	{
+		"name": "section_cards_carousel_testimonial",
+		"component": {
+			"theme": "light",
+			"sectionTitle": "O que dizem nossos clientes",
+			"cards": [
+				{
+					"name": "Andreia Dias",
+					"service": "12/08/2024",
+					"text": "Super indico muito bom o atendimento é ótimo"
+				},
+				{
+					"name": "Constantina And",
+					"service": "07/08/2024",
+					"text": "Gostaria de deixar aqui um elogio sobre o atendimento que recebo da Porto: Sempre muito profissional, competente e sempre disposta a ajudar nas mínimas questões que levo relativas ao meu carro. Meu muito obrigada!"
+				},
+				{
+					"name": "Felipe Fagaraz",
+					"service": "06/08/2024",
+					"text": "Excelente atendimento e preço. Parabéns para oficina, com certeza voltarei a realizar revisões com eles."
+				},
+				{
+					"name": "Bruno Alves",
+					"service": "15/07/2024",
+					"text": "Atendimento perfeito de todos na oficina. Levei meu carro para fazer revisão, e fiquei muito satisfeito. "
+				}
+			]
+		}
+	},
+	{
+		"name": "section_faq",
+		"component": {
+			"sectionTitle": "Tire suas dúvidas sobre Revisão customizada",
+			"questionsAndAnswers": [
+				{
+					"title": "O que é um check-up de carro?",
+					"description": "O check-up de carro é uma revisão completa do veículo, onde são inspecionados os principais sistemas, como motor, freios, suspensão, iluminação, e níveis de fluidos essenciais."
+				},
+				{
+					"title": "O que acontece se forem encontrados problemas durante o check-up?",
+					"description": "Se forem identificados problemas, iremos informar sobre a situação e recomendar os reparos necessários, além de fornecer um orçamento."
+				},
+				{
+					"title": "O que acontece se eu não fizer um check-up regularmente?",
+					"description": "Não realizar um check-up pode levar a problemas mecânicos sérios, aumento do risco de acidentes e custos de reparo mais altos no futuro."
+				},
+				{
+					"title": "O check-up pode identificar problemas ocultos no carro?",
+					"description": "Sim, o check-up é projetado para detectar problemas potenciais antes que se tornem graves, permitindo que você faça reparos preventivos."
+				},
+				{
+					"title": "O check-up pode ajudar a aumentar a vida útil do carro?",
+					"description": "Sim, a manutenção preventiva e a identificação de problemas antes que se agravem podem ajudar a prolongar a vida útil do seu veículo."
+				}
+			],
+			"allBorder": "any",
+			"allNegative": "boolean"
+		}
+	}
+]

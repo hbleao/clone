@@ -1,0 +1,35 @@
+.template-pdp-page {
+	.banner-body__image {
+		display: none;
+	}
+
+	@media screen and (min-width: 1224px) {
+		.banner-body__image {
+			display: flex;
+		}
+	}
+
+	.slick-dots li button {
+		width: 8px;
+		height: 8px;
+		background-color: #ccc;
+	}
+
+	.slick-dots li.slick-active button {
+		background-color: #0046c0 !important;
+	}
+
+	.banner-body__title {
+		font-family: 'Porto Roobert';
+		font-size: 24px !important;
+		font-weight: 500 !important;
+		line-height: 28px !important;
+
+		@media screen and (min-width: 1024) {
+			font-family: 'Porto Roobert';
+			font-size: 40px !important;
+			font-weight: 700 !important;
+			line-height: 48px !important;
+		}
+	}
+}

@@ -1,0 +1,16 @@
+.acquisition-flow-appointment {
+  display: flex;
+  max-width: 400px;
+  flex-direction: column;
+  gap: 2.4rem;
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .notification__root {
+    width: 100%;
+  }
+}

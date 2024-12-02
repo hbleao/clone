@@ -1,0 +1,9 @@
+.acquisition-flow-rescheduling {
+  padding-top: 4rem;
+  overflow: auto;
+
+  .modal__body {
+    overflow: hidden !important;
+    height: unset !important;
+  }
+}

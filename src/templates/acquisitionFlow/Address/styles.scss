@@ -1,0 +1,54 @@
+.acquisition-flow__address {
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+
+  >div {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 2.4rem;
+  }
+
+  .form-address {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+  }
+
+  .input__root.--disabled {
+    .input__box {
+      background-color: #f7f7f7;
+    }
+
+    .input__label {
+      color: #808080;
+    }
+
+    i {
+      color: #0046c0;
+    }
+  }
+
+  .toggle-cep-icon {
+    position: absolute;
+    right: 1.2rem;
+    top: 25%;
+    cursor: pointer;
+  }
+
+  @media only screen and (min-width: 768px) {
+    flex-direction: row;
+
+    .card-resume {
+      width: 48.5%;
+    }
+
+    width: auto;
+
+    .card-resume__body {
+      width: auto;
+    }
+  }
+}

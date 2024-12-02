@@ -1,0 +1,65 @@
+.section-banner-body {
+  &__title {
+    margin-bottom: 3.2rem;
+  }
+
+  .btn.--contain {
+    width: 100%;
+  }
+
+  @media screen and (min-width: 768px) {
+    .btn.--contain {
+      width: fit-content;
+    }
+  }
+}
+
+.banner-body {
+  &__benefit__text {
+    font-size: 1.4rem;
+    font-family: 'Open Sans', sans-serif;
+    line-height: 2rem;
+  }
+
+  &__title__text {
+    font-size: 3.2rem;
+    line-height: 4rem;
+    font-family: 'Porto Roobert';
+  }
+
+  &__title__textnote {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.4rem;
+    line-height: 20rem;
+  }
+
+  &__white {
+    color: white;
+  }
+
+  &__image img {
+    width: 100%;
+    display: block;
+  }
+
+  &__content {
+    padding: 0;
+  }
+}
+
+
+@media screen and (min-width: 768px) {
+  .position-left {
+    .banner-body__root {
+      flex-direction: row-reverse !important;
+      justify-content: space-between;
+    }
+  }
+
+  .position-right {
+    .banner-body__root {
+      flex-direction: row !important;
+      justify-content: space-between;
+    }
+  }
+}

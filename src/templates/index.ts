@@ -1,0 +1,10 @@
+export { AcquisitionFlowAddress } from './acquisitionFlow/Address';
+export { AcquisitionFlowAppointments } from './acquisitionFlow/Appointments';
+export { AcquisitionFlowLayout } from './acquisitionFlow/Layout';
+export { AcquisitionFlowRegisterData } from './acquisitionFlow/RegisterData';
+export * from './default';
+export * from './notFound';
+export * from './pdp';
+export * from './sectionList';
+export { WorkshopFlowAddress } from './workshopFlow/Address';
+export { WorkshopFlowLayout } from './workshopFlow/Layout';

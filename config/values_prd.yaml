@@ -1,0 +1,35 @@
+appFramework: react
+
+ingress:
+  enabled: true
+  contextURL: /
+  host: servicos.hub-de-vendas-ecommerce.prd.awsporto
+
+namespace: corp-psrv
+containerPort: 3000
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 5
+  targetMemoryUtilizationPercentage: 70
+
+# Habilita ou não as secrets que são "puxadas" através do Backstage
+enable_secrets: true
+secrets:
+  TOKEN: f7bb0be9-be6f-47aa-9be5-e01a35557dc5
+
+enable_dynatrace_operator: true
+dynatrace_token: dt0c01.HD5Z4DCM6MCP7ULL755EQAI4.CK6YVBRD6RPKGYZOFF5J6YXHR3C2DQMPAJRAUHTS35YAHFYFDFNNIBGLAEJ22CDO
+
+configmap:
+  profile: 'prd'
+  NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: AIzaSyAkhRMobM54Xpx2bRfCIsnN-Avvzu01xv4
+  NEXT_PUBLIC_CART_COOKIE_DOMAIN: .portoseguro.com.br
+  NEXT_PUBLIC_API_NEXT_BASE_URL: https://servicos.portoseguro.com.br
+  NEXT_PUBLIC_CARBON_BASE_URL: https://portoapicloud.portoseguro.com.br
+  NEXT_PUBLIC_CARBON_BASE_ENDPOINT: https://portoapicloud.portoseguro.com.br/hub-vendas-carbon/prestacao-servico/v1
+  NEXT_PUBLIC_CARBON_BASE_PATH: hub-vendas-carbon/prestacao-servico/v1
+  NEXT_PUBLIC_ORGANIZATION_ID: D5XCBOB5
+  NEXT_PUBLIC_PROPOSAL_BASE_PATH: https://www.portoseguro.com.br
+  NEXT_PUBLIC_GTM_API_SECRET: faDX6PJ1RMGXt5CPxmycUQ
+  NEXT_PUBLIC_GTM_MEASUREMENT_ID: G-S9FTJ8D526

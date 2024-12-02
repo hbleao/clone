@@ -1,0 +1,19 @@
+.acquisition-flow-rescheduling {
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .notification__root {
+    width: 100%;
+    margin-bottom: 2.4rem;
+  }
+}

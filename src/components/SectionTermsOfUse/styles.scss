@@ -1,0 +1,31 @@
+.section-terms-of-use {
+	.modal__header {
+		min-height: 60px;
+	}
+
+	.modal__body {
+		overflow: auto;
+	}
+
+	&__modal {
+		padding: 3rem 2rem;
+	}
+
+	&__box-pdf {
+		margin: 2rem 0;
+	}
+
+	&__title-pdf {
+		font-family: 'Open Sans', sans-serif;
+		font-size: 14px !important;
+		font-weight: 700 !important;
+		line-height: 20px !important;
+	}
+
+	&__anchor-pdf {
+		font-family: 'Open Sans', sans-serif;
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 20px;
+	}
+}

@@ -1,0 +1,134 @@
+.section-cards-testimonial {
+  &__title {
+    margin-bottom: 2.4rem;
+  }
+
+  &.margin-default {
+    margin-bottom: 8.6rem;
+  }
+
+  .card-testimonial__text {
+    max-width: fit-content;
+    min-height: 10.6rem;
+    margin-top: 8px;
+  }
+
+  .card-testimonial__root {
+    cursor: auto;
+    min-height: 250px;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &:hover {
+      outline-color: transparent;
+    }
+  }
+
+  .slick-slide>div {
+    flex: 1 0 auto;
+    height: 100%;
+    margin-right: 0.8rem;
+
+    @media screen and (min-width: 1023px) {
+      margin-right: 1.6rem;
+    }
+  }
+
+  @media screen and (min-width: 1224px) {
+    &.margin-default {
+      margin-bottom: 8.8rem;
+    }
+  }
+}
+
+.slick-list {
+  padding: 8px;
+}
+
+.slick-dots {
+  display: flex !important;
+  margin: 0 auto;
+  justify-content: center;
+  top: calc(100% + 2.2rem);
+}
+
+.slick-dots li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slick-dots li button {
+  border: none;
+  color: transparent;
+  width: 12px;
+  height: 12px;
+  background: #b3b3b3;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slick-dots .slick-active button {
+  background: #0046c0;
+}
+
+.slick-dots li button::before {
+  display: none;
+}
+
+.slick-arrow.slick-hidden {
+  display: none;
+}
+
+.slick-arrow {
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eff4ff;
+  transition: 0.3s background ease;
+  font-size: 0;
+  font-weight: 500;
+
+  &:hover {
+    background: #00a1fc;
+    color: white;
+  }
+}
+
+.slick-prev {
+  position: absolute;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  z-index: 1;
+}
+
+.slick-next {
+  position: absolute;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  z-index: 1;
+}
+
+.slick-prev:before {
+  color: #0046c0;
+  font-family: 'icomoon';
+  content: '\e929';
+  font-size: 3rem;
+  position: relative;
+  right: 2px;
+}
+
+.slick-next:before {
+  color: #0046c0;
+  font-family: 'icomoon';
+  content: '\e921';
+  font-size: 3rem;
+  position: relative;
+  left: 2px;
+}

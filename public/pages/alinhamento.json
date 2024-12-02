@@ -1,0 +1,264 @@
+[
+	{
+		"name": "section_custom_data",
+		"component": {
+			"pageName": "oficina",
+			"porto_product": "centro-automotivo",
+			"subproduct": "alinhamento",
+			"category": "aquisicao",
+			"vertical": "servicos",
+			"funnel": "short-form"
+		}
+	},
+	{
+		"name": "section_breadcrumb",
+		"component": {
+			"marginBottom": "",
+			"theme": "light",
+			"links": [
+				{
+					"url": "https://www.portoseguro.com.br",
+					"name": "Home"
+				},
+				{
+					"url": "https://www.portoseguro.com.br/centros-automotivos-porto-seguro",
+					"name": "Centro Automotivo Porto"
+				},
+				{
+					"name": "Alinhamento"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_banner_hero",
+		"component": {
+			"theme": "dark",
+			"variant": "caps",
+			"marginBottom": "margin-default",
+			"bannerHero": {
+				"bgColor": "#D9F1FF",
+				"title": "Alinhamento",
+				"description": "<p><strong>Recomendação:</strong> a cada 6 meses, 10 mil km ou durante troca e reparo de pneus<br><strong>Inclui:</strong> mão de obra e verificação e ajuste de alinhamento de rodas</p>",
+				"headingTagTitle": "h1",
+				"ctaLabel": "Agende agora",
+				"subTitle": "Manutenção preventiva",
+				"image": {
+					"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/bh-servico-automotivo-alinhamento.webp",
+					"alt": "Alinhamento"
+				}
+			}
+		}
+	},
+	{
+		"name": "section_card_price_with_text",
+		"component": {
+			"title": "Sobre o serviço",
+			"description": "É uma manutenção preventiva para garantir a correta posição das rodas em relação ao solo. O alinhamento ajusta os ângulos das rodas, fazendo com que o carro siga em linha reta e o motorista tenha maior controle da direção.",
+			"price": 120,
+			"benefits": [
+				{
+					"icon": "icon-porto-ic-credit-card",
+					"text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+				},
+				{
+					"icon": "icon-porto-ic-discount",
+					"text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_banner_body",
+		"component": {
+			"marginBottom": "margin-default",
+			"bannerBody": {
+				"theme": "light",
+				"image": {
+					"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/bb-servico-automotivo-alinhamento.webp",
+					"alt": "prestador porto realizando manutenção no encanamento de uma pia"
+				},
+				"pretitle": "",
+				"title": "Por que é importante?",
+				"subtitle": "",
+				"bgColor": "white",
+				"textColor": "black75",
+				"benefits": [
+					{
+						"iconName": "icon-porto-ic-circle-check",
+						"text": "<p><strong>Segurança:</strong>  um carro alinhado reduz o risco de aquaplanagem e aumenta a sua estabilidade.</p>"
+					},
+					{
+						"iconName": "icon-porto-ic-circle-check",
+						"text": "<p><strong>Menor desgaste dos pneus:</strong>  o ajuste correto prolonga a vida útil dos pneus, evitando desgaste irregular ou prematuro.</p>"
+					},
+					{
+						"iconName": "icon-porto-ic-circle-check",
+						"text": "<p><strong>Conforto:</strong>  elimina vibrações e trepidações, proporcionando uma condução mais suave e agradável. </p>"
+					},
+					{
+						"iconName": "icon-porto-ic-circle-check",
+						"text": "<p><strong>Economia de combustível:</strong>  devido ao fato dos pneus rodarem com menor resistência.</p>"
+					}
+				]
+			}
+		}
+	},
+	{
+		"name": "section_how_it_works",
+		"component": {
+			"theme": "light",
+			"sectionTitle": "Como funciona?",
+			"cardIcons": [
+				{
+					"title": "Encontre uma oficina",
+					"description": "Localize a unidade do Centro Automotivo de sua preferência.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info1"
+				},
+				{
+					"title": "Escolha o serviço",
+					"description": "Escolha um pacote de revisão ou o serviço avulso que seu carro precisa.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info2"
+				},
+				{
+					"title": "Agendamento",
+					"description": "Escolha o melhor dia e horário para a realização do serviço.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info3"
+				},
+				{
+					"title": "Execução do serviço",
+					"description": "Compareça na unidade no dia e horário agendado.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info4"
+				},
+				{
+					"title": "Pagamento",
+					"description": "Feito diretamente na unidade, após aprovação do diagnóstico e orçamento.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info5"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_card_content_side_by_side",
+		"component": {
+			"sectionTitle": "Nossos diferenciais",
+			"cardsContent": [
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-especialistas-centro-automotivo-porto.webp",
+						"alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+					},
+					"title": "Especialistas em mecânica",
+					"description": "Conte com profissionais treinados e mão de obra qualificada para cuidar do seu carro."
+				},
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-garantia-centro-automotivo-porto.webp",
+						"alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+					},
+					"title": "Garantia nacional Porto",
+					"description": "Garantia de até 90 dias após a realização do serviço."
+				},
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-flexibilidade-centro-automotivo-porto.webp",
+						"alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+					},
+					"title": "Flexibilidade",
+					"description": "Encontre a oficina mais próxima e agende serviços para seu carro no horário de sua preferência."
+				}
+			]
+		}
+	},
+	{
+		"name": "section_service_requirements",
+		"component": {
+			"title": "Informações importantes",
+			"variant": "fluid",
+			"requirements": [
+				{
+					"icon": "icon-porto-ic-car-alert1",
+					"title": "Diagnóstico",
+					"caption": "Todos os serviços agendados, passarão por um diagnóstico antes da execução.",
+					"details": {}
+				},
+				{
+					"icon": "icon-porto-ic-circle-dollar-sign",
+					"title": "Preços",
+					"caption": "Preços podem sofrer alteração de acordo com produto e/ou marca escolhidos.",
+					"details": {}
+				},
+				{
+					"icon": "icon-porto-ic-motorcycle",
+					"title": "Veículos não atendidos",
+					"caption": "Motos, vans, pesados e veículos a diesel.",
+					"details": {}
+				}
+			]
+		}
+	},
+	{
+		"name": "section_cards_carousel_testimonial",
+		"component": {
+			"theme": "light",
+			"sectionTitle": "O que dizem nossos clientes",
+			"cards": [
+				{
+					"name": "Vivian Marques",
+					"service": "17/09/2024",
+					"text": "Foi rápido e com muita excelência o atendimento, desde a recepção até a entrega do serviço!"
+				},
+				{
+					"name": "Daniela Bacic",
+					"service": "18/07/2024",
+					"text": "Atendimento maravilhoso, enviam videos e fotos de cada etapa do reparo, equipe nota 1000."
+				},
+				{
+					"name": "Patrícia Abreu",
+					"service": "23/07/2024",
+					"text": "Ótimo atendimento, rápido, gentil, honesto e muito profissional! Parabéns."
+				},
+				{
+					"name": "Antonia Almeida",
+					"service": "10/06/2024",
+					"text": "Ótimo atendimento, garantia do serviço. Funcionários super gentis e atencioso."
+				}
+			]
+		}
+	},
+	{
+		"name": "section_faq",
+		"component": {
+			"sectionTitle": "Tire suas dúvidas sobre Alinhamento",
+			"questionsAndAnswers": [
+				{
+					"title": "O que é alinhamento de direção?",
+					"description": "O alinhamento de direção é o ajuste dos ângulos das rodas do veículo para garantir que elas estejam perpendiculares ao solo e paralelas entre si, o que ajuda a manter a estabilidade e a dirigibilidade."
+				},
+				{
+					"title": "Como posso saber se meu carro precisa de alinhamento?",
+					"description": "Sinais de que o veículo pode precisar de alinhamento incluem o carro puxando para um dos lados, desgaste desigual dos pneus ou um volante desalinhado."
+				},
+				{
+					"title": "O alinhamento pode resolver problemas de direção?",
+					"description": "Sim, um alinhamento adequado pode corrigir problemas de direção, como o carro puxar para um lado e o volante desalinhado."
+				},
+				{
+					"title": "Quanto tempo leva para realizar o alinhamento?",
+					"description": "O tempo de serviço varia dependendo das condições do veículo."
+				},
+				{
+					"title": "Qual a diferença entre alinhamento e balanceamento?",
+					"description": "O alinhamento ajusta os ângulos das rodas para garantir que o veículo siga em linha reta, enquanto o balanceamento corrige o peso desigual dos pneus, evitando vibrações durante a condução."
+				}
+			],
+			"allBorder": "any",
+			"allNegative": "boolean"
+		}
+	}
+]
