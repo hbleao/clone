@@ -1,0 +1,59 @@
+.modal-reminder-list {
+	padding-top: 4rem;
+	overflow: auto;
+
+	.modal__body {
+		overflow: hidden !important;
+		height: unset !important;
+	}
+
+	&__reminder {
+		background-color: #f7f7f7;
+		padding: 16px;
+		margin-bottom: 16px;
+		border-radius: 8px;
+	}
+
+	&__reminder-image {
+		margin-right: 1.2rem;
+	}
+
+	&__reminder-options {
+		display: flex;
+		gap: 16px;
+	}
+
+	.--refused {
+		.typography {
+			color: #ff5a40;
+		}
+
+		.radio__input {
+			border-color: #ff5a40 !important;
+			background-color: #ff5a40 !important;
+		}
+	}
+
+	.notification__root {
+		width: 100%;
+		height: max-content;
+		margin-bottom: 24px;
+	}
+
+	.notification__description {
+		margin-bottom: 1rem;
+	}
+
+	&__notification-refused {
+		svg {
+			position: absolute;
+			top: 12px;
+			left: 12px;
+		}
+	}
+
+	&__notification-refused-buttons {
+		display: flex;
+		justify-content: right;
+	}
+}

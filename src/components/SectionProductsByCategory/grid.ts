@@ -1,0 +1,26 @@
+export const grid = [
+	{
+		mobile: [1, 5],
+		portrait: [1, 5],
+		landscape: [1, 4],
+		desktop: [1, 4],
+	},
+	{
+		mobile: [5, 9],
+		portrait: [5, 9],
+		landscape: [4, 7],
+		desktop: [4, 7],
+	},
+	{
+		mobile: [1, 5],
+		portrait: [1, 5],
+		landscape: [7, 10],
+		desktop: [7, 10],
+	},
+	{
+		mobile: [5, 9],
+		portrait: [5, 9],
+		landscape: [10, 13],
+		desktop: [10, 13],
+	},
+];

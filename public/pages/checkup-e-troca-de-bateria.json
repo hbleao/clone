@@ -1,0 +1,260 @@
+[
+	{
+		"name": "section_custom_data",
+		"component": {
+			"pageName": "oficina",
+			"porto_product": "centro-automotivo",
+			"subproduct": "checkup-e-troca-de-bateria",
+			"category": "aquisicao",
+			"vertical": "servicos",
+			"funnel": "short-form"
+		}
+	},
+	{
+		"name": "section_breadcrumb",
+		"component": {
+			"marginBottom": "",
+			"theme": "light",
+			"links": [
+				{
+					"url": "https://www.portoseguro.com.br",
+					"name": "Home"
+				},
+				{
+					"url": "https://www.portoseguro.com.br/centros-automotivos-porto-seguro",
+					"name": "Centro Automotivo Porto"
+				},
+				{
+					"name": "Check-up e troca de bateria"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_banner_hero",
+		"component": {
+			"theme": "dark",
+			"variant": "caps",
+			"marginBottom": "margin-default",
+			"bannerHero": {
+				"bgColor": "#D9F1FF",
+				"title": "Check-up e troca de bateria",
+				"description": "<p><strong>Recomendação:</strong> a cada 6 meses, 10 mil km ou durante troca e reparo de pneus<br><strong>Inclui:</strong> mão de obra, avaliação da capacidade e troca da bateria</p>",
+				"headingTagTitle": "h1",
+				"ctaLabel": "Agende agora",
+				"subTitle": "Manutenção preventiva",
+				"image": {
+					"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/bh-servico-automotivo-checkup-troca-baterias.webp",
+					"alt": "Check-up e troca de bateria"
+				}
+			}
+		}
+	},
+	{
+		"name": "section_card_price_with_text",
+		"component": {
+			"title": "Sobre o serviço",
+			"description": "Consiste na troca bateria e na verificação do alternador e do sistema de carregamento, garantindo que todo o sistema elétrico esteja funcionando corretamente.",
+			"price": 489,
+			"benefits": [
+				{
+					"icon": "icon-porto-ic-credit-card",
+					"text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+				},
+				{
+					"icon": "icon-porto-ic-discount",
+					"text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_banner_body",
+		"component": {
+			"marginBottom": "margin-default",
+			"bannerBody": {
+				"theme": "light",
+				"image": {
+					"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/bb-servico-automotivo-checkup-troca-baterias.webp",
+					"alt": "prestador porto realizando manutenção no encanamento de uma pia"
+				},
+				"pretitle": "",
+				"title": "Por que é importante?",
+				"subtitle": "",
+				"bgColor": "white",
+				"textColor": "black75",
+				"benefits": [
+					{
+						"iconName": "icon-porto-ic-circle-check",
+						"text": "<p><strong>Evita problemas de partida:</strong>  a bateria fornece a energia inicial para o motor de arranque. Se ela estiver fraca ou desgastada, o carro pode não ligar, especialmente em dias mais frios, quando o motor exige mais energia para funcionar.</p>"
+					},
+					{
+						"iconName": "icon-porto-ic-circle-check",
+						"text": "<p><strong>Protege o sistema elétrico:</strong>  baterias desgastadas ou com baixa carga podem gerar flutuações de tensão, o que pode danificar componentes elétricos do veículo, como centralinas, sensores e outros dispositivos sensíveis à variação de voltagem.</p>"
+					},
+					{
+						"iconName": "icon-porto-ic-circle-check",
+						"text": "<p><strong>Evita paradas inesperadas:</strong>  uma bateria em fim de vida útil pode deixar o carro “na mão” em situações inesperadas. Trocar a bateria de maneira preventiva ajuda a evitar contratempos.</p>"
+					}
+				]
+			}
+		}
+	},
+	{
+		"name": "section_how_it_works",
+		"component": {
+			"theme": "light",
+			"sectionTitle": "Como funciona?",
+			"cardIcons": [
+				{
+					"title": "Encontre uma oficina",
+					"description": "Localize a unidade do Centro Automotivo de sua preferência.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info1"
+				},
+				{
+					"title": "Escolha o serviço",
+					"description": "Escolha um pacote de revisão ou o serviço avulso que seu carro precisa.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info2"
+				},
+				{
+					"title": "Agendamento",
+					"description": "Escolha o melhor dia e horário para a realização do serviço.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info3"
+				},
+				{
+					"title": "Execução do serviço",
+					"description": "Compareça na unidade no dia e horário agendado.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info4"
+				},
+				{
+					"title": "Pagamento",
+					"description": "Feito diretamente na unidade, após aprovação do diagnóstico e orçamento.",
+					"variant": "withoutLink",
+					"iconName": "icon-porto-ic-circle-info5"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_card_content_side_by_side",
+		"component": {
+			"sectionTitle": "Nossos diferenciais",
+			"cardsContent": [
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-especialistas-centro-automotivo-porto.webp",
+						"alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+					},
+					"title": "Especialistas em mecânica",
+					"description": "Conte com profissionais treinados e mão de obra qualificada para cuidar do seu carro."
+				},
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-garantia-centro-automotivo-porto.webp",
+						"alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+					},
+					"title": "Garantia nacional Porto",
+					"description": "Garantia de até 90 dias após a realização do serviço."
+				},
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-flexibilidade-centro-automotivo-porto.webp",
+						"alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+					},
+					"title": "Flexibilidade",
+					"description": "Encontre a oficina mais próxima e agende serviços para seu carro no horário de sua preferência."
+				}
+			]
+		}
+	},
+	{
+		"name": "section_service_requirements",
+		"component": {
+			"title": "Informações importantes",
+			"variant": "fluid",
+			"requirements": [
+				{
+					"icon": "icon-porto-ic-car-alert1",
+					"title": "Diagnóstico",
+					"caption": "Todos os serviços agendados, passarão por um diagnóstico antes da execução.",
+					"details": {}
+				},
+				{
+					"icon": "icon-porto-ic-circle-dollar-sign",
+					"title": "Preços",
+					"caption": "Preços podem sofrer alteração de acordo com produto e/ou marca escolhidos.",
+					"details": {}
+				},
+				{
+					"icon": "icon-porto-ic-motorcycle",
+					"title": "Veículos não atendidos",
+					"caption": "Motos, vans, pesados e veículos a diesel.",
+					"details": {}
+				}
+			]
+		}
+	},
+	{
+		"name": "section_cards_carousel_testimonial",
+		"component": {
+			"theme": "light",
+			"sectionTitle": "O que dizem nossos clientes",
+			"cards": [
+				{
+					"name": "Leonardo Araujo",
+					"service": "12/03/2024",
+					"text": "Fiz um diagnóstico da bateria e ocorreu tudo perfeito."
+				},
+				{
+					"name": "Marlucia Abreu",
+					"service": "14/07/2024",
+					"text": "Atendimento rápido e cordial. Fiquei muito satisfeita."
+				},
+				{
+					"name": "Robson Assunção",
+					"service": "01/07/2024",
+					"text": "Excelente diagnostico, trabalho e atendimento. Eu recomendo!! Obrigado"
+				},
+				{
+					"name": "João Silva",
+					"service": "04/08/2024",
+					"text": "Serviço excepcional o prestado pela Porto. Pessoal super engajado em solucionar os problemas. "
+				}
+			]
+		}
+	},
+	{
+		"name": "section_faq",
+		"component": {
+			"sectionTitle": "Tire suas dúvidas sobre Check-up e troca de bateria",
+			"questionsAndAnswers": [
+				{
+					"title": "Quais são os sinais de que a bateria precisa ser trocada?",
+					"description": "Sinais incluem dificuldade para dar partida no veículo, luzes fracas, cheiro de ácido ou vazamentos, e a luz de verificação da bateria no painel acesa."
+				},
+				{
+					"title": "Qual é a vida útil média de uma bateria de carro?",
+					"description": "A vida útil média de uma bateria de carro é de 3 a 5 anos, mas pode variar dependendo do uso e das condições climáticas."
+				},
+				{
+					"title": "O que causa o desgaste da bateria?",
+					"description": "O desgaste da bateria pode ser causado por diversos fatores, incluindo temperaturas extremas, uso excessivo de acessórios elétricos, falta de manutenção e ciclos de carga e descarga frequentes."
+				},
+				{
+					"title": "Como posso prolongar a vida útil da bateria do meu carro?",
+					"description": "Para prolongar a vida útil da bateria, mantenha os terminais limpos, evite deixar luzes acesas quando o carro está desligado e faça verificações regulares no sistema elétrico do veículo."
+				},
+				{
+					"title": "O que devo fazer se a bateria do meu carro não segurar carga?",
+					"description": "Se a bateria não estiver segurando carga, pode ser necessário substituir a bateria ou verificar se há problemas no sistema de carregamento. Um check-up na oficina é recomendável para diagnosticar o problema."
+				}
+			],
+			"allBorder": "any",
+			"allNegative": "boolean"
+		}
+	}
+]

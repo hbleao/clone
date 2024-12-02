@@ -1,0 +1,11 @@
+{
+	"name": "convert-workshop-csv-to-json",
+	"version": "1.0.0",
+	"main": "main.ts",
+	"scripts": {
+		"start": " node --trace-warnings --experimental-strip-types main.ts"
+	},
+	"dependencies": {
+		"csv-parser": "^3.0.0"
+	}
+}

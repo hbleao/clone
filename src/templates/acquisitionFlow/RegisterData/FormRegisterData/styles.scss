@@ -1,0 +1,54 @@
+.acquisition-flow-form-register {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+
+  &__social-name {
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+  }
+
+  &__coupon {
+    position: relative;
+    display: flex;
+    gap: 16px;
+
+    .input__root {
+      width: 50% !important;
+    }
+
+    &-close {
+      position: absolute;
+      top: 14px;
+      right: 8px;
+
+      svg {
+        fill: inherit;
+      }
+
+    }
+  }
+
+  .notification__root {
+    width: 100%;
+    margin-top: 2.4rem;
+  }
+
+  .checkbox__root {
+    align-items: flex-start;
+  }
+
+  .btn-loader {
+    position: absolute;
+    border: 3px solid #0046c0;
+    border-bottom-color: transparent;
+    right: 10px;
+    top: 10px;
+  }
+
+  button .btn-loader {
+    top: auto;
+    right: auto;
+  }
+}

@@ -1,0 +1,38 @@
+.single-options {
+  width: 100%;
+  border: 1px solid #c8c8c8;
+  border-radius: 6px;
+  margin-bottom: 2.4rem;
+  cursor: pointer;
+
+  &__service {
+    min-height: 44px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #c8c8c8;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__service:last-child {
+    border-bottom: 1px solid transparent;
+  }
+
+  &__selection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__price {
+    font-family: 'Porto Roobert';
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 14px;
+    letter-spacing: 0.02em;
+  }
+
+  .radio__root {
+    align-items: center;
+  }
+}

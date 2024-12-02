@@ -1,0 +1,52 @@
+.modal-without-cep {
+	padding-top: 4.8rem;
+
+	@media screen and (min-width: 1024px) {
+		margin-bottom: 4rem;
+	}
+
+	.modal__body {
+		display: flex;
+		flex-direction: column;
+		gap: 3.2rem;
+		overflow: unset;
+	}
+
+	.btn.--insurance-primary {
+		margin-bottom: 1rem;
+	}
+	.dropdown__list {
+		z-index: 1;
+		max-height: 185px;
+	}
+
+	.modal__content-title {
+		display: flex;
+		margin: 0 0 2rem 0;
+	}
+
+	.btn-loader {
+		position: absolute;
+		border: 3px solid #0046c0;
+		border-bottom-color: transparent;
+		right: 10px;
+		top: 10px;
+	}
+
+	&__radio-box {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.error-street {
+		display: flex;
+		flex-direction: column;
+		gap: 0.8rem;
+	}
+
+	.--checked {
+		span {
+			color: #0046c0;
+		}
+	}
+}

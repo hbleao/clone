@@ -1,0 +1,19 @@
+.shimmer-desktop {
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+	&__category {
+		display: flex;
+		gap: 0.8rem;
+	}
+	&__price {
+		display: flex;
+		justify-content: space-between;
+	}
+	&__items {
+		display: flex;
+		flex-direction: column;
+		gap: 0.8rem;
+		margin-left: 2rem;
+	}
+}

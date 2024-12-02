@@ -1,0 +1,32 @@
+appFramework: react
+
+ingress:
+  enabled: true
+  contextURL: /
+  host: servicos.hub-de-vendas-ecommerce.dev.awsporto
+
+namespace: corp-psrv
+containerPort: 3000
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 5
+  targetMemoryUtilizationPercentage: 70
+
+# Habilita ou não as secrets que são "puxadas" através do Backstage
+enable_secrets: true
+secrets:
+  TOKEN: f85f09ad-5b66-4b1c-a945-a3df91fca024
+
+configmap:
+  profile: 'dev'
+  NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: AIzaSyAkhRMobM54Xpx2bRfCIsnN-Avvzu01xv4
+  NEXT_PUBLIC_CART_COOKIE_DOMAIN: nginx.hub-de-vendas-ecommerce.dev.awsporto
+  NEXT_PUBLIC_API_NEXT_BASE_URL: https://servicos.hub-de-vendas-ecommerce.dev.awsporto
+  NEXT_PUBLIC_CARBON_BASE_URL: https://portoapicloud-hml.portoseguro.com.br
+  NEXT_PUBLIC_CARBON_BASE_ENDPOINT: https://portoapicloud-hml.portoseguro.com.br/hub-vendas-carbon/prestacao-servico/v1
+  NEXT_PUBLIC_CARBON_BASE_PATH: hub-vendas-carbon/prestacao-servico/v1
+  NEXT_PUBLIC_ORGANIZATION_ID: 6T4XUGKR
+  NEXT_PUBLIC_PROPOSAL_BASE_PATH: https://nginx.hub-de-vendas-ecommerce.dev.awsporto
+  NEXT_PUBLIC_GTM_API_SECRET: WO6iuJ75SbCcqvStYxnz-A
+  NEXT_PUBLIC_GTM_MEASUREMENT_ID: G-PGMXQZ7PG8

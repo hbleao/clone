@@ -1,0 +1,27 @@
+.section-card-price-text {
+	&__title {
+		margin-bottom: 1.6rem;
+	}
+
+	&__description p {
+		margin-bottom: .8rem;
+	}
+
+	&__benefits-container {
+		display: flex;
+		flex-direction: column;
+		gap: .8rem;
+		padding: .8rem;
+		background-color: #f7f7f7;
+	}
+
+	.card-price .benefits {
+		padding: 0;
+		background-color: none;
+		height: fit-content;
+	}
+
+	.card-price .benefits path {
+		fill: black;
+	}
+}
