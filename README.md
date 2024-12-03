@@ -1,64 +1,109 @@
-# @porto-seguro/react-ssr-corp-psrv-porto-servicos
+# Porto Serviços E-commerce
 
-## Update all deps
+Este módulo faz parte do ecossistema de e-commerce da Porto Seguro, especificamente focado na área de serviços. O projeto é desenvolvido e mantido pela squad de serviços.
+
+## Visão Técnica
+
+### Stack Tecnológica
+- **Framework Principal**: Next.js 14 com Server-Side Rendering (SSR)
+- **Linguagem**: TypeScript
+- **Gerenciamento de Estado**:
+  - Zustand para estado global
+  - React Query para cache e estado de servidor
+- **UI/UX**: Design System Ocean da Porto (@porto-ocean/*)
+- **Testes**: Playwright para testes E2E
+
+### Principais Integrações
+- Adobe Experience Manager (AEM) para gestão de conteúdo
+- Google Maps API para geolocalização
+- Sistemas internos Porto:
+  - Sistema de Precificação
+  - Sistema de Propostas
+  - Sistema de Oficinas
+- Serviços de CEP e Localização
+
+### Arquitetura do Projeto
 
 ```
-npm i @porto-ocean/accordion @porto-ocean/banner-hero @porto-ocean/breadcrumb @porto-ocean/button @porto-ocean/cards-carousel @porto-ocean/carousel @porto-ocean/chip @porto-ocean/css @porto-ocean/grid @porto-ocean/row @porto-ocean/header @porto-ocean/hooks @porto-ocean/icon @porto-ocean/show-on-device @porto-ocean/typography @porto-ocean/utils @porto-ocean/banner-body @porto-ocean/card-content @porto-ocean/card-testimonial @porto-ocean/input @porto-ocean/footer @porto-ocean/modal @porto-ocean/card-icon @porto-ocean/notification @porto-ocean/dropdown @porto-ocean/text-body @porto-ocean/textarea
+src/
+├── app/                # Rotas e páginas Next.js
+├── components/         # Componentes React reutilizáveis
+├── services/           # Integrações com APIs e serviços
+├── store/              # Gerenciamento de estado global
+├── templates/          # Templates de páginas
+├── validation/         # Esquemas de validação
+└── utils/              # Utilitários e helpers
 ```
 
-## Ambiente de desenvolvimento
+### Principais Funcionalidades
 
-https://servicos.hub-de-vendas-ecommerce.dev.awsporto
+1. **Gestão de Serviços**
+   - Listagem por categorias
+   - Filtros e busca
+   - Detalhamento de serviços
 
-## Ambiente de homologação:
+2. **Sistema de Agendamento**
+   - Verificação de disponibilidade
+   - Seleção de oficinas por localização
+   - Confirmação e finalização
 
-https://servicos.hub-de-vendas-ecommerce.hml.awsporto
+3. **Precificação e Propostas**
+   - Cálculo dinâmico de preços
+   - Geração de propostas
+   - Verificação de elegibilidade
 
-Esse projeto foi gerando via [Tech Store](https://portostage.portoseguro.brasil/).
+4. **Geolocalização**
+   - Busca de oficinas por CEP
+   - Integração com Google Maps
+   - Validação de área de cobertura
 
-## Instalação das dependências
+### Segurança e Performance
 
-Rode `npm install` para executar a instalação das dependências do projeto. Será necessário para execução dos comandos `npm`.
+- Middleware para gestão de tokens e cookies
+- Validação de dados com TypeScript
+- Server-Side Rendering para melhor SEO e performance
+- Sistema próprio de autorização
 
-## Execução do projeto em desenvolvimento
+## Ambientes
 
-Rode `npm run dev` para executar o servidor local do projeto e acesse `http://localhost:3000/`.
+- **Desenvolvimento**: https://servicos.hub-de-vendas-ecommerce.dev.awsporto
+- **Homologação**: https://servicos.hub-de-vendas-ecommerce.hml.awsporto
 
-## Execução do projeto em produção
+## Setup do Projeto
 
-Para simular o ambiente de produção, rode `npm run build` para gerar os artefatos e em seguida `npm run start`. Acesse `http://localhost:3000/react-ssr-corp-psrv-porto-servicos`.
+### Pré-requisitos
+- Node.js (versão LTS)
+- NPM ou Yarn
 
-## Execução do build
+### Instalação
+```bash
+npm install
+```
 
-Rode `npm run build` para executar o build do projeto. Os artefatos serão armazenados no diretório `dist/react-ssr-corp-psrv-porto-servicos`.
+### Scripts Disponíveis
+```bash
+npm run dev          # Ambiente de desenvolvimento
+npm run build       # Build de produção
+npm run start       # Execução em produção
+npm run test        # Execução de testes
+```
 
-## Execução dos testes unitários
+### Variáveis de Ambiente
+Para configurar as variáveis de ambiente, crie um arquivo `.env.local` baseado no `.env.example`.
 
-Rode `npm run test` para executar os testes unitários via [Jest](https://www.npmjs.com/package/jest). Os resultados serão armazenados no diretório `coverage`.
+## Padrões de Desenvolvimento
 
+### Commits
+Utilizamos Conventional Commits para padronização das mensagens:
+- feat: Nova funcionalidade
+- fix: Correção de bug
+- docs: Documentação
+- style: Formatação
+- refactor: Refatoração
+- test: Testes
+- chore: Manutenção
 
-## Processos Tech Store
-
-### Cadastro de variável ambiente na tech store
-
-Para fazer o cadastro de uma nova secret de autenticação na tech store
-o formato de base64 com as informaçôes de <client_id>:<client_secret>, esse encode vai nos gerar um token.
-
-Exemplo do retorno do fomato do token: AHksuSSImNmOS00MmY2LThiZjYtZmE2YzFiMGIwMjAwOmM1NWIzNmQ4LWQ10HyyTllGJmNy04YjlhLWMwN==
-
-Com esse token em mão podemos cadastrar em uma secret do cofre.
-
-# Pontos de melhoria
-
-[ ] Não temos um padrão de escrita de código definida para o time
-  - Ex: Não temos um padrão de como vamos utilizar as tipagens se vamos usar interface ou type,
-  se o sufixo das tipagens dos metodos vão ser PROPS ou IPROPS.
-
-[ ] Não temos testes automatizados para testar o fluxo
-  - Por conta do prazo apertado e da correria do dia a dia não priorizamos a qualidade de
-  nossas entregas e deixamos os testes automatizados de lado, assim sempre ou quase sempre
-  que alteramos o código podemos gerar bugs imprevisívies
-
-[ ] Não aplicamos a regra do escoteiro no código
-  - Por conta da pressão pela entrega rapida do software muitas vezes deixamos o código pior do que
-  encontramos.
+### Qualidade de Código
+- Biome para linting e formatação
+- Husky para git hooks
+- TypeScript para tipagem estática

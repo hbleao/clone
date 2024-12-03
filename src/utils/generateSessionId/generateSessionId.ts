@@ -1,25 +1,20 @@
-export const generateSessionId = (orgid: string) => {
-	const year = new Date().getFullYear();
-	const month = new Date().getMonth();
-	const date = new Date().getDate();
-	const hours = new Date().getHours();
-	const minutes = new Date().getMinutes();
-	const miniseconds = new Date().getSeconds();
-	const miliseconds = new Date().getUTCMilliseconds();
-	let sessionId =
-		// biome-ignore lint/style/useTemplate: <explanation>
-		'' +
-		year +
-		month +
-		date +
-		hours +
-		minutes +
-		miniseconds +
-		miliseconds +
-		Math.ceil(Math.random() * 1000000);
+/**
+ * Generates a unique session ID using the current timestamp and a random number.
+ * @param orgid - The organization ID to include in the session ID.
+ * @returns A unique session ID string.
+ */
+export const generateSessionId = (orgid: string): string => {
+	const now = new Date();
+	const year = now.getFullYear();
+	const month = now.getMonth();
+	const date = now.getDate();
+	const hours = now.getHours();
+	const minutes = now.getMinutes();
+	const seconds = now.getSeconds();
+	const milliseconds = now.getUTCMilliseconds();
+	const randomPart = Math.ceil(Math.random() * 1e6);
 
-	// biome-ignore lint/style/useTemplate: <explanation>
-	sessionId += '-' + orgid.toUpperCase();
+	const sessionId = `${orgid}-${year}${month}${date}${hours}${minutes}${seconds}${milliseconds}-${randomPart}`;
 
 	return sessionId;
 };
