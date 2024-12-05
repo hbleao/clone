@@ -6,7 +6,7 @@ import { formattedPrice } from '@/utils';
  * @returns The formatted price string without currency symbol and whitespace.
  */
 export function formatOptionPriceToGtm(value: number): string {
-	if (typeof value !== 'number' || value) return '';
+	if (typeof value !== 'number' || isNaN(value)) return '';
 
 	return String(formattedPrice(value)).replace('R$', '').replace(/\s/g, '');
 }
