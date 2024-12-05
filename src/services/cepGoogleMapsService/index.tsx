@@ -3,30 +3,32 @@
 import { env } from 'next-runtime-env';
 import type { AddressData } from './type';
 
+function getDefaultAddressData(): AddressData {
+  return {
+    cep: '',
+    street: '',
+    neighborhood: '',
+    city: '',
+    state: '',
+    address: '',
+    lat: '',
+    lng: '',
+  };
+}
+
 export async function CepGoogleMapsService(cep: string): Promise<AddressData> {
-	const response = await fetch(
-		`${env('NEXT_PUBLIC_API_NEXT_BASE_URL')}/api/caps/cep/${cep}`,
-	);
+  try {
+    const response = await fetch(`${env('NEXT_PUBLIC_API_NEXT_BASE_URL')}/api/caps/cep/${cep}`);
 
-	if (!response.ok) {
-		throw new Error(
-			`Error fetching data for CEP ${cep}: ${response.status} ${response.statusText}`,
-		);
-	}
+    if (!response.ok) {
+      console.error(`Error fetching data for CEP ${cep}: ${response.status} ${response.statusText}`);
+      return getDefaultAddressData();
+    }
 
-	if (response.status === 200) {
-		const data = await response.json();
-		return data;
-	}
-
-	return {
-		cep: '',
-		street: '',
-		neighborhood: '',
-		city: '',
-		state: '',
-		address: '',
-		lat: '',
-		lng: '',
-	};
+    const data: AddressData = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Network error in CepGoogleMapsService:', error);
+    return getDefaultAddressData();
+  }
 }

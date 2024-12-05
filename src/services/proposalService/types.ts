@@ -1,5 +1,8 @@
 import type { IScheduling } from '@/dtos';
 
 export type ProposalServiceResponse = {
-	newSchedule?: IScheduling[];
+  idLead?: string;
+  status: number;
+  newSchedule?: IScheduling[];
+  result?: Record<string, unknown>;
 };

@@ -1,90 +1,83 @@
 import type { HttpResponseHomeProps } from './types';
 
-function removeNumbers(sectionName: string) {
-	const newSectionName = sectionName.replace(/[0-9]/g, '');
-
-	return newSectionName.endsWith('_')
-		? newSectionName.substring(0, newSectionName.length - 1)
-		: newSectionName;
+function removeNumbers(sectionName: string): string {
+  const newSectionName = sectionName.replace(/[0-9]/g, '');
+  return newSectionName.endsWith('_')
+    ? newSectionName.slice(0, -1)
+    : newSectionName;
 }
 
-function findSectionHeader(obj: any): any {
-	if (!obj || typeof obj !== 'object') return null;
-	if (obj[':type'] === 'porto/react-components/section-header') {
-		return obj;
-	}
+function findSectionHeader(obj: Record<string, any>): Record<string, any> | null {
+  if (!obj || typeof obj !== 'object') return null;
+  if (obj[':type'] === 'porto/react-components/section-header') {
+    return obj;
+  }
 
-	for (const key of Object.keys(obj)) {
-		const result = findSectionHeader(obj[key]);
-		if (result) return result;
-	}
+  for (const key of Object.keys(obj)) {
+    const result = findSectionHeader(obj[key]);
+    if (result) return result;
+  }
 
-	return null;
+  return null;
 }
 
 export const AEMService = {
-	getContent: async (endpoint: any): Promise<HttpResponseHomeProps> => {
-		const response = await fetch(endpoint, {
-			next: {
-				revalidate: 1,
-			},
-		});
+  getContent: async (endpoint: string): Promise<HttpResponseHomeProps> => {
+    try {
+      const response = await fetch(endpoint, {
+        next: { revalidate: 1 },
+      });
 
-		const data = await response.json();
-		const rootProps = data[':items']?.root[':items'] || {};
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-		const header =
-			rootProps?.experiencefragment?.[':items']?.root?.[':items']?.header;
-		const footer =
-			rootProps?.['experiencefragment-footer']?.[':items']?.root?.[':items']
-				?.footer;
+      const data = await response.json();
+      const rootProps = data[':items']?.root[':items'] ?? {};
 
-		const Sections = rootProps?.responsivegrid?.[':items'] || {};
+      const header = rootProps?.experiencefragment?.[':items']?.root?.[':items']?.header;
+      const footer = rootProps?.['experiencefragment-footer']?.[':items']?.root?.[':items']?.footer;
+      const sections = rootProps?.responsivegrid?.[':items'] ?? {};
+      const sectionHeader = findSectionHeader(data);
 
-		const sectionHeader = findSectionHeader(data);
+      const filteredSections = Object.entries(sections)
+        .filter(([key]) => !key.includes('spacing'))
+        .map(([key, value]) => ({
+          name: removeNumbers(key),
+          value,
+        }));
 
-		const listSections = Object.entries(Sections);
-
-		const listSectionsWithoutSpacing = listSections.filter(
-			(section) => !section[0].includes('spacing'),
-		);
-
-		function generateId() {
-			return (
-				Math.random().toString(36).substring(2, 15) +
-				Math.random().toString(36).substring(2, 15)
-			);
-		}
-
-		const formattedListSections = listSectionsWithoutSpacing.map((section) => ({
-			_uid: generateId(),
-			name: removeNumbers(section[0]),
-			component: section[1],
-		}));
-
-		const formattedResponse = [
-			{
-				_uid: generateId(),
-				name: 'header',
-				component: header,
-			},
-
-			sectionHeader && {
-				_uid: generateId(),
-				name: 'section-header',
-				component: sectionHeader,
-			},
-			...formattedListSections,
-			{
-				_uid: generateId(),
-				name: 'footer',
-				component: footer,
-			},
-		].filter(Boolean);
-
-		return {
-			data,
-			sections: formattedResponse,
-		};
-	},
+      return {
+        data,
+        sections: [
+          {
+            _uid: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+            name: 'header',
+            component: header,
+          },
+          sectionHeader && {
+            _uid: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+            name: 'section-header',
+            component: sectionHeader,
+          },
+          ...filteredSections.map((section) => ({
+            _uid: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+            name: section.name,
+            component: section.value,
+          })),
+          {
+            _uid: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+            name: 'footer',
+            component: footer,
+          },
+        ].filter(Boolean),
+      };
+    } catch (error) {
+      console.error('Error in AEMService.getContent:', error);
+      return {
+        data: null,
+        sections: [],
+      };
+    }
+  },
 };

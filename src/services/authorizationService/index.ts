@@ -6,27 +6,48 @@ import { api } from '@/lib';
 
 import type { AuthorizationServiceResponse } from './types';
 
-export async function AuthorizationService() {
-	const endpoint = `${env('NEXT_PUBLIC_CARBON_BASE_URL')}/oauth/v2/access-token`;
+type ConfigHeaders = {
+  headers: {
+    Authorization: string;
+    'Content-Type': string;
+  };
+};
 
-	const configHeaders = {
-		headers: {
-			Authorization: `Basic ${process.env.TOKEN}`,
-			'Content-Type': 'application/x-www-form-urlencoded',
-		},
-	};
+type RequestBody = {
+  grant_type: string;
+};
 
-	const body = { grant_type: 'client_credentials' };
+export async function AuthorizationService(): Promise<AuthorizationServiceResponse> {
+  const baseUrl = env('NEXT_PUBLIC_CARBON_BASE_URL');
+  const token = process.env.TOKEN;
 
-	const httpResponse = await api.post<AuthorizationServiceResponse>(
-		endpoint,
-		body,
-		configHeaders,
-	);
+  if (!baseUrl || !token) {
+    console.error('Missing environment variables for AuthorizationService');
+    return { access_token: '' };
+  }
 
-	if (httpResponse.status !== 200 || !httpResponse.data?.access_token) {
-		return { access_token: '' };
-	}
+  const endpoint = `${baseUrl}/oauth/v2/access-token`;
 
-	return httpResponse.data;
+  const configHeaders: ConfigHeaders = {
+    headers: {
+      Authorization: `Basic ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  };
+
+  const body: RequestBody = { grant_type: 'client_credentials' };
+
+  try {
+    const httpResponse = await api.post<AuthorizationServiceResponse>(endpoint, body, configHeaders);
+
+    if (httpResponse.status !== 200 || !httpResponse.data?.access_token) {
+      console.warn('AuthorizationService: Invalid response format or status');
+      return { access_token: '' };
+    }
+
+    return httpResponse.data;
+  } catch (error) {
+    console.error('Error in AuthorizationService:', error);
+    return { access_token: '' };
+  }
 }

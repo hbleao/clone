@@ -28,22 +28,15 @@ export class CPFValidation implements FieldValidation {
 	}
 
 	checkCPF(cpf: string): boolean {
-		if (!cpf) return false;
-		if (!isValidLength(cpf, 11)) return false;
-		if (!isRepeatedNumbers(cpf, 11)) return false;
+		if (!cpf || !isValidLength(cpf, 11) || isRepeatedNumbers(cpf, 11)) {
+			return false;
+		}
 
-		const firstDigitChecker = this.calculateCheckDigit(
-			cpf,
-			this.FACTOR_DIGIT_1,
-		);
-		const secondDigitChecker = this.calculateCheckDigit(
-			cpf,
-			this.FACTOR_DIGIT_2,
-		);
-
+		const firstDigitChecker = this.calculateCheckDigit(cpf, this.FACTOR_DIGIT_1);
+		const secondDigitChecker = this.calculateCheckDigit(cpf, this.FACTOR_DIGIT_2);
 		const calculatedDigit = extractCheckDigits(cpf);
-		const checkDigits = `${firstDigitChecker}${secondDigitChecker}`;
-		return calculatedDigit === checkDigits;
+
+		return calculatedDigit === `${firstDigitChecker}${secondDigitChecker}`;
 	}
 
 	validate(value: string): Error | null {

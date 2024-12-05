@@ -10,23 +10,32 @@ import type {
 export const DataQualityService = async ({
 	type,
 	param,
-}: DataQualityServiceProps) => {
+}: DataQualityServiceProps): Promise<DataQualityServiceResponse> => {
 	const endpoint = `${env(
 		'NEXT_PUBLIC_CARBON_BASE_URL',
 	)}/hub-vendas-carbon/cliente/v1/validacoes/${param}/${type}`;
 
-	const httpResponse =
-		await authorizedApi.get<DataQualityServiceResponse>(endpoint);
+	try {
+		const httpResponse =
+			await authorizedApi.get<DataQualityServiceResponse>(endpoint);
 
-	if (httpResponse.status !== 200) {
+		if (httpResponse.status !== 200) {
+			console.warn('DataQualityService: Invalid response format or status');
+			return {
+				isValid: false,
+				message: 'Serviço indísponivel',
+			};
+		}
+
+		return {
+			...httpResponse.data,
+			message: httpResponse.data.isValid ? '' : 'Valor inválido',
+		};
+	} catch (error) {
+		console.error('Error in DataQualityService:', error);
 		return {
 			isValid: false,
-			message: 'Serviço indísponivel',
+			message: 'Erro ao validar dados',
 		};
 	}
-
-	return {
-		...httpResponse.data,
-		message: httpResponse.data.isValid ? '' : 'Valor inválido',
-	};
 };

@@ -9,3 +9,13 @@ export type ScheduleServiceProps = {
 		problemCode?: string;
 	};
 };
+
+export type ScheduleServiceResponse = {
+  status: number;
+  selectedHour: string;
+  selectedDate: Record<string, unknown>;
+  availableDays: Array<{
+    date: string;
+    availableHours: string[];
+  }>;
+};

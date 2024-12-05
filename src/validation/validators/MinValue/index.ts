@@ -9,8 +9,10 @@ export class MinValueValidation implements FieldValidation {
 	) {}
 
 	validate(value: string): Error | null {
-		return Number.parseFloat(value) >= this.minValue!
-			? null
-			: new CustomError(this.errorMessage);
+		const numericValue = Number.parseFloat(value);
+		if (numericValue || numericValue < (this.minValue ?? 0)) {
+			return new CustomError(this.errorMessage);
+		}
+		return null;
 	}
 }

@@ -30,26 +30,15 @@ export class CnpjValidation implements FieldValidation {
 	}
 
 	checkCNPJ(cnpj: string): boolean {
-		if (!cnpj) return false;
-		if (!isValidLength(cnpj, 14)) return false;
-		if (!isRepeatedNumbers(cnpj, 14)) return false;
-
-		const firstDigitChecker = this.calculateCheckDigit(
-			cnpj.slice(0, 12),
-			this.FIRST_FACTOR,
-		);
-		const secondDigitChecker = this.calculateCheckDigit(
-			cnpj.slice(0, 13),
-			this.SECOND_FACTOR,
-		);
-
-		const checkDigits = extractCheckDigits(cnpj);
-
-		if (checkDigits === `${firstDigitChecker}${secondDigitChecker}`) {
-			return true;
+		if (!cnpj || !isValidLength(cnpj, 14) || isRepeatedNumbers(cnpj, 14)) {
+			return false;
 		}
 
-		return false;
+		const firstDigitChecker = this.calculateCheckDigit(cnpj.slice(0, 12), this.FIRST_FACTOR);
+		const secondDigitChecker = this.calculateCheckDigit(cnpj.slice(0, 13), this.SECOND_FACTOR);
+		const checkDigits = extractCheckDigits(cnpj);
+
+		return checkDigits === `${firstDigitChecker}${secondDigitChecker}`;
 	}
 
 	validate(value: string): Error | null {

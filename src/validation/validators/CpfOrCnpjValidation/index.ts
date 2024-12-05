@@ -9,14 +9,12 @@ export class CpfOrCnpjValidation implements FieldValidation {
 	) {}
 
 	validate(value: string): Error | null {
-		const isCpf = value.length < 16;
-		const filledField = value.length > 0;
+		if (!value) return null;
 
-		if (!filledField) return null;
+		const validator = value.length < 16
+			? new CPFValidation(this.field, 'CPF com valor inválido')
+			: new CnpjValidation(this.field, 'CNPJ com valor inválido');
 
-		const cpf = new CPFValidation(this.field, 'CPF com valor inválido');
-		const cnpj = new CnpjValidation(this.field, 'CNPJ com valor inválido');
-
-		return isCpf ? cpf.validate(value) : cnpj.validate(value);
+		return validator.validate(value);
 	}
 }

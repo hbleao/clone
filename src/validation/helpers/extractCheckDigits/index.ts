@@ -1,3 +1,7 @@
 export function extractCheckDigits(value: string): string {
-	return value.slice(-2);
+  if (typeof value !== 'string' || value.length < 2) {
+    console.warn('Entrada inválida para extractCheckDigits. Retornando string vazia.');
+    return '';
+  }
+  return value.slice(-2);
 }

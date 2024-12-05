@@ -8,11 +8,11 @@ export class CepValidation implements FieldValidation {
 	) {}
 
 	validate(value: string): Error | null {
+		if (!value) {
+			return new CustomError(this.errorMessage);
+		}
 		const onlyNumbers = value.replace(/\D/g, '');
-		const emailRegex = /^[0-9]{8}$/;
-
-		return !onlyNumbers || emailRegex.test(onlyNumbers)
-			? null
-			: new CustomError(this.errorMessage);
+		const isValidCep = /^[0-9]{8}$/.test(onlyNumbers);
+		return isValidCep ? null : new CustomError(this.errorMessage);
 	}
 }

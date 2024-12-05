@@ -10,23 +10,29 @@ import type {
 export async function ServiceProductByProductAlias({
 	value,
 }: ServiceProductByProductAliasProps): Promise<ServiceProductByProductAliasResult> {
-	const endpoint = `${env('NEXT_PUBLIC_CARBON_BASE_URL')}/hub-vendas-carbon/prestacao-servico/v1/produtos`;
+	const baseUrl = env('NEXT_PUBLIC_CARBON_BASE_URL');
+
+	if (!baseUrl) {
+		console.error('Variável de ambiente ausente: NEXT_PUBLIC_CARBON_BASE_URL');
+		return {} as ServiceProductByProductAliasResult;
+	}
+
+	const endpoint = `${baseUrl}/hub-vendas-carbon/prestacao-servico/v1/produtos`;
 	const body = JSON.stringify({ type: 'productAlias', value });
 
 	try {
-		const httpResponse =
-			await authorizedApi.post<ServiceProductByProductAliasResult>(
-				endpoint,
-				body,
-			);
+		const httpResponse = await authorizedApi.post<ServiceProductByProductAliasResult>(
+			endpoint,
+			body,
+		);
 
 		if (httpResponse.status === 200) {
 			return httpResponse.data;
 		}
 
-		console.error(`Error: Received status ${httpResponse.status}`);
+		console.warn(`ServiceProductByProductAlias: Código de status inesperado ${httpResponse.status}`);
 	} catch (error) {
-		console.error('Request failed:', error);
+		console.error('Erro na ServiceProductByProductAlias:', error);
 	}
 
 	return {} as ServiceProductByProductAliasResult;

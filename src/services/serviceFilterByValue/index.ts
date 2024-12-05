@@ -11,18 +11,31 @@ import type {
 export async function ServiceFilterByValueService({
 	value,
 }: ServiceFilterByValueProps): Promise<ServiceFilterByValueServiceResult> {
-	const endpoint = `${env('NEXT_PUBLIC_CARBON_BASE_URL')}/hub-vendas-carbon/prestacao-servico/v1/produtos`;
+	const baseUrl = env('NEXT_PUBLIC_CARBON_BASE_URL');
+
+	if (!baseUrl) {
+		console.error('Variável de ambiente ausente: NEXT_PUBLIC_CARBON_BASE_URL');
+		return [];
+	}
+
+	const endpoint = `${baseUrl}/hub-vendas-carbon/prestacao-servico/v1/produtos`;
 
 	const body = JSON.stringify({ type: 'filter', value });
 
-	const response = await authorizedApi.post<ServiceFilterByValueServiceResult>(
-		endpoint,
-		body,
-	);
+	try {
+		const response = await authorizedApi.post<ServiceFilterByValueServiceResult>(
+			endpoint,
+			body,
+		);
 
-	if (response.status === 200) {
-		return response.data;
+		if (response.status === 200) {
+			return response.data;
+		}
+
+		console.warn(`ServiceFilterByValueService: Código de status inesperado ${response.status}`);
+		return [];
+	} catch (error) {
+		console.error('Erro na ServiceFilterByValueService:', error);
+		return [];
 	}
-
-	return [] as ServiceFilterByValueServiceResult;
 }

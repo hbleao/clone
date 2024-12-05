@@ -7,29 +7,26 @@ import type { IProduct } from '@/dtos';
 
 import { formatAemImageUrl } from '@/utils';
 
-export async function CapsServicesService() {
-	const endpoint = `${env('NEXT_PUBLIC_API_NEXT_BASE_URL')}/api/caps/servicos`;
+export async function CapsServicesService(): Promise<IProduct[]> {
+  const endpoint = `${env('NEXT_PUBLIC_API_NEXT_BASE_URL')}/api/caps/servicos`;
 
-	const httpResponse = await api.get<IProduct[]>(endpoint);
+  try {
+    const httpResponse = await api.get<IProduct[]>(endpoint);
 
-	if (!Array.isArray(httpResponse.data)) {
-		throw new Error('CapsServicesService: Something went wrong!');
-	}
+    if (httpResponse.status !== 200 || !Array.isArray(httpResponse.data)) {
+      console.warn('CapsServicesService: Invalid response format or status');
+      return [];
+    }
 
-	if (httpResponse.status !== 200) {
-		throw new Error('CapsServicesService: Internal server error');
-	}
-
-	const response = {
-		...httpResponse,
-		data: httpResponse.data.map((card) => ({
-			...card,
-			image: {
-				src: formatAemImageUrl(card.image.src),
-				alt: card.image.alt,
-			},
-		})),
-	};
-
-	return response;
+    return httpResponse.data.map((card) => ({
+      ...card,
+      image: {
+        src: formatAemImageUrl(card.image.src),
+        alt: card.image.alt,
+      },
+    }));
+  } catch (error) {
+    console.error('Error in CapsServicesService:', error);
+    return [];
+  }
 }

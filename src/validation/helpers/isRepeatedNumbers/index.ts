@@ -4,17 +4,19 @@ export function isRepeatedNumbers(
 	value: string,
 	quant_digits: number,
 ): boolean {
-	const INITIAL_COUNT = 0;
-	const NUMBER_OF_INTERACTIONS = 10;
-	const valueWithoutSpecialCharacters = removeSpecialCharacters(value);
-	let isValid = true;
+	if (typeof value !== 'string' || quant_digits <= 0) {
+		console.warn('Entrada inválida para isRepeatedNumbers. Retornando false.');
+		return false;
+	}
 
-	for (let i = INITIAL_COUNT; i < NUMBER_OF_INTERACTIONS; i++) {
-		const matrix = [...Array(quant_digits).fill(i)].join('');
+	const valueWithoutSpecialCharacters = removeSpecialCharacters(value);
+
+	for (let i = 0; i < 10; i++) {
+		const matrix = Array(quant_digits).fill(i).join('');
 		if (matrix === valueWithoutSpecialCharacters) {
-			isValid = false;
+			return true;
 		}
 	}
 
-	return isValid;
+	return false;
 }

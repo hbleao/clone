@@ -5,22 +5,27 @@ import { env } from 'next-runtime-env';
 import type { AvailableDate } from './type';
 
 export async function WorkshopScheduleService({
-	code,
-}): Promise<AvailableDate[]> {
-	const response = await fetch(
-		`${env('NEXT_PUBLIC_API_NEXT_BASE_URL')}/api/caps/workshop/${code}/schedule`,
-	);
+  code,
+}: { code: string }): Promise<AvailableDate[]> {
+  const baseUrl = env('NEXT_PUBLIC_API_NEXT_BASE_URL');
 
-	if (!response.ok) {
-		throw new Error(
-			`Error fetching workshop code [${code}]: ${response.status} ${response.statusText}`,
-		);
-	}
+  if (!baseUrl) {
+    console.error('Variável de ambiente ausente: NEXT_PUBLIC_API_NEXT_BASE_URL');
+    return [];
+  }
 
-	if (response.status === 200) {
-		const data = await response.json();
-		return data;
-	}
+  try {
+    const response = await fetch(`${baseUrl}/api/caps/workshop/${code}/schedule`);
 
-	return [];
+    if (!response.ok) {
+      console.warn(`Erro ao buscar código do workshop [${code}]: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Erro na WorkshopScheduleService:', error);
+    return [];
+  }
 }

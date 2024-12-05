@@ -5,34 +5,45 @@ import { env } from 'next-runtime-env';
 import { authorizedApi } from '@/lib';
 import { GtmMeasurementProtocolService } from '../measurementProtocol';
 import { getIp } from './getIp';
+import type { ProposalServiceResponse } from './types';
 
-export async function ProposalService(param: any) {
-	const endpoint = `${env('NEXT_PUBLIC_CARBON_BASE_URL')}/hub-vendas-carbon/prestacao-servico/v1/proposta`;
+export async function ProposalService(param: any): Promise<ProposalServiceResponse> {
+  const baseUrl = env('NEXT_PUBLIC_CARBON_BASE_URL');
 
-	const body = {
-		scope: 'porto_service',
-		...param,
-		ipAddress: await getIp(),
-	};
+  if (!baseUrl) {
+    console.error('Variável de ambiente ausente: NEXT_PUBLIC_CARBON_BASE_URL');
+    return { result: {}, status: 500 };
+  }
 
-	const httpResponse = await authorizedApi.post(endpoint, body);
+  const endpoint = `${baseUrl}/hub-vendas-carbon/prestacao-servico/v1/proposta`;
 
-	if (httpResponse.status === 200) {
-		const response = httpResponse.data;
+  const body = {
+    scope: 'porto_service',
+    ...param,
+    ipAddress: await getIp(),
+  };
 
-		const { serviceProvision } = param;
+  try {
+    const httpResponse = await authorizedApi.post(endpoint, body);
 
-		await GtmMeasurementProtocolService({
-			documentNumber: serviceProvision?.serviceOrder?.requester.documentNumber,
-			leadId: response.idLead,
-			products: serviceProvision?.products?.[0]?.items,
-		});
+    if (httpResponse.status === 200) {
+      const response = httpResponse.data;
 
-		return { ...response, status: httpResponse.status };
-	}
+      const { serviceProvision } = param;
 
-	return {
-		result: {},
-		status: httpResponse,
-	};
+      await GtmMeasurementProtocolService({
+        documentNumber: serviceProvision?.serviceOrder?.requester.documentNumber,
+        leadId: response.idLead,
+        products: serviceProvision?.products?.[0]?.items,
+      });
+
+      return { ...response, status: httpResponse.status };
+    }
+
+    console.warn(`ProposalService: Código de status inesperado ${httpResponse.status}`);
+    return { result: {}, status: httpResponse.status };
+  } catch (error) {
+    console.error('Erro na ProposalService:', error);
+    return { result: {}, status: 500 };
+  }
 }

@@ -4,23 +4,28 @@ import type { Workshop } from '@/templates/workshopFlow/Address/reducer/types';
 import { env } from 'next-runtime-env';
 
 export async function WorkshopByLatLngService(
-	lat: string,
-	lng: string,
+  lat: string,
+  lng: string,
 ): Promise<Workshop[]> {
-	const response = await fetch(
-		`${env('NEXT_PUBLIC_API_NEXT_BASE_URL')}/api/caps/workshops?lat=${lat}&lng=${lng}`,
-	);
+  const baseUrl = env('NEXT_PUBLIC_API_NEXT_BASE_URL');
 
-	if (!response.ok) {
-		throw new Error(
-			`Error fetching workshops for coordinates (lat: ${lat}, lng: ${lng}): ${response.status} ${response.statusText}`,
-		);
-	}
+  if (!baseUrl) {
+    console.error('Variável de ambiente ausente: NEXT_PUBLIC_API_NEXT_BASE_URL');
+    return [];
+  }
 
-	if (response.status === 200) {
-		const data = await response.json();
-		return data;
-	}
+  try {
+    const response = await fetch(`${baseUrl}/api/caps/workshops?lat=${lat}&lng=${lng}`);
 
-	return [];
+    if (!response.ok) {
+      console.warn(`Erro ao buscar workshops: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Erro na WorkshopByLatLngService:', error);
+    return [];
+  }
 }

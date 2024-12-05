@@ -9,8 +9,9 @@ export class MaxLengthValidation implements FieldValidation {
 	) {}
 
 	validate(value: string): Error | null {
-		return value.length <= this.validationValue!
-			? null
-			: new CustomError(this.errorMessage);
+		if (value.length > (this.validationValue ?? 0)) {
+			return new CustomError(this.errorMessage);
+		}
+		return null;
 	}
 }

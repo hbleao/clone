@@ -107,3 +107,9 @@ Utilizamos Conventional Commits para padronização das mensagens:
 - Biome para linting e formatação
 - Husky para git hooks
 - TypeScript para tipagem estática
+
+
+
+
+melhore o codigo da pasta serviceProductByAlias e crie testes automatizados com vitest e typescript
+
