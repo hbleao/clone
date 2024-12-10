@@ -111,5 +111,5 @@ Utilizamos Conventional Commits para padronização das mensagens:
 
 
 
-melhore o codigo da pasta serviceProductByAlias e crie testes automatizados com vitest e typescript
+melhore o codigo da pasta utils > formatOptionPriceToGtm e crie testes automatizados com vitest e typescript
 
