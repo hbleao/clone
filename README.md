@@ -1,115 +1,36 @@
-# Porto Serviços E-commerce
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Este módulo faz parte do ecossistema de e-commerce da Porto Seguro, especificamente focado na área de serviços. O projeto é desenvolvido e mantido pela squad de serviços.
+## Getting Started
 
-## Visão Técnica
+First, run the development server:
 
-### Stack Tecnológica
-- **Framework Principal**: Next.js 14 com Server-Side Rendering (SSR)
-- **Linguagem**: TypeScript
-- **Gerenciamento de Estado**:
-  - Zustand para estado global
-  - React Query para cache e estado de servidor
-- **UI/UX**: Design System Ocean da Porto (@porto-ocean/*)
-- **Testes**: Playwright para testes E2E
-
-### Principais Integrações
-- Adobe Experience Manager (AEM) para gestão de conteúdo
-- Google Maps API para geolocalização
-- Sistemas internos Porto:
-  - Sistema de Precificação
-  - Sistema de Propostas
-  - Sistema de Oficinas
-- Serviços de CEP e Localização
-
-### Arquitetura do Projeto
-
-```
-src/
-├── app/                # Rotas e páginas Next.js
-├── components/         # Componentes React reutilizáveis
-├── services/           # Integrações com APIs e serviços
-├── store/              # Gerenciamento de estado global
-├── templates/          # Templates de páginas
-├── validation/         # Esquemas de validação
-└── utils/              # Utilitários e helpers
-```
-
-### Principais Funcionalidades
-
-1. **Gestão de Serviços**
-   - Listagem por categorias
-   - Filtros e busca
-   - Detalhamento de serviços
-
-2. **Sistema de Agendamento**
-   - Verificação de disponibilidade
-   - Seleção de oficinas por localização
-   - Confirmação e finalização
-
-3. **Precificação e Propostas**
-   - Cálculo dinâmico de preços
-   - Geração de propostas
-   - Verificação de elegibilidade
-
-4. **Geolocalização**
-   - Busca de oficinas por CEP
-   - Integração com Google Maps
-   - Validação de área de cobertura
-
-### Segurança e Performance
-
-- Middleware para gestão de tokens e cookies
-- Validação de dados com TypeScript
-- Server-Side Rendering para melhor SEO e performance
-- Sistema próprio de autorização
-
-## Ambientes
-
-- **Desenvolvimento**: https://servicos.hub-de-vendas-ecommerce.dev.awsporto
-- **Homologação**: https://servicos.hub-de-vendas-ecommerce.hml.awsporto
-
-## Setup do Projeto
-
-### Pré-requisitos
-- Node.js (versão LTS)
-- NPM ou Yarn
-
-### Instalação
 ```bash
-npm install
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-### Scripts Disponíveis
-```bash
-npm run dev          # Ambiente de desenvolvimento
-npm run build       # Build de produção
-npm run start       # Execução em produção
-npm run test        # Execução de testes
-```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Variáveis de Ambiente
-Para configurar as variáveis de ambiente, crie um arquivo `.env.local` baseado no `.env.example`.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## Padrões de Desenvolvimento
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-### Commits
-Utilizamos Conventional Commits para padronização das mensagens:
-- feat: Nova funcionalidade
-- fix: Correção de bug
-- docs: Documentação
-- style: Formatação
-- refactor: Refatoração
-- test: Testes
-- chore: Manutenção
+## Learn More
 
-### Qualidade de Código
-- Biome para linting e formatação
-- Husky para git hooks
-- TypeScript para tipagem estática
+To learn more about Next.js, take a look at the following resources:
 
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Deploy on Vercel
 
-melhore o codigo da pasta utils > formatOptionPriceToGtm e crie testes automatizados com vitest e typescript
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

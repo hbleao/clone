@@ -13,12 +13,8 @@
 /.next/
 /out/
 
-# build
-/dist
-
 # production
 /build
-/dist
 
 # misc
 .DS_Store
@@ -31,8 +27,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.env.development
-.env.production
 
 # vercel
 .vercel
@@ -40,16 +34,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-node_modules/
-
-
-scripts/**/*.xlsx
-scripts/**/*.json
-scripts/**/out/
-!scripts/**/package.json
-
-.env*
