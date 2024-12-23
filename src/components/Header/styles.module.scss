@@ -1,0 +1,14 @@
+.header {
+  width: 100%;
+  height: 80px;
+  background-color: #fff;
+  margin-bottom: $spacing-12;
+  box-shadow: $shadow-sm;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 140px;
+    height: 70px;
+  }
+}

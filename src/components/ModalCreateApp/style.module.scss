@@ -1,0 +1,158 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($gray9, 0.5);
+  backdrop-filter: blur(0.4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+
+  .modal {
+    background: $white;
+    border-radius: 1.2rem;
+    width: 100%;
+    max-width: 64rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    box-shadow: $shadow-2xl;
+    animation: modalIn 0.3s ease-out;
+
+    .modal-header {
+      padding: 2.4rem;
+      border-bottom: 0.1rem solid $gray2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: $gray8;
+        margin: 0;
+      }
+
+      .close-button {
+        background: none;
+        border: none;
+        padding: 0.8rem;
+        margin: -0.8rem;
+        cursor: pointer;
+        color: $gray6;
+        transition: all 0.2s;
+
+        &:hover {
+          color: $gray8;
+        }
+
+        svg {
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+    }
+
+    form {
+      padding: 2.4rem;
+
+      .form-grid {
+        display: grid;
+        gap: 2rem;
+
+        .form-group {
+          label {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: $gray7;
+            margin-bottom: 0.8rem;
+          }
+
+          input,
+          textarea {
+            width: 100%;
+            padding: 1.2rem;
+            border: 0.1rem solid $gray3;
+            border-radius: 0.8rem;
+            font-size: 1.4rem;
+            background: $gray1;
+            transition: all 0.2s;
+
+            &:focus {
+              outline: none;
+              border-color: $blue4;
+              background: $white;
+              box-shadow: 0 0 0 0.3rem rgba($blue4, 0.1);
+            }
+
+            &::placeholder {
+              color: $gray5;
+            }
+          }
+
+          textarea {
+            min-height: 10rem;
+            resize: vertical;
+          }
+        }
+      }
+
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+        margin-top: 2.4rem;
+        padding-top: 2.4rem;
+        border-top: 0.1rem solid $gray2;
+
+        button {
+          padding: 1.2rem 2.4rem;
+          font-size: 1.4rem;
+          font-weight: 500;
+          border: none;
+          border-radius: 0.8rem;
+          cursor: pointer;
+          transition: all 0.2s;
+
+          &.cancel-button {
+            color: $gray7;
+            background: $gray2;
+
+            &:hover {
+              background: $gray3;
+            }
+          }
+
+          &.submit-button {
+            color: $white;
+            background: $blue5;
+
+            &:hover {
+              background: $blue6;
+            }
+
+            &:disabled {
+              background: $gray4;
+              cursor: not-allowed;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
