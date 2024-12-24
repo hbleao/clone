@@ -1,0 +1,36 @@
+.container {
+  padding: 1rem 0rem;
+  border-bottom: 1px solid $gray3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.canvas {
+  width: 100%;
+  height: calc(100vh - 120px);
+  overflow-y: hidden;
+  position: relative;
+  background-image: url("/assets/icons/paper.svg");
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.notReady {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,32 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.switchContainer {
+  padding: 0.8rem;
+  border: 1px solid $gray4;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.switchHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.text {
+  font-size: 0.8rem;
+  color: $gray2;
+  line-height: 20px;
+}

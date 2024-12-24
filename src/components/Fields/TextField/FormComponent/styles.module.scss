@@ -1,0 +1,19 @@
+.designerComponent {
+  color: $white;
+
+  input {
+    width: 100%;
+  }
+}
+
+.helperText {
+  font-size: 0.8rem;
+  line-height: 1.6rem;
+  color: $gray4;
+}
+
+.error {
+  font-size: 0.8rem;
+  line-height: 1.6rem;
+  color: $red5;
+}

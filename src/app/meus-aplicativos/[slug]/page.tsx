@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getAppBySlug } from "@/actions/app";
+import { ChevronLeft } from "lucide-react";
 import {
 	getPagesByAppId,
 	createPage,
@@ -187,6 +188,10 @@ export default function AppDetailsPage() {
 		setEditingPageId(null);
 	};
 
+	const handlePageClick = (page: Page) => {
+		router.push(`/meus-aplicativos/${params.slug}/pages/${page.id}`);
+	};
+
 	if (loading) {
 		return (
 			<div className="app-details-container">
@@ -207,13 +212,13 @@ export default function AppDetailsPage() {
 		<div className="app-details-container">
 			<Header />
 			<div className="header">
-				{/* <h1>Páginas {app.name}</h1> */}
 				<Button
 					type="button"
 					width="contain"
 					variant="disabled"
 					onClick={() => router.back()}
 				>
+					<ChevronLeft />
 					Voltar
 				</Button>
 
@@ -401,7 +406,11 @@ export default function AppDetailsPage() {
 				</div>
 
 				{pages.map((page) => (
-					<div key={page.id} className="page-item">
+					<div
+						key={page.id}
+						className="page-item"
+						onClick={() => handlePageClick(page)}
+					>
 						<div className="status">
 							<span className={`status-tag ${page.status}`}>
 								{page.status === "draft" ? "Rascunho" : "Publicado"}
@@ -417,7 +426,10 @@ export default function AppDetailsPage() {
 							<button
 								type="button"
 								className="action-button edit"
-								onClick={() => handleEditPage(page)}
+								onClick={(e) => {
+									e.stopPropagation();
+									handleEditPage(page);
+								}}
 								title="Editar página"
 							>
 								<svg

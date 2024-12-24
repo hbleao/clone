@@ -1,3 +1,4 @@
+"use client";
 import s from "./styles.module.scss";
 
 import { Button } from "../Button";
@@ -90,7 +91,7 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 						width="contain"
 						onClick={() => router.push(`/meus-aplicativos/${app.slug}`)}
 					>
-						Acessar Aplicativo
+						Ver aplicação
 					</Button>
 				</div>
 			))}

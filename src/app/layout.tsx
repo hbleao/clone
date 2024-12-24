@@ -1,4 +1,8 @@
+"use client";
+
 import "../styles/globals.css";
+
+import { DesignerContextProvider } from "@/context";
 
 export default function RootLayout({
 	children,
@@ -7,7 +11,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="pt-BR">
-			<body>{children}</body>
+			<body>
+				<DesignerContextProvider>{children}</DesignerContextProvider>
+			</body>
 		</html>
 	);
 }

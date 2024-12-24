@@ -2,7 +2,6 @@
   padding: 1.2rem 2.4rem;
   font-size: $text-md;
   font-weight: $semi;
-  margin-top: $spacing-4;
   border: none;
   border-radius: 0.8rem;
   cursor: pointer;
@@ -10,6 +9,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.4rem;
+
+  svg {
+    width: 1.8rem;
+  }
 }
 
 .fluid {
@@ -40,7 +44,7 @@
 
 .disabled {
   color: $gray7;
-  background: $gray2;
+  background: $gray3;
 
   &:hover {
     background: $gray3;

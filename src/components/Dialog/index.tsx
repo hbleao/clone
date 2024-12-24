@@ -13,7 +13,11 @@ export const Dialog = ({
 			onClick={handleCloseModal}
 			onKeyDown={handleCloseModal}
 		>
-			<div className={s.modal}>
+			<div
+				className={s.modal}
+				onClick={(e) => e.stopPropagation()}
+				onKeyDown={(e) => e.stopPropagation()}
+			>
 				<div className={s["modal-header"]}>
 					<h2>{title}</h2>
 					<button

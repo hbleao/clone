@@ -1,0 +1,101 @@
+.designerElementWrapper {
+  padding: 1rem;
+  background-color: $blue8;
+  cursor: pointer;
+  position: relative;
+  opacity: 0.5;
+  transition: opacity 300ms ease;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  input,
+  div,
+  label {
+    cursor: pointer;
+  }
+}
+
+.top {
+  width: 100%;
+  height: 60px;
+  border-top: 7px solid transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.bottom {
+  width: 100%;
+  height: 60px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.ghostBorderHalfTop {
+  width: 100%;
+  height: 4px;
+  background-color: $white;
+  border-radius: 4px 4px 0 0;
+  padding: 8px 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.ghostBorderHalfBottom {
+  width: 100%;
+  height: 4px;
+  background-color: $white;
+  border-radius: 0 0 4px 4px;
+  padding: 8px 16px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.message {
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  color: $white;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    color: $gray4;
+  }
+
+  70% {
+    color: $white;
+  }
+
+  100% {
+    color: $gray4;
+  }
+}
+
+.exclude {
+  width: 50px;
+  height: 100%;
+  background-color: $red2;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  transition: all 300ms ease;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: $red5;
+  }
+}

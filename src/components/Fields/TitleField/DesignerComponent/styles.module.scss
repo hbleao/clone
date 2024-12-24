@@ -1,0 +1,22 @@
+.designerComponent {
+  color: $white;
+  height: 84px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.label {
+  display: block;
+  font-size: 0.8rem;
+  line-height: 1.6rem;
+  color: $gray3;
+}
+
+.text {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: $white;
+  margin-bottom: 0.5rem;
+}

@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 
 import s from "./styles.module.scss";
@@ -10,6 +11,7 @@ export const Header = ({ children }: { children?: React.ReactNode }) => {
 				alt="Logo"
 				width={1000}
 				height={1000}
+				onClick={() => (window.location.href = "/meus-aplicativos")}
 			/>
 			{children}
 		</header>
