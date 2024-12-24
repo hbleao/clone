@@ -1,14 +1,230 @@
 .app-details-container {
-  max-width: 1200px;
-  height: 100vh;
-  margin: 0 auto;
+  min-height: 100vh;
+  background-color: $gray1;
 
-  .loading,
+  .header {
+    margin: 3.2rem 0;
+    padding: 0 2.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      font-size: 3.2rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin: 0;
+    }
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 2.4rem;
+    border-bottom: 1px solid #e2e8f0;
+
+    .tab {
+      padding: 1.2rem 2.4rem;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #4a5568;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        color: #2d3748;
+      }
+
+      &.active {
+        color: $blue5;
+        border-bottom-color: $blue5;
+      }
+    }
+  }
+
+  .tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  .status-select {
+    label {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #4a5568;
+      margin-bottom: 0.8rem;
+    }
+
+    select {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.4rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.4rem;
+      background-color: white;
+      color: #2d3748;
+
+      &:focus {
+        outline: none;
+        border-color: #4c1d95;
+        box-shadow: 0 0 0 1px #4c1d95;
+      }
+    }
+  }
+
+  .pages-list {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin: 0 2.4rem;
+    margin-top: 2rem;
+
+    .pages-header {
+      display: grid;
+      grid-template-columns: 120px 1fr 120px 180px 155px 60px;
+      gap: 1rem;
+      padding: 2.4rem;
+      border-bottom: 1px solid #e2e8f0;
+      font-weight: 600;
+      color: #4a5568;
+      font-size: 1.6rem;
+    }
+
+    .page-item {
+      display: grid;
+      grid-template-columns: 120px 1fr 120px 180px 155px 60px;
+      gap: 1rem;
+      cursor: pointer;
+      padding: 2.4rem;
+      border-bottom: 1px solid #eeeeee;
+      background-color: #f8f9fa;
+      align-items: center;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f4f4f4;
+      }
+
+      .status-tag {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        font-size: 1.2rem;
+        font-weight: 500;
+
+        &.draft {
+          background-color: #e2e5e8;
+          color: #4a5568;
+          font-weight: $semi;
+        }
+
+        &.live {
+          background-color: #c6f6d5;
+          color: #2f855a;
+        }
+      }
+
+      .name {
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #2d3748;
+      }
+
+      .type {
+        font-size: 1.4rem;
+        color: #4a5568;
+      }
+
+      .last-update {
+        color: #718096;
+        font-size: 1.4rem;
+      }
+
+      .author {
+        color: #4a5568;
+        font-size: 1.4rem;
+      }
+
+      .actions {
+        display: flex;
+        gap: 0.8rem;
+        justify-content: flex-end;
+
+        .action-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border: none;
+          border-radius: 4px;
+          background: none;
+          color: #4a5568;
+          cursor: pointer;
+          transition: all 0.2s;
+
+          &:hover {
+            background-color: #edf2f7;
+
+            &.edit {
+              color: $blue5;
+            }
+
+            &.delete {
+              color: #e53e3e;
+            }
+          }
+
+          svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  .delete-confirmation {
+    p {
+      font-size: 1.4rem;
+      color: #4a5568;
+      margin-bottom: 2.4rem;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2rem;
+    margin-top: 3.2rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #718096;
+    font-size: 1.6rem;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 4rem;
+    color: #718096;
+    font-size: 1.6rem;
+  }
+
   .error {
     text-align: center;
-    color: white;
-    font-size: 1.2rem;
-    margin-top: 2rem;
+    padding: 4rem;
+    color: #e53e3e;
+    font-size: 1.6rem;
   }
 
   .app-details-card {

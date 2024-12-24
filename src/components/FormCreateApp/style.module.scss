@@ -1,0 +1,15 @@
+.form {
+  .form-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2rem;
+    margin-top: 2.4rem;
+    padding-top: 2.4rem;
+    border-top: 0.1rem solid $gray2;
+  }
+}

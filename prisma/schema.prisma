@@ -23,6 +23,7 @@ model User {
 
 model App {
   id          String   @id @default(uuid())
+  title       String
   name        String
   slug        String   @unique
   description String?
@@ -31,6 +32,45 @@ model App {
   updatedAt   DateTime @updatedAt
   userId      String
   user        User     @relation(fields: [userId], references: [id])
+  Page        Page[]
 
   @@map("apps")
+}
+
+model Page {
+  id          String    @id @default(uuid())
+  title       String // Título da página
+  slug        String // URL amigável
+  content     String? // Conteúdo da página em formato JSON para flexibilidade
+  status      String    @default("draft") // draft, published, archived
+  type        String // tipo de página (landing, blog, form, etc)
+  author      String // Nome do autor
+  appId       String // Relação com o App
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime? // Data de publicação
+  app         App       @relation(fields: [appId], references: [id])
+  seo         Seo? // Relação 1:1 com SEO
+
+  @@unique([appId, slug]) // Garante que o slug seja único dentro do app
+  @@index([status]) // Índice para consultas por status
+  @@map("pages")
+}
+
+model Seo {
+  id            String   @id @default(uuid())
+  title         String // Título da página para SEO
+  description   String? // Meta descrição
+  keywords      String? // Palavras-chave
+  ogTitle       String? // Open Graph título
+  ogDescription String? // Open Graph descrição
+  ogImage       String? // URL da imagem Open Graph
+  canonical     String? // URL canônica
+  robots        String? // Meta robots (index, follow, etc)
+  pageId        String   @unique // Relação 1:1 com Page
+  page          Page     @relation(fields: [pageId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("seos")
 }

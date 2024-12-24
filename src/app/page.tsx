@@ -1,8 +1,11 @@
 "use client";
-
 import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 import "./styles.scss";
+
+import { Button, Input } from "@/components";
+import { authenticateUser } from "@/actions/auth";
 
 interface LoginForm {
 	registration: string;
@@ -10,96 +13,62 @@ interface LoginForm {
 }
 
 export default function LoginPage() {
+	const router = useRouter();
 	const [formData, setFormData] = useState<LoginForm>({
 		registration: "",
 		password: "",
 	});
 	const [error, setError] = useState<string>("");
-	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		setError("");
-		setIsLoading(true);
-
-		try {
-			// Aqui você implementará a lógica de autenticação
-			console.log("Dados do formulário:", formData);
-
-			// Exemplo de validação básica
-			if (!formData.registration || !formData.password) {
-				throw new Error("Por favor, preencha todos os campos");
-			}
-
-			const response = await fetch("/api/auth/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(formData),
-			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				throw new Error(data.error);
-			}
-
-			// Redireciona para a página de aplicativos após login bem-sucedido
-			window.location.href = "/meus-aplicativos";
-		} catch (err) {
-			setError(err instanceof Error ? err.message : "Erro ao fazer login");
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
+	const handleChange = (field: keyof LoginForm, value: string) => {
 		setFormData((prev) => ({
 			...prev,
-			[name]: value,
+			[field]: value,
 		}));
+	};
+
+	const handleSubmit = async (e: FormEvent) => {
+		e.preventDefault();
+		setError("");
+
+		try {
+			await authenticateUser(formData);
+			router.push("/meus-aplicativos");
+		} catch (err) {
+			setError(err instanceof Error ? err.message : "Erro ao fazer login");
+		}
 	};
 
 	return (
 		<div className="login-container">
 			<div className="login-card">
-				<h1>KrillCore</h1>
+				<h1>Marine CMS</h1>
 
 				<form onSubmit={handleSubmit}>
 					<div className="form-group">
-						<label htmlFor="registration">Matrícula</label>
-						<input
-							type="text"
-							id="registration"
-							name="registration"
+						<Input
+							label="Matrícula"
 							value={formData.registration}
-							onChange={handleChange}
 							placeholder="Digite sua matrícula"
-							autoComplete="off"
+							onChange={(value) => handleChange("registration", value)}
 							required
 						/>
 					</div>
 
 					<div className="form-group">
-						<label htmlFor="password">Senha</label>
-						<input
+						<Input
 							type="password"
-							id="password"
-							name="password"
+							label="Senha"
 							value={formData.password}
-							onChange={handleChange}
 							placeholder="Digite sua senha"
+							onChange={(value) => handleChange("password", value)}
 							required
 						/>
 					</div>
 
-					{error && <div className="error-message">{error}</div>}
+					{error && <p className="error-message">{error}</p>}
 
-					<button type="submit" className="login-button" disabled={isLoading}>
-						{isLoading ? "Entrando..." : "Entrar"}
-					</button>
+					<Button type="submit">Entrar</Button>
 				</form>
 			</div>
 		</div>
