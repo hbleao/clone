@@ -1,13 +1,13 @@
 .button {
   width: 120px;
   height: 120px;
-  color: $white;
+  color: $gray6;
   border: 1px dashed $gray3;
   border-radius: 4px;
-  background-color: transparent;
+  background-color: $gray2;
 
   &:hover {
-    background-color: rgba($color: #fff, $alpha: 0.2);
+    background-color: $gray3;
   }
 
   > svg {

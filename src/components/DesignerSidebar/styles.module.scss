@@ -1,8 +1,11 @@
 .designerSidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
   width: 400px;
   max-width: 400px;
   height: 100%;
-  background-color: $blue9;
+  background-color: $white;
   padding: 1rem;
   overflow-y: auto;
   display: flex;

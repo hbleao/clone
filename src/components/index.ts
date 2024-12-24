@@ -20,3 +20,4 @@ export * from "./Fields/TextField";
 export * from "./Fields/ParagraphField";
 export * from "./Fields/TitleField";
 export * from "./Fields/SubtitleField";
+export * from "./PropertiesDialog";

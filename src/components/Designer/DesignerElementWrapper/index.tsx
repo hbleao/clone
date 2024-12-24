@@ -11,6 +11,8 @@ import {
 	FormElements,
 } from "@/components/FormElements";
 
+import { PropertiesDialog } from "@/components/PropertiesDialog";
+
 export type DesignerElementWrapperProps = {
 	element: FormElementInstance;
 };
@@ -20,6 +22,7 @@ export const DesignerElementWrapper = ({
 }: DesignerElementWrapperProps) => {
 	const { removeElement, setSelectedElement } = useDesigner();
 	const [mouseIsOver, setMouseIsOver] = useState(false);
+	const [isPropertiesOpen, setIsPropertiesOpen] = useState(false);
 	const DesignerElement = FormElements[element.type].designerComponent;
 
 	const topHalf = useDroppable({
@@ -58,7 +61,7 @@ export const DesignerElementWrapper = ({
 			onMouseLeave={() => setMouseIsOver(false)}
 			onClick={(e) => {
 				e.stopPropagation();
-				setSelectedElement(element);
+				setIsPropertiesOpen(true);
 			}}
 			ref={draggable.setNodeRef}
 			{...draggable.listeners}
@@ -89,6 +92,13 @@ export const DesignerElementWrapper = ({
 			{topHalf.isOver && <div className={s.ghostBorderHalfTop} />}
 			<DesignerElement elementInstance={element} />
 			{bottomHalf.isOver && <div className={s.ghostBorderHalfBottom} />}
+
+			{isPropertiesOpen && (
+				<PropertiesDialog
+					onClose={() => setIsPropertiesOpen(false)}
+					element={element}
+				/>
+			)}
 		</div>
 	);
 };

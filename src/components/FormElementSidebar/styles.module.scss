@@ -1,10 +1,19 @@
 .designerSidebarForm {
-  display: flex;
-  flex-direction: column;
+  padding-top: 2.4rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   gap: 2rem;
+
+  .title {
+    color: $gray7;
+    font-size: 1.6rem;
+    font-weight: $semi;
+  }
+
+  p {
+    color: $gray9;
+  }
 }
 
 .designerSidebarFormContent {
