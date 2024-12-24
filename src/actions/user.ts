@@ -19,7 +19,6 @@ export async function createUser(data: {
 				role: data.role,
 			},
 		});
-		console.log("Usuário criado:", newUser);
 		return newUser;
 	} catch (error) {
 		console.error("Erro ao criar usuário:", error);
@@ -30,7 +29,6 @@ export async function createUser(data: {
 export async function getAllUsers() {
 	try {
 		const users = await prisma.user.findMany();
-		console.log("Todos os usuários:", users);
 		return users;
 	} catch (error) {
 		console.error("Erro ao buscar usuários:", error);
@@ -43,7 +41,6 @@ export async function getUserByEmail(email: string) {
 		const user = await prisma.user.findUnique({
 			where: { email },
 		});
-		console.log("Usuário encontrado:", user);
 		return user;
 	} catch (error) {
 		console.error("Erro ao buscar usuário:", error);
@@ -60,7 +57,6 @@ export async function updateUser(
 			where: { email },
 			data,
 		});
-		console.log("Usuário atualizado:", updatedUser);
 		return updatedUser;
 	} catch (error) {
 		console.error("Erro ao atualizar usuário:", error);
@@ -73,7 +69,6 @@ export async function deleteUser(email: string) {
 		const deletedUser = await prisma.user.delete({
 			where: { email },
 		});
-		console.log("Usuário deletado:", deletedUser);
 		return deletedUser;
 	} catch (error) {
 		console.error("Erro ao deletar usuário:", error);

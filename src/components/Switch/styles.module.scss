@@ -1,0 +1,43 @@
+.switch {
+  max-height: 20px;
+  padding: 0.6rem;
+  position: relative;
+  cursor: pointer;
+  border-radius: 48px;
+  border: 1px solid $gray4;
+}
+
+.switchChecked {
+  background: $blue5;
+}
+
+.switchNoChecked {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.circle {
+  width: 15px;
+  height: 15px;
+  border-radius: 99px;
+  position: absolute;
+  top: 2px;
+}
+
+.checked {
+  background-color: $blue9;
+  left: 4px;
+}
+.noChecked {
+  background-color: $blue9;
+  left: 21px;
+}
+
+.fluid {
+  width: 100%;
+}
+
+.contain {
+  width: 40px;
+  max-width: 40px;
+  min-width: 40px;
+}

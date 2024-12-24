@@ -1,0 +1,221 @@
+.users-container {
+  max-width: 192rem;
+  height: 100vh;
+  margin: 0 auto;
+  background-color: $gray1;
+
+  .content {
+    padding: 0 2.4rem;
+
+    .header {
+      margin: 3.2rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h1 {
+        font-size: 2.4rem;
+        font-weight: $semi;
+        color: $gray8;
+      }
+    }
+
+    .users-list {
+      margin-top: 2rem;
+      border: 1px solid $gray2;
+      border-radius: 8px;
+      box-shadow: $shadow-sm;
+
+      .users-header {
+        display: grid;
+        grid-template-columns: 1.5fr 1.5fr 1fr 120px 180px 100px;
+        gap: 1rem;
+        padding: 1.6rem;
+        border-bottom: 1px solid #e2e8f0;
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 1.6rem;
+      }
+
+      .user-item {
+        display: grid;
+        grid-template-columns: 1.5fr 1.5fr 1fr 120px 180px 100px;
+        gap: 1rem;
+        padding: 1.6rem;
+        border-bottom: 1px solid #eeeeee;
+        background-color: #f8f9fa;
+        align-items: center;
+
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #f4f4f4;
+        }
+
+        .name {
+          font-size: 1.4rem;
+          font-weight: 500;
+          color: #2d3748;
+        }
+
+        .email {
+          font-size: 1.4rem;
+          color: #4a5568;
+        }
+
+        .registration {
+          font-size: 1.4rem;
+          color: #4a5568;
+        }
+
+        .role {
+          .role-tag {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            font-weight: $semi;
+
+            &.admin {
+              background-color: $blue0;
+              color: $blue5;
+            }
+
+            &.editor {
+              background-color: $yellow1;
+              color: $yellow6;
+            }
+
+            &.author {
+              background-color: $green1;
+              color: $green6;
+            }
+          }
+        }
+
+        .last-access {
+          font-size: 1.4rem;
+          color: #4a5568;
+        }
+
+        .actions {
+          display: flex;
+          gap: 0.8rem;
+
+          .action-button {
+            width: 3.2rem;
+            height: 3.2rem;
+            border: none;
+            border-radius: 4px;
+            background: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+              width: 1.6rem;
+              height: 1.6rem;
+            }
+
+            &:hover {
+              background-color: #edf2f7;
+
+              &.edit {
+                color: $blue5;
+              }
+
+              &.delete {
+                color: #e53e3e;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Estilos do formulário
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding: 2.4rem;
+  min-width: 48rem;
+
+  .select-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    label {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: $gray7;
+    }
+
+    select {
+      padding: 1.2rem;
+      border: 1px solid $gray3;
+      border-radius: 0.8rem;
+      font-size: 1.4rem;
+      color: $gray8;
+      background-color: white;
+      cursor: pointer;
+      outline: none;
+
+      transition: all 0.2s;
+
+      &:focus {
+        border-color: $blue5;
+        box-shadow: 0 0 0 1px $blue5;
+      }
+
+      &:hover {
+        border-color: $gray4;
+      }
+
+      &.error {
+        border-color: $red5;
+        box-shadow: 0 0 0 1px $red5;
+      }
+    }
+  }
+
+  .error-message {
+    color: $red5;
+    font-size: 1.2rem;
+    margin-top: 0.4rem;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2rem;
+    margin-top: 1.6rem;
+  }
+}
+
+// Estilos para o modal de confirmação de exclusão
+.delete-confirmation {
+  padding: 2.4rem;
+  text-align: center;
+
+  p {
+    font-size: 1.6rem;
+    color: $gray7;
+    margin-bottom: 1.6rem;
+
+    &.warning {
+      color: $red5;
+      font-size: 1.4rem;
+    }
+
+    strong {
+      color: $gray8;
+      font-weight: $semi;
+    }
+  }
+}
