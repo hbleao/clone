@@ -96,14 +96,14 @@
       opacity: 0;
       transition: opacity 0.2s;
 
-      button {
+      .button {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 3.2rem;
         height: 3.2rem;
         border: none;
-        border-radius: 1rem;
+        border-radius: 0.8rem;
         background: $gray1;
         color: $gray7;
         cursor: pointer;

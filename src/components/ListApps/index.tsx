@@ -30,8 +30,8 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 						>
 							<button
 								type="button"
+								className={`${s.button} ${s["delete-btn"]}`}
 								onClick={() => handleDelete(app.id)}
-								className={s["delete-btn"]}
 								title="Deletar"
 							>
 								<svg
@@ -49,7 +49,7 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 							</button>
 							<button
 								type="button"
-								className={s["edit-btn"]}
+								className={`${s.button} ${s["edit-btn"]}`}
 								onClick={() => handleEdit(app)}
 							>
 								<svg
@@ -91,7 +91,7 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 						width="contain"
 						onClick={() => router.push(`/meus-aplicativos/${app.slug}`)}
 					>
-						Ver aplicação
+						Acessar páginas
 					</Button>
 				</div>
 			))}

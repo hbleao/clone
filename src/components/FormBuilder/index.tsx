@@ -11,7 +11,13 @@ import { ExternalLink } from "lucide-react";
 
 import s from "./styles.module.scss";
 
-import { Button, Designer, DragOverlayWrapper, Spinner } from "@/components";
+import {
+	Button,
+	Designer,
+	DragOverlayWrapper,
+	Header,
+	Spinner,
+} from "@/components";
 
 import { useDesigner } from "@/hooks";
 
@@ -52,18 +58,20 @@ export const FormBuilder = ({ page }: FormBuilderProps) => {
 	return (
 		<DndContext sensors={sensors}>
 			<main>
-				<div className={s.container}>
-					<h2 className={s.title}>
-						<span>Form: </span>
-						{page.title}
-					</h2>
-					<div className={s.buttons}>
-						<Button type="button" variant="disabled">
-							<ExternalLink />
-							<span>Preview</span>
-						</Button>
+				<Header>
+					<div className={s.container}>
+						<h2 className={s.title}>
+							<span>Form: </span>
+							{page.title}
+						</h2>
+						<div className={s.buttons}>
+							<Button type="button" variant="disabled">
+								<ExternalLink />
+								<span>Preview</span>
+							</Button>
+						</div>
 					</div>
-				</div>
+				</Header>
 				<div className={s.canvas}>
 					<Designer />
 				</div>
