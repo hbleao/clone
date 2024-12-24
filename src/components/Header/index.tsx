@@ -1,8 +1,9 @@
 "use client";
 
 import { Logo } from "@/components/Logo";
-import { Settings, ChevronDown, Users, Shield } from "lucide-react";
+import { Settings, ChevronDown, Users, Shield, Palette } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
 import s from "./styles.module.scss";
 import Image from "next/image";
 
@@ -11,6 +12,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ children }: HeaderProps) => {
+	const params = useParams();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
 
@@ -60,6 +62,12 @@ export const Header = ({ children }: HeaderProps) => {
 								<Shield size={16} />
 								<span>Permissões</span>
 							</a>
+							{params.slug && (
+								<a href={`/apps/${params.slug}/templates`} className={s.menuItem}>
+									<Palette size={16} />
+									<span>Templates</span>
+								</a>
+							)}
 						</div>
 					)}
 				</div>

@@ -1,8 +1,8 @@
+import type { LinkProps as NextLinkProps } from "next/link";
 import type { HTMLAttributes } from "react";
 
-export type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
+export type LinkProps = NextLinkProps & {
 	children: React.ReactNode;
-	type: "button" | "submit" | "reset";
 	width?: "fluid" | "contain";
 	variant?: "insurance" | "disabled" | "danger" | "ghost";
 	disabled?: boolean;

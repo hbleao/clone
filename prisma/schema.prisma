@@ -22,17 +22,18 @@ model User {
 }
 
 model App {
-  id          String   @id @default(uuid())
-  title       String
-  name        String
-  slug        String   @unique
-  description String?
-  owner       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  Page        Page[]
+  id              String            @id @default(uuid())
+  title           String
+  name            String
+  slug            String            @unique
+  description     String?
+  owner           String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  userId          String
+  user            User              @relation(fields: [userId], references: [id])
+  Page            Page[]
+  SectionTemplate SectionTemplate[]
 
   @@map("apps")
 }
@@ -41,7 +42,7 @@ model Page {
   id          String    @id @default(uuid())
   title       String // Título da página
   slug        String // URL amigável
-  content     String? // Conteúdo da página em formato JSON para flexibilidade
+  content     String? // Array de seções baseadas nos templates (JSON string)
   status      String    @default("draft") // draft, published, archived
   type        String // tipo de página (landing, blog, form, etc)
   author      String // Nome do autor
@@ -73,4 +74,20 @@ model Seo {
   updatedAt     DateTime @updatedAt
 
   @@map("seos")
+}
+
+model SectionTemplate {
+  id          String   @id @default(uuid())
+  name        String
+  type        String // hero, features, testimonials, etc
+  description String
+  thumbnail   String?
+  schema      String // Schema dos campos do template (JSON string)
+  defaultData String? // Dados padrão para o template (JSON string)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  appId       String // Relação com o App
+  app         App      @relation(fields: [appId], references: [id])
+
+  @@map("section_templates")
 }

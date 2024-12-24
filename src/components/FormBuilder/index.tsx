@@ -61,7 +61,7 @@ export const FormBuilder = ({ page }: FormBuilderProps) => {
 				<Header>
 					<div className={s.container}>
 						<h2 className={s.title}>
-							<span>Form: </span>
+							<span>Página: </span>
 							{page.title}
 						</h2>
 						<div className={s.buttons}>
