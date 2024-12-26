@@ -2,18 +2,26 @@ import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
+const fieldSchema: z.ZodType<any> = z.lazy(() =>
+  z.object({
+    name: z.string().min(1, 'Nome do campo é obrigatório'),
+    type: z.string().min(1, 'Tipo do campo é obrigatório'),
+    label: z.string().min(1, 'Label do campo é obrigatório'),
+    required: z.boolean().default(false),
+    fields: z.array(fieldSchema).optional(), // Para campos do tipo objeto
+    arrayType: z.object({
+      type: z.string(),
+      fields: z.array(fieldSchema).optional()
+    }).optional(), // Para campos do tipo array
+  })
+);
+
 const sectionTemplateSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
   type: z.string().min(1, 'Tipo é obrigatório'),
   description: z.string().min(1, 'Descrição é obrigatória'),
   schema: z.object({
-    fields: z.array(z.object({
-      name: z.string().min(1, 'Nome do campo é obrigatório'),
-      type: z.string().min(1, 'Tipo do campo é obrigatório'),
-      label: z.string().min(1, 'Label do campo é obrigatório'),
-      required: z.boolean().default(false),
-      options: z.array(z.any()).optional(),
-    }))
+    fields: z.array(fieldSchema)
   }),
   defaultData: z.record(z.any()).optional(),
 });

@@ -11,6 +11,7 @@ import { createSectionTemplate } from "@/actions/sectionTemplate";
 
 import type { Field, FieldType } from "./types";
 import { Input, Textarea } from "@/components";
+import { createSectionTemplateService } from "@/services";
 
 export default function NewTemplatePage() {
 	const router = useRouter();
@@ -37,15 +38,63 @@ export default function NewTemplatePage() {
 		setLoading(true);
 
 		try {
-			const result = await createSectionTemplate(
+			// Validar se todos os campos obrigatórios estão preenchidos
+			if (!formData.name || !formData.description) {
+				toast.error("Preencha todos os campos obrigatórios");
+				return;
+			}
+
+			// Validar se todos os campos do template têm nome e label
+			const validateFields = (fields: Field[]): boolean => {
+				return fields.every((field) => {
+					if (!field.name || !field.label) {
+						return false;
+					}
+
+					if (field.type === "object" && field.fields) {
+						return validateFields(field.fields);
+					}
+
+					if (
+						field.type === "array" &&
+						field.arrayType?.type === "object" &&
+						field.arrayType.fields
+					) {
+						return validateFields(field.arrayType.fields);
+					}
+
+					return true;
+				});
+			};
+
+			if (!validateFields(formData.schema.fields)) {
+				toast.error("Todos os campos precisam ter nome e label");
+				return;
+			}
+
+			// Salvar template
+			const result = await createSectionTemplateService(
 				params.slug as string,
 				formData,
 			);
+
+			// const result = await createSectionTemplate(
+			// 	params.slug as string,
+			// 	formData,
+			// );
+
 			if (result.success) {
 				toast.success("Template criado com sucesso!");
 				router.push(`/apps/${params.slug}/templates`);
 			} else {
-				toast.error("Erro ao criar template");
+				if (Array.isArray(result.error)) {
+					// Mostrar erros de validação do Zod
+					result.error.forEach((err) => {
+						toast.error(err.message);
+					});
+				} else {
+					toast.error(result.error || "Erro ao criar template");
+				}
 			}
 		} catch (error) {
 			console.error("Erro ao salvar template:", error);
@@ -93,11 +142,57 @@ export default function NewTemplatePage() {
 		}
 	};
 
+	const handleFieldChange = (
+		fieldIndex: number,
+		value: string,
+		isNested: boolean,
+		parentIndex?: number,
+		isArrayField?: boolean,
+	) => {
+		const newSchemaFields = [...formData.schema.fields];
+
+		if (isNested && typeof parentIndex === "number") {
+			const parentField = newSchemaFields[parentIndex];
+
+			if (
+				isArrayField &&
+				parentField?.type === "array" &&
+				parentField.arrayType?.type === "object"
+			) {
+				const arrayFields = [...(parentField.arrayType.fields || [])];
+				arrayFields[fieldIndex] = {
+					...arrayFields[fieldIndex],
+					name: value,
+				};
+				parentField.arrayType.fields = arrayFields;
+			} else if (parentField?.type === "object" && parentField.fields) {
+				const nestedFields = [...parentField.fields];
+				nestedFields[fieldIndex] = {
+					...nestedFields[fieldIndex],
+					name: value,
+				};
+				parentField.fields = nestedFields;
+			}
+		} else {
+			newSchemaFields[fieldIndex] = {
+				...newSchemaFields[fieldIndex],
+				name: value,
+			};
+		}
+
+		setFormData((prev) => ({
+			...prev,
+			schema: { fields: newSchemaFields },
+		}));
+	};
+
 	const renderField = (
 		field: Field,
 		index: number,
 		parentFields: Field[],
 		isNested = false,
+		parentIndex?: number,
+		isArrayField?: boolean,
 	) => {
 		return (
 			<div key={index} className={s.fieldGroup}>
@@ -106,29 +201,15 @@ export default function NewTemplatePage() {
 					<input
 						type="text"
 						value={field.name}
-						onChange={(e) => {
-							const newFields = [...parentFields];
-							newFields[index].name = e.target.value;
-							if (isNested) {
-								// Atualizar campos aninhados
-								const parentIndex = Number.parseInt(field.name.split("-")[0]);
-								const newSchemaFields = [...formData.schema.fields];
-								if (newSchemaFields[parentIndex].type === "object") {
-									newSchemaFields[parentIndex].fields = newFields;
-								} else if (newSchemaFields[parentIndex].type === "array") {
-									newSchemaFields[parentIndex].arrayType!.fields = newFields;
-								}
-								setFormData((prev) => ({
-									...prev,
-									schema: { fields: newSchemaFields },
-								}));
-							} else {
-								setFormData((prev) => ({
-									...prev,
-									schema: { fields: newFields },
-								}));
-							}
-						}}
+						onChange={(e) =>
+							handleFieldChange(
+								index,
+								e.target.value,
+								isNested,
+								parentIndex,
+								isArrayField,
+							)
+						}
 						required
 					/>
 				</div>
@@ -147,12 +228,14 @@ export default function NewTemplatePage() {
 								arrayType: newType === "array" ? { type: "text" } : undefined,
 							};
 							if (isNested) {
-								const parentIndex = Number.parseInt(field.name.split("-")[0]);
 								const newSchemaFields = [...formData.schema.fields];
-								if (newSchemaFields[parentIndex].type === "object") {
-									newSchemaFields[parentIndex].fields = newFields;
-								} else if (newSchemaFields[parentIndex].type === "array") {
-									newSchemaFields[parentIndex].arrayType!.fields = newFields;
+								if (newSchemaFields[parentIndex as number].type === "object") {
+									newSchemaFields[parentIndex as number].fields = newFields;
+								} else if (
+									newSchemaFields[parentIndex as number].type === "array"
+								) {
+									newSchemaFields[parentIndex as number].arrayType!.fields =
+										newFields;
 								}
 								setFormData((prev) => ({
 									...prev,
@@ -185,12 +268,14 @@ export default function NewTemplatePage() {
 							const newFields = [...parentFields];
 							newFields[index].label = e.target.value;
 							if (isNested) {
-								const parentIndex = Number.parseInt(field.name.split("-")[0]);
 								const newSchemaFields = [...formData.schema.fields];
-								if (newSchemaFields[parentIndex].type === "object") {
-									newSchemaFields[parentIndex].fields = newFields;
-								} else if (newSchemaFields[parentIndex].type === "array") {
-									newSchemaFields[parentIndex].arrayType!.fields = newFields;
+								if (newSchemaFields[parentIndex as number].type === "object") {
+									newSchemaFields[parentIndex as number].fields = newFields;
+								} else if (
+									newSchemaFields[parentIndex as number].type === "array"
+								) {
+									newSchemaFields[parentIndex as number].arrayType!.fields =
+										newFields;
 								}
 								setFormData((prev) => ({
 									...prev,
@@ -216,12 +301,16 @@ export default function NewTemplatePage() {
 								const newFields = [...parentFields];
 								newFields[index].required = e.target.checked;
 								if (isNested) {
-									const parentIndex = Number.parseInt(field.name.split("-")[0]);
 									const newSchemaFields = [...formData.schema.fields];
-									if (newSchemaFields[parentIndex].type === "object") {
-										newSchemaFields[parentIndex].fields = newFields;
-									} else if (newSchemaFields[parentIndex].type === "array") {
-										newSchemaFields[parentIndex].arrayType!.fields = newFields;
+									if (
+										newSchemaFields[parentIndex as number].type === "object"
+									) {
+										newSchemaFields[parentIndex as number].fields = newFields;
+									} else if (
+										newSchemaFields[parentIndex as number].type === "array"
+									) {
+										newSchemaFields[parentIndex as number].arrayType!.fields =
+											newFields;
 									}
 									setFormData((prev) => ({
 										...prev,
@@ -243,7 +332,13 @@ export default function NewTemplatePage() {
 					<div className={s.nestedFields}>
 						<h3>Campos do Objeto</h3>
 						{field.fields?.map((nestedField, nestedIndex) =>
-							renderField(nestedField, nestedIndex, field.fields || [], true),
+							renderField(
+								nestedField,
+								nestedIndex,
+								field.fields || [],
+								true,
+								index,
+							),
 						)}
 						<button
 							type="button"
@@ -269,14 +364,15 @@ export default function NewTemplatePage() {
 										fields: newType === "object" ? [] : undefined,
 									};
 									if (isNested) {
-										const parentIndex = Number.parseInt(
-											field.name.split("-")[0],
-										);
 										const newSchemaFields = [...formData.schema.fields];
-										if (newSchemaFields[parentIndex].type === "object") {
-											newSchemaFields[parentIndex].fields = newFields;
-										} else if (newSchemaFields[parentIndex].type === "array") {
-											newSchemaFields[parentIndex].arrayType!.fields =
+										if (
+											newSchemaFields[parentIndex as number].type === "object"
+										) {
+											newSchemaFields[parentIndex as number].fields = newFields;
+										} else if (
+											newSchemaFields[parentIndex as number].type === "array"
+										) {
+											newSchemaFields[parentIndex as number].arrayType!.fields =
 												newFields;
 										}
 										setFormData((prev) => ({
@@ -305,6 +401,8 @@ export default function NewTemplatePage() {
 										nestedField,
 										nestedIndex,
 										field.arrayType?.fields || [],
+										true,
+										index,
 										true,
 									),
 								)}
@@ -350,11 +448,10 @@ export default function NewTemplatePage() {
 							}))
 						}
 					>
+						<option value="hero">Base</option>
 						<option value="hero">Hero</option>
 						<option value="features">Features</option>
 						<option value="testimonials">Depoimentos</option>
-						<option value="pricing">Preços</option>
-						<option value="contact">Contato</option>
 						<option value="custom">Personalizado</option>
 					</select>
 				</div>

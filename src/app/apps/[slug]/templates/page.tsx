@@ -3,16 +3,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
+import { PlusIcon } from "lucide-react";
 
 import type { SectionTemplate } from "@/types/section";
-import {
-	deleteSectionTemplate,
-	getSectionTemplates,
-} from "@/actions/sectionTemplate";
 import { Header, Link } from "@/components";
+import { getAllSectionTemplateService } from "@/services";
 
 import s from "./styles.module.scss";
-import { PlusIcon } from "lucide-react";
 
 export default function TemplatesPage() {
 	const params = useParams();
@@ -25,11 +22,11 @@ export default function TemplatesPage() {
 
 	async function loadTemplates() {
 		try {
-			const result = await getSectionTemplates(params.slug as string);
-			if (result.success) {
+			const result = await getAllSectionTemplateService(params.slug as string);
+			if (result.success && result.data) {
 				setTemplates(result.data);
 			} else {
-				toast.error("Erro ao carregar templates");
+				toast.error(result.error?.message || "Erro ao carregar templates");
 			}
 		} catch (error) {
 			console.error("Erro ao carregar templates:", error);
@@ -39,74 +36,75 @@ export default function TemplatesPage() {
 		}
 	}
 
-	async function handleDelete(templateId: string) {
-		if (!confirm("Tem certeza que deseja excluir este template?")) return;
-
-		try {
-			const result = await deleteSectionTemplate(
-				params.slug as string,
-				templateId,
-			);
-			if (result.success) {
-				toast.success("Template excluído com sucesso");
-				loadTemplates();
-			} else {
-				toast.error("Erro ao excluir template");
-			}
-		} catch (error) {
-			console.error("Erro ao excluir template:", error);
-			toast.error("Erro ao excluir template");
-		}
-	}
-
 	if (loading) {
-		return <div>Carregando...</div>;
+		return <div className={s.loading}>Carregando templates...</div>;
 	}
 
 	return (
-		<>
+		<div className={s.container}>
 			<Header />
-			<div className={s.container}>
-				<header className={s.header}>
-					<h1>Templates de Seção</h1>
-					<Link href={`/apps/${params.slug}/templates/novo`} width="contain">
-						<PlusIcon />
-						Novo Template
-					</Link>
-				</header>
-
-				<div className={s.grid}>
-					{templates.map((template) => (
-						<div key={template.id} className={s.card}>
-							{template.thumbnail && (
-								<img src={template.thumbnail} alt={template.name} />
-							)}
-							<div className={s.content}>
-								<h3>{template.name}</h3>
-								<p>{template.description}</p>
-								<div className={s.type}>{template.type}</div>
-							</div>
-							<div className={s.actions}>
-								<Link
-									href={`/apps/${params.slug}/templates/${template.id}/editar`}
-								>
-									Editar
-								</Link>
-								<button onClick={() => handleDelete(template.id)}>
-									Excluir
-								</button>
-							</div>
-						</div>
-					))}
-
-					{templates.length === 0 && (
-						<div className={s.empty}>
-							<p>Nenhum template encontrado</p>
-							<p>Crie seu primeiro template de seção!</p>
-						</div>
-					)}
-				</div>
+			
+			<div className={s.pageHeader}>
+				<h1>Templates de Seção</h1>
+				<Link href={`/apps/${params.slug}/templates/novo`} className={s.newButton}>
+					<PlusIcon size={20} />
+					Novo Template
+				</Link>
 			</div>
-		</>
+
+			<div className={s.grid}>
+				{templates.map((template) => (
+					<div key={template.id} className={s.templateCard}>
+						<div className={s.templateInfo}>
+							<h2>{template.name}</h2>
+							<p>{template.description}</p>
+							<div className={s.type}>{template.type}</div>
+						</div>
+						<div className={s.templateMeta}>
+							<span>
+								Criado em:{" "}
+								{template.createdAt.toLocaleDateString("pt-BR", {
+									day: "2-digit",
+									month: "long",
+									year: "numeric",
+								})}
+							</span>
+							<span>
+								Última atualização:{" "}
+								{template.updatedAt.toLocaleDateString("pt-BR", {
+									day: "2-digit",
+									month: "long",
+									year: "numeric",
+								})}
+							</span>
+						</div>
+						<div className={s.actions}>
+							<Link
+								href={`/apps/${params.slug}/templates/${template.id}/editar`}
+								className={s.editButton}
+							>
+								Editar
+							</Link>
+							<button className={s.deleteButton}>
+								Excluir
+							</button>
+						</div>
+					</div>
+				))}
+
+				{templates.length === 0 && (
+					<div className={s.empty}>
+						<p>Nenhum template encontrado</p>
+						<Link
+							href={`/apps/${params.slug}/templates/novo`}
+							className={s.newButton}
+						>
+							<PlusIcon size={20} />
+							Criar meu primeiro template
+						</Link>
+					</div>
+				)}
+			</div>
+		</div>
 	);
 }

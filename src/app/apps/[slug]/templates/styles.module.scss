@@ -1,117 +1,159 @@
 .container {
-  padding: 2.4rem;
+	padding: 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+.pageHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 2rem 0;
 
-  h1 {
-    font-size: 2.4rem;
-    color: $gray8;
-    font-weight: 600;
-  }
+	h1 {
+		font-size: 2.4rem;
+		color: #1a1a1a;
+		font-weight: 600;
+		margin: 0;
+	}
+}
+
+.newButton {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1.5rem;
+	background-color: #0070f3;
+	color: white;
+	border-radius: 0.5rem;
+	font-weight: 500;
+	transition: background-color 0.2s;
+
+	&:hover {
+		background-color: #0051cc;
+	}
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 1.5rem;
 }
 
-.card {
-  border: 1px solid #eaeaea;
-  border-radius: 0.5rem;
-  overflow: hidden;
+.templateCard {
+	display: flex;
+	flex-direction: column;
+	background-color: white;
+	border: 1px solid #e5e5e5;
+	border-radius: 0.5rem;
+	overflow: hidden;
+	transition: all 0.2s;
 
-  img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-  }
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	}
+}
 
-  .content {
-    padding: 1rem;
+.templateInfo {
+	padding: 1.5rem;
+	flex: 1;
 
-    h3 {
-      margin: 0;
-      font-size: 2rem;
-      font-weight: 600;
-    }
+	h2 {
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: #1a1a1a;
+		margin-bottom: 0.5rem;
+	}
 
-    p {
-      margin: 0.8rem 0;
-      color: #666;
-    }
+	p {
+		color: #666;
+		font-size: 0.875rem;
+		line-height: 1.5;
+		margin-bottom: 1rem;
+	}
 
-    .type {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      background-color: #f3f4f6;
-      border-radius: 0.25rem;
-      font-size: 0.875rem;
-      color: #374151;
-    }
-  }
+	.type {
+		display: inline-block;
+		padding: 0.25rem 0.5rem;
+		background-color: #f3f4f6;
+		border-radius: 0.25rem;
+		font-size: 0.75rem;
+		color: #374151;
+	}
+}
 
-  .actions {
-    display: flex;
-    gap: 0.5rem;
-    padding: 1rem;
-    border-top: 1px solid #eaeaea;
+.templateMeta {
+	padding: 1rem 1.5rem;
+	background-color: #f9fafb;
+	border-top: 1px solid #e5e5e5;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	font-size: 0.75rem;
+	color: #666;
+}
 
-    a,
-    button {
-      flex: 1;
-      padding: 0.5rem;
-      text-align: center;
-      border-radius: 0.25rem;
-      font-weight: 500;
-    }
+.actions {
+	display: flex;
+	gap: 0.5rem;
+	padding: 1rem 1.5rem;
+	border-top: 1px solid #e5e5e5;
 
-    a {
-      background-color: #f3f4f6;
-      color: #374151;
-      text-decoration: none;
+	.editButton,
+	.deleteButton {
+		flex: 1;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 0.5rem;
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		transition: all 0.2s;
+	}
 
-      &:hover {
-        background-color: #e5e7eb;
-      }
-    }
+	.editButton {
+		background-color: #f3f4f6;
+		color: #374151;
+		text-decoration: none;
 
-    button {
-      background-color: #fee2e2;
-      color: #dc2626;
-      border: none;
-      cursor: pointer;
+		&:hover {
+			background-color: #e5e7eb;
+		}
+	}
 
-      &:hover {
-        background-color: #fecaca;
-      }
-    }
-  }
+	.deleteButton {
+		background-color: #fee2e2;
+		color: #dc2626;
+		border: none;
+		cursor: pointer;
+
+		&:hover {
+			background-color: #fecaca;
+		}
+	}
 }
 
 .empty {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 4rem;
-  background-color: #f9fafb;
-  border-radius: $radii-sm;
-  border: 2px dashed #e5e7eb;
+	grid-column: 1 / -1;
+	text-align: center;
+	padding: 3rem;
+	background-color: #f9f9f9;
+	border-radius: 0.5rem;
 
-  p {
-    margin: 0;
-    color: #6b7280;
-    font-size: 1.6rem;
-    font-weight: $medium;
+	p {
+		color: #666;
+		margin-bottom: 1rem;
+		font-size: 1.125rem;
+	}
+}
 
-    &:first-child {
-      font-size: 2.4rem;
-      font-weight: $semi;
-      margin-bottom: 0.8rem;
-    }
-  }
+.loading {
+	grid-column: 1 / -1;
+	text-align: center;
+	padding: 3rem;
+	color: #666;
+	font-size: 1.125rem;
 }
