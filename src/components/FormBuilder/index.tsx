@@ -1,4 +1,5 @@
 "use client";
+
 import {
 	DndContext,
 	MouseSensor,
@@ -7,13 +8,12 @@ import {
 	useSensors,
 } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
-import { ExternalLink } from "lucide-react";
 
 import s from "./styles.module.scss";
 
 import {
-	Button,
 	Designer,
+	DesignerSidebar,
 	DragOverlayWrapper,
 	Header,
 	Spinner,
@@ -39,7 +39,6 @@ export const FormBuilder = ({ page }: FormBuilderProps) => {
 	});
 	const sensors = useSensors(mouseSensor, touchSensor);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (isReady) return;
 		const jsonFormContent = JSON.parse(page.content || "[]");
@@ -64,19 +63,15 @@ export const FormBuilder = ({ page }: FormBuilderProps) => {
 							<span>Página: </span>
 							{page.title}
 						</h2>
-						<div className={s.buttons}>
-							<Button type="button" variant="disabled">
-								<ExternalLink />
-								<span>Preview</span>
-							</Button>
-						</div>
 					</div>
 				</Header>
 				<div className={s.canvas}>
-					<Designer />
+					<div className={s.designerWrapper}>
+						<Designer />
+					</div>
+					<DesignerSidebar />
 				</div>
 			</main>
-
 			<DragOverlayWrapper />
 		</DndContext>
 	);

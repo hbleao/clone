@@ -5,28 +5,20 @@ import {
 	SubTitleFieldFormElement,
 	TextFieldFormElement,
 	TitleFieldFormElement,
+	SectionFieldFormElement,
 } from "../Fields";
 
-export type ElementsType =
-	| "TextField"
-	| "TitleField"
-	| "SubTitleField"
-	| "SeparatorField"
-	| "SpacerField"
-	| "ParagraphField";
+export type ElementsType = "TextField" | "TitleField" | "SubTitleField" | "SeparatorField" | "SpacerField" | "ParagraphField" | "SectionField";
 
 export type SubmitFunction = (key: string, value: string) => void;
 
 export type FormElement = {
 	type: ElementsType;
-
 	construct: (id: string) => FormElementInstance;
-
 	designerBtnElement: {
 		icon: any;
 		label: string;
 	};
-
 	designerComponent: React.FC<{ elementInstance: FormElementInstance }>;
 	formComponent: React.FC<{
 		elementInstance: FormElementInstance;
@@ -35,7 +27,6 @@ export type FormElement = {
 		isInvalid?: boolean;
 	}>;
 	propertiesComponent: React.FC<{ elementInstance: FormElementInstance }>;
-
 	validate: (formElement: FormElementInstance, currentValue: string) => boolean;
 };
 
@@ -56,4 +47,5 @@ export const FormElements: FormElementsType = {
 	ParagraphField: ParagraphFieldFormElement,
 	SeparatorField: SeparatorFieldFormElement,
 	SpacerField: SpacerFieldFormElement,
+	SectionField: SectionFieldFormElement,
 };

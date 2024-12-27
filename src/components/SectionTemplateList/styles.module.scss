@@ -1,0 +1,91 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 1rem;
+}
+
+.template {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 1rem;
+	background: white;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	text-align: left;
+	cursor: grab;
+	transition: all 0.2s;
+	touch-action: none;
+
+	&:hover {
+		border-color: #d1d5db;
+		background: #f9fafb;
+	}
+
+	p {
+		margin: 0;
+		font-size: 0.875rem;
+		color: #6b7280;
+	}
+}
+
+.isDragging {
+	opacity: 0.5;
+	cursor: grabbing;
+}
+
+.icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 6px;
+	background: #f3f4f6;
+	color: #4b5563;
+}
+
+.info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+
+	h3 {
+		font-size: 1rem;
+		font-weight: 600;
+		color: #111827;
+		margin: 0;
+	}
+
+	span {
+		font-size: 0.875rem;
+		color: #6b7280;
+	}
+}
+
+.loading {
+	padding: 1rem;
+	text-align: center;
+	color: #6b7280;
+}
+
+.empty {
+	padding: 1rem;
+	text-align: center;
+	color: #6b7280;
+
+	p {
+		margin: 0 0 1rem;
+	}
+}
+
+.link {
+	color: #2563eb;
+	text-decoration: none;
+	font-size: 0.875rem;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}

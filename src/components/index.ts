@@ -22,3 +22,4 @@ export * from "./Fields/TitleField";
 export * from "./Fields/SubtitleField";
 export * from "./PropertiesDialog";
 export * from "./Link";
+export * from "./SectionTemplateList";

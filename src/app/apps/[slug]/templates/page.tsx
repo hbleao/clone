@@ -11,6 +11,10 @@ import { getAllSectionTemplateService } from "@/services";
 
 import s from "./styles.module.scss";
 
+type TemplatesByCategory = {
+	[key: string]: SectionTemplate[];
+};
+
 export default function TemplatesPage() {
 	const params = useParams();
 	const [templates, setTemplates] = useState<SectionTemplate[]>([]);
@@ -36,6 +40,15 @@ export default function TemplatesPage() {
 		}
 	}
 
+	const templatesByCategory = templates.reduce<TemplatesByCategory>((acc, template) => {
+		const category = template.type || "Outros";
+		if (!acc[category]) {
+			acc[category] = [];
+		}
+		acc[category].push(template);
+		return acc;
+	}, {});
+
 	if (loading) {
 		return <div className={s.loading}>Carregando templates...</div>;
 	}
@@ -52,59 +65,65 @@ export default function TemplatesPage() {
 				</Link>
 			</div>
 
-			<div className={s.grid}>
-				{templates.map((template) => (
-					<div key={template.id} className={s.templateCard}>
-						<div className={s.templateInfo}>
-							<h2>{template.name}</h2>
-							<p>{template.description}</p>
-							<div className={s.type}>{template.type}</div>
+			{templates.length === 0 ? (
+				<div className={s.empty}>
+					<p>Nenhum template encontrado</p>
+					<Link
+						href={`/apps/${params.slug}/templates/novo`}
+						className={s.newButton}
+					>
+						<PlusIcon size={20} />
+						Criar meu primeiro template
+					</Link>
+				</div>
+			) : (
+				<div className={s.categories}>
+					{Object.entries(templatesByCategory).map(([category, categoryTemplates]) => (
+						<div key={category} className={s.category}>
+							<h2 className={s.categoryTitle}>{category}</h2>
+							<div className={s.grid}>
+								{categoryTemplates.map((template) => (
+									<div key={template.id} className={s.templateCard}>
+										<div className={s.templateInfo}>
+											<h3>{template.name}</h3>
+											<p>{template.description}</p>
+										</div>
+										<div className={s.templateMeta}>
+											<span>
+												Criado em:{" "}
+												{template.createdAt.toLocaleDateString("pt-BR", {
+													day: "2-digit",
+													month: "long",
+													year: "numeric",
+												})}
+											</span>
+											<span>
+												Última atualização:{" "}
+												{template.updatedAt.toLocaleDateString("pt-BR", {
+													day: "2-digit",
+													month: "long",
+													year: "numeric",
+												})}
+											</span>
+										</div>
+										<div className={s.actions}>
+											<Link
+												href={`/apps/${params.slug}/templates/${template.id}/editar`}
+												className={s.editButton}
+											>
+												Editar
+											</Link>
+											<button className={s.deleteButton}>
+												Excluir
+											</button>
+										</div>
+									</div>
+								))}
+							</div>
 						</div>
-						<div className={s.templateMeta}>
-							<span>
-								Criado em:{" "}
-								{template.createdAt.toLocaleDateString("pt-BR", {
-									day: "2-digit",
-									month: "long",
-									year: "numeric",
-								})}
-							</span>
-							<span>
-								Última atualização:{" "}
-								{template.updatedAt.toLocaleDateString("pt-BR", {
-									day: "2-digit",
-									month: "long",
-									year: "numeric",
-								})}
-							</span>
-						</div>
-						<div className={s.actions}>
-							<Link
-								href={`/apps/${params.slug}/templates/${template.id}/editar`}
-								className={s.editButton}
-							>
-								Editar
-							</Link>
-							<button className={s.deleteButton}>
-								Excluir
-							</button>
-						</div>
-					</div>
-				))}
-
-				{templates.length === 0 && (
-					<div className={s.empty}>
-						<p>Nenhum template encontrado</p>
-						<Link
-							href={`/apps/${params.slug}/templates/novo`}
-							className={s.newButton}
-						>
-							<PlusIcon size={20} />
-							Criar meu primeiro template
-						</Link>
-					</div>
-				)}
-			</div>
+					))}
+				</div>
+			)}
 		</div>
 	);
 }

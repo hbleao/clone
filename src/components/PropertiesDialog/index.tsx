@@ -43,7 +43,20 @@ export const PropertiesDialog = ({
 			handleCloseModal={onClose}
 		>
 			<div className={s.content}>
-				<ElementComponent elementInstance={element} />
+				<ElementComponent 
+					elementInstance={element}
+					updateElement={(newElement: FormElementInstance) => {
+						updateElement(element.id, newElement);
+					}}
+				/>
+			</div>
+			<div className={s.footer}>
+				<button onClick={onClose} className={s.cancelButton}>
+					Cancelar
+				</button>
+				<button onClick={applyChanges} className={s.saveButton}>
+					Salvar
+				</button>
 			</div>
 		</Dialog>
 	);

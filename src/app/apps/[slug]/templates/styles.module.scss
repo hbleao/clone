@@ -34,6 +34,23 @@
 	}
 }
 
+.categories {
+	display: flex;
+	flex-direction: column;
+	gap: 3rem;
+}
+
+.category {
+	.categoryTitle {
+		font-size: 1.5rem;
+		color: #1a1a1a;
+		font-weight: 600;
+		margin-bottom: 1.5rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 2px solid #f3f4f6;
+	}
+}
+
 .grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -59,7 +76,7 @@
 	padding: 1.5rem;
 	flex: 1;
 
-	h2 {
+	h3 {
 		font-size: 1.25rem;
 		font-weight: 600;
 		color: #1a1a1a;
@@ -70,16 +87,7 @@
 		color: #666;
 		font-size: 0.875rem;
 		line-height: 1.5;
-		margin-bottom: 1rem;
-	}
-
-	.type {
-		display: inline-block;
-		padding: 0.25rem 0.5rem;
-		background-color: #f3f4f6;
-		border-radius: 0.25rem;
-		font-size: 0.75rem;
-		color: #374151;
+		margin-bottom: 0;
 	}
 }
 
@@ -137,11 +145,11 @@
 }
 
 .empty {
-	grid-column: 1 / -1;
 	text-align: center;
 	padding: 3rem;
 	background-color: #f9f9f9;
 	border-radius: 0.5rem;
+	margin-top: 2rem;
 
 	p {
 		color: #666;
@@ -151,7 +159,6 @@
 }
 
 .loading {
-	grid-column: 1 / -1;
 	text-align: center;
 	padding: 3rem;
 	color: #666;

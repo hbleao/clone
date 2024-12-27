@@ -1,6 +1,5 @@
 "use client";
 
-import { Logo } from "@/components/Logo";
 import { Settings, ChevronDown, Users, Shield, Palette } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
@@ -63,9 +62,12 @@ export const Header = ({ children }: HeaderProps) => {
 								<span>Permissões</span>
 							</a>
 							{params.slug && (
-								<a href={`/apps/${params.slug}/templates`} className={s.menuItem}>
+								<a
+									href={`/apps/${params.slug}/templates`}
+									className={s.menuItem}
+								>
 									<Palette size={16} />
-									<span>Templates</span>
+									<span>Modelos</span>
 								</a>
 							)}
 						</div>

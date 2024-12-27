@@ -1,6 +1,42 @@
 .content {
-  padding: 1.6rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  gap: 1rem;
+}
+
+.footer {
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top: 1px solid $gray4;
+}
+
+.cancelButton {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background-color: $gray4;
+  color: $gray7;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: $gray5;
+  }
+}
+
+.saveButton {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background-color: $blue5;
+  color: $white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: $blue6;
+  }
 }
