@@ -18,7 +18,10 @@ interface GetTemplatesResponse {
 export async function getAllSectionTemplateService(
 	slug: string,
 ): Promise<GetTemplatesResponse> {
+	console.log("Fetching templates for slug:", slug);
+
 	if (!slug) {
+		console.error("No slug provided");
 		return {
 			success: false,
 			error: {
@@ -34,6 +37,7 @@ export async function getAllSectionTemplateService(
 			headers: {
 				"Content-Type": "application/json",
 			},
+			cache: "no-store", // Desabilitar cache para garantir dados frescos
 		});
 
 		const data = await response.json();
@@ -41,6 +45,7 @@ export async function getAllSectionTemplateService(
 		if (!response.ok) {
 			// Trata erros específicos da API
 			if (response.status === 404) {
+				console.error("App não encontrado:", data);
 				return {
 					success: false,
 					error: {
@@ -51,6 +56,7 @@ export async function getAllSectionTemplateService(
 				};
 			}
 
+			console.error("Erro ao buscar templates:", data);
 			return {
 				success: false,
 				error: {
@@ -63,6 +69,7 @@ export async function getAllSectionTemplateService(
 
 		// Valida se os dados retornados são um array
 		if (!Array.isArray(data)) {
+			console.error("Formato de resposta inválido:", data);
 			return {
 				success: false,
 				error: {
@@ -72,32 +79,68 @@ export async function getAllSectionTemplateService(
 			};
 		}
 
-		// Converte as datas de string para Date
-		const templates = data.map((template) => ({
-			...template,
-			createdAt: new Date(template.createdAt),
-			updatedAt: new Date(template.updatedAt),
-			// Converte os campos JSON de string para objeto
-			schema: typeof template.schema === "string"
-				? JSON.parse(template.schema)
-				: template.schema,
-			defaultData: template.defaultData
-				? typeof template.defaultData === "string"
-					? JSON.parse(template.defaultData)
-					: template.defaultData
-				: null,
-		}));
+		// Converte as datas de string para Date e valida templates
+		const templates: SectionTemplate[] = data.reduce((acc, template, index) => {
+			try {
+				// Valida campos obrigatórios
+				if (!template.id || !template.name) {
+					console.warn("Template inválido (sem id ou nome):", template);
+					return acc;
+				}
+
+				const processedTemplate: SectionTemplate = {
+					...template,
+					createdAt: new Date(template.createdAt),
+					updatedAt: new Date(template.updatedAt),
+					// Converte os campos JSON de string para objeto
+					schema:
+						typeof template.schema === "string"
+							? JSON.parse(template.schema)
+							: template.schema,
+					defaultData:
+						template.defaultData && typeof template.defaultData === "string"
+							? JSON.parse(template.defaultData)
+							: template.defaultData || {},
+				};
+
+				// Validação adicional do schema
+				if (
+					!processedTemplate.schema ||
+					!Array.isArray(processedTemplate.schema.fields)
+				) {
+					console.warn("Template com schema inválido:", processedTemplate);
+					return acc;
+				}
+
+				return [...acc, processedTemplate];
+			} catch (error) {
+				console.error(`Erro ao processar template ${index}:`, error);
+				return acc;
+			}
+		}, [] as SectionTemplate[]);
+
+		// Verifica se há templates válidos
+		if (templates.length === 0) {
+			console.warn("Nenhum template válido encontrado");
+			return {
+				success: false,
+				error: {
+					message: "Nenhum template válido encontrado",
+					code: "NOT_FOUND",
+				},
+			};
+		}
 
 		return {
 			success: true,
 			data: templates,
 		};
 	} catch (error) {
-		console.error("Erro ao buscar templates:", error);
+		console.error("Erro inesperado ao buscar templates:", error);
 		return {
 			success: false,
 			error: {
-				message: "Erro ao conectar com o servidor",
+				message: "Erro inesperado ao buscar templates",
 				code: "NETWORK_ERROR",
 				details: error,
 			},

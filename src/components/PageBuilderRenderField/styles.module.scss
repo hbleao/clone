@@ -1,0 +1,143 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .required {
+    color: #ef4444;
+  }
+
+  .input {
+    width: 100%;
+    padding: 0.625rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    background-color: #f9fafb;
+    color: #1f2937;
+    font-size: 0.875rem;
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  textarea.input {
+    min-height: 100px;
+    resize: vertical;
+  }
+}
+
+.imageField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .preview {
+    width: 100%;
+    height: 200px;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    background-color: #f3f4f6;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.objectField {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  background-color: #f3f4f6;
+}
+
+.arrayField {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .arrayItem {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    background-color: #f3f4f6;
+
+    .arrayItemHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h4 {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+        margin: 0;
+      }
+    }
+  }
+
+  .addButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px dashed #e5e7eb;
+    border-radius: 0.375rem;
+    background-color: white;
+    color: #6b7280;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: #f3f4f6;
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+  }
+
+  .removeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    border: none;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: #ef4444;
+      color: white;
+    }
+  }
+}

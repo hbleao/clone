@@ -3,9 +3,9 @@ import { useState, useEffect, type FormEvent } from "react";
 
 import s from "./style.module.scss";
 
-import { Input } from "../Input";
-import { Textarea } from "../Textarea";
-import { Button } from "../Button";
+import { Input } from "../Base/Input";
+import { Textarea } from "../Base/Textarea";
+import { Button } from "../Base/Button";
 
 import { createApp } from "../../actions/app";
 import { getCurrentUser } from "../../actions/auth";

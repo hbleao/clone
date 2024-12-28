@@ -1,6 +1,9 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../lib/prisma";
+import type { ElementsType, FormElementInstance } from "../components";
+
+import { logger } from "@/utils";
 
 interface CreatePageData {
 	title: string;
@@ -39,17 +42,23 @@ interface UpdatePageParams {
 }
 
 export async function createPage(data: CreatePageData) {
+	logger.info("Creating page with data:", data);
 	try {
-		// Verifica se o app existe
 		const app = await prisma.app.findUnique({
 			where: { id: data.appId },
 		});
 
 		if (!app) {
+			logger.warn(`Aplicativo não encontrado: ${data.appId}`);
 			return { success: false, error: "Aplicativo não encontrado" };
 		}
 
-		// Verifica se já existe uma página com o mesmo slug no app
+		const content = data.content
+			? typeof data.content === "string"
+				? data.content
+				: JSON.stringify(data.content)
+			: undefined;
+
 		const existingPage = await prisma.page.findFirst({
 			where: {
 				appId: data.appId,
@@ -58,25 +67,21 @@ export async function createPage(data: CreatePageData) {
 		});
 
 		if (existingPage) {
+			logger.warn(`Já existe uma página com este slug: ${data.slug}`);
 			return { success: false, error: "Já existe uma página com este slug" };
 		}
 
-		// Cria a página
 		const page = await prisma.page.create({
 			data: {
-				title: data.title,
-				slug: data.slug,
-				type: data.type,
-				content: data.content || "",
-				appId: data.appId,
-				author: data.author,
-				status: "draft",
+				...data,
+				content,
 			},
 		});
 
+		logger.info(`Página criada com sucesso: ${page.id}`);
 		return { success: true, page };
 	} catch (error) {
-		console.error("Erro ao criar página:", error);
+		logger.error("Erro ao criar página:", error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : "Erro ao criar página",
@@ -95,9 +100,10 @@ export async function getPagesByAppId(appId: string) {
 			},
 		});
 
+		logger.info(`Páginas buscadas para o aplicativo: ${appId}`);
 		return { success: true, pages };
 	} catch (error) {
-		console.error("Erro ao buscar páginas:", error);
+		logger.error("Erro ao buscar páginas:", error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : "Erro ao buscar páginas",
@@ -106,6 +112,7 @@ export async function getPagesByAppId(appId: string) {
 }
 
 export async function getPageBySlug(appId: string, slug: string) {
+	logger.info("Fetching page by slug:", { appId, slug });
 	try {
 		const page = await prisma.page.findFirst({
 			where: {
@@ -118,12 +125,14 @@ export async function getPageBySlug(appId: string, slug: string) {
 		});
 
 		if (!page) {
+			logger.warn(`Página não encontrada para o slug: ${slug}`);
 			return { success: false, error: "Página não encontrada" };
 		}
 
+		logger.info(`Página encontrada: ${page.id}`);
 		return { success: true, page };
 	} catch (error) {
-		console.error("Erro ao buscar página:", error);
+		logger.error("Erro ao buscar página:", error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : "Erro ao buscar página",
@@ -132,6 +141,7 @@ export async function getPageBySlug(appId: string, slug: string) {
 }
 
 export async function getPageById(id: string) {
+	logger.info("Fetching page by ID:", id);
 	try {
 		const page = await prisma.page.findFirst({
 			where: {
@@ -143,12 +153,77 @@ export async function getPageById(id: string) {
 		});
 
 		if (!page) {
+			logger.warn(`Página não encontrada para o ID: ${id}`);
 			return { success: false, error: "Página não encontrada" };
 		}
 
-		return { success: true, page };
+		logger.info("Content from DB:", {
+			content: page.content,
+			type: typeof page.content,
+		});
+
+		let parsedContent: FormElementInstance[] = [];
+		try {
+			const initialContent = page.content
+				? typeof page.content === "string"
+					? JSON.parse(page.content)
+					: page.content
+				: [];
+
+			logger.info("Initial parsed content:", initialContent);
+
+			if (Array.isArray(initialContent)) {
+				parsedContent = initialContent
+					.map((item): FormElementInstance | null => {
+						if (item?.content && typeof item.content === "string") {
+							try {
+								const parsedItemContent = JSON.parse(item.content);
+								const element: FormElementInstance = {
+									id: item.id,
+									type: "SectionField" as ElementsType,
+									extraAttributes: {
+										templateId: item.templateId,
+										content: parsedItemContent,
+										order: item.order,
+									},
+								};
+								return element;
+							} catch (innerError) {
+								logger.error(
+									"Erro ao fazer parse do content interno:",
+									innerError,
+								);
+								return null;
+							}
+						}
+						return null;
+					})
+					.filter((item): item is FormElementInstance => item !== null);
+			}
+
+			logger.info("Final parsed content:", {
+				content: parsedContent,
+				type: typeof parsedContent,
+				isArray: Array.isArray(parsedContent),
+			});
+		} catch (error) {
+			logger.error("Erro ao fazer parse do conteúdo:", error);
+		}
+
+		const processedPage = {
+			...page,
+			content: parsedContent,
+		};
+
+		logger.info("Final processed page:", {
+			content: processedPage.content,
+			type: typeof processedPage.content,
+			isArray: Array.isArray(processedPage.content),
+		});
+
+		return { success: true, page: processedPage };
 	} catch (error) {
-		console.error("Erro ao buscar página:", error);
+		logger.error("Erro ao buscar página:", error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : "Erro ao buscar página",
@@ -157,15 +232,26 @@ export async function getPageById(id: string) {
 }
 
 export async function updatePage(pageId: string, data: UpdatePageData) {
+	logger.info("Updating page:", { pageId, data });
 	try {
+		const processedData = {
+			...data,
+			content: data.content
+				? typeof data.content === "string"
+					? data.content
+					: JSON.stringify(data.content)
+				: undefined,
+		};
+
 		const page = await prisma.page.update({
 			where: { id: pageId },
-			data,
+			data: processedData,
 		});
 
+		logger.info(`Página atualizada com sucesso: ${page.id}`);
 		return { success: true, page };
 	} catch (error) {
-		console.error("Erro ao atualizar página:", error);
+		logger.error("Erro ao atualizar página:", error);
 		return {
 			success: false,
 			error:
@@ -175,35 +261,49 @@ export async function updatePage(pageId: string, data: UpdatePageData) {
 }
 
 export async function updatePageFull(params: UpdatePageParams) {
+	logger.info("Updating page fully:", { id: params.id });
 	try {
+		const content =
+			typeof params.content === "string"
+				? params.content
+				: JSON.stringify(params.content);
+
 		const page = await prisma.page.update({
 			where: { id: params.id },
 			data: {
 				title: params.title,
 				slug: params.slug,
 				type: params.type,
-				content: params.content,
+				content,
 				status: params.status,
-				seo: params.seo,
+				seo: {
+					upsert: {
+						create: params.seo,
+						update: params.seo,
+					},
+				},
 			},
 		});
 
+		logger.info(`Página atualizada completamente: ${page.id}`);
 		return { success: true, page };
 	} catch (error) {
-		console.error("Error updating page:", error);
-		return { success: false, error: "Failed to update page" };
+		logger.error("Erro ao atualizar página:", error);
+		return { success: false, error: "Falha ao atualizar página" };
 	}
 }
 
 export async function deletePage(pageId: string) {
+	logger.info("Deleting page with ID:", pageId);
 	try {
 		await prisma.page.delete({
 			where: { id: pageId },
 		});
 
+		logger.info(`Página deletada com sucesso: ${pageId}`);
 		return { success: true };
 	} catch (error) {
-		console.error("Erro ao deletar página:", error);
+		logger.error("Erro ao deletar página:", error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : "Erro ao deletar página",
@@ -212,14 +312,16 @@ export async function deletePage(pageId: string) {
 }
 
 export async function deletePageById(id: string) {
+	logger.info("Deleting page by ID:", id);
 	try {
 		await prisma.page.delete({
 			where: { id },
 		});
 
+		logger.info(`Página deletada com sucesso pelo ID: ${id}`);
 		return { success: true };
 	} catch (error) {
-		console.error("Error deleting page:", error);
-		return { success: false, error: "Failed to delete page" };
+		logger.error("Erro ao deletar página:", error);
+		return { success: false, error: "Falha ao deletar página" };
 	}
 }

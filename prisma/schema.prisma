@@ -40,38 +40,38 @@ model App {
 
 model Page {
   id          String    @id @default(uuid())
-  title       String // Título da página
-  slug        String // URL amigável
-  content     String? // Array de seções baseadas nos templates (JSON string)
-  status      String    @default("draft") // draft, published, archived
-  type        String // tipo de página (landing, blog, form, etc)
-  author      String // Nome do autor
-  appId       String // Relação com o App
+  title       String
+  slug        String
+  content     String?
+  status      String    @default("draft")
+  type        String
+  author      String
+  appId       String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  publishedAt DateTime? // Data de publicação
+  publishedAt DateTime?
   app         App       @relation(fields: [appId], references: [id])
-  seo         Seo? // Relação 1:1 com SEO
+  seo         Seo?
 
-  @@unique([appId, slug]) // Garante que o slug seja único dentro do app
-  @@index([status]) // Índice para consultas por status
+  @@unique([appId, slug])
+  @@index([status])
   @@map("pages")
 }
 
 model Seo {
   id            String   @id @default(uuid())
-  title         String // Título da página para SEO
-  description   String? // Meta descrição
-  keywords      String? // Palavras-chave
-  ogTitle       String? // Open Graph título
-  ogDescription String? // Open Graph descrição
-  ogImage       String? // URL da imagem Open Graph
-  canonical     String? // URL canônica
-  robots        String? // Meta robots (index, follow, etc)
-  pageId        String   @unique // Relação 1:1 com Page
-  page          Page     @relation(fields: [pageId], references: [id])
+  title         String
+  description   String?
+  keywords      String?
+  ogTitle       String?
+  ogDescription String?
+  ogImage       String?
+  canonical     String?
+  robots        String?
+  pageId        String   @unique
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  page          Page     @relation(fields: [pageId], references: [id])
 
   @@map("seos")
 }
@@ -79,14 +79,14 @@ model Seo {
 model SectionTemplate {
   id          String   @id @default(uuid())
   name        String
-  type        String // hero, features, testimonials, etc
+  type        String
   description String
   thumbnail   String?
-  schema      String // Schema dos campos do template (JSON string)
-  defaultData String? // Dados padrão para o template (JSON string)
+  schema      String
+  defaultData String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  appId       String // Relação com o App
+  appId       String
   app         App      @relation(fields: [appId], references: [id])
 
   @@map("section_templates")

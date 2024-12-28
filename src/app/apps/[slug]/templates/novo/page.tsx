@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import s from "./styles.module.scss";
 
 import type { SectionTemplateType } from "@/types/section";
-import { createSectionTemplate } from "@/actions/sectionTemplate";
 
 import type { Field, FieldType } from "./types";
 import { Input, Textarea } from "@/components";

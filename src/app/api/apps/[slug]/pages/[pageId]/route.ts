@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(
@@ -13,17 +13,9 @@ export async function GET(
 					slug: params.slug,
 				},
 			},
-			include: {
-				sections: {
-					include: {
-						template: true,
-					},
-					orderBy: {
-						order: "asc",
-					},
-				},
-			},
 		});
+
+		console.log("FIND FIRST: ", page);
 
 		if (!page) {
 			return NextResponse.json(
@@ -49,13 +41,6 @@ export async function PATCH(
 	try {
 		const data = await request.json();
 
-		// Primeiro, excluímos todas as seções existentes
-		await prisma.pageSection.deleteMany({
-			where: {
-				pageId: params.pageId,
-			},
-		});
-
 		// Depois, criamos as novas seções
 		const page = await prisma.page.update({
 			where: {
@@ -65,24 +50,7 @@ export async function PATCH(
 				},
 			},
 			data: {
-				sections: {
-					create: data.sections.map((section: any) => ({
-						id: section.id,
-						templateId: section.templateId,
-						data: section.data,
-						order: section.order,
-					})),
-				},
-			},
-			include: {
-				sections: {
-					include: {
-						template: true,
-					},
-					orderBy: {
-						order: "asc",
-					},
-				},
+				content: data,
 			},
 		});
 

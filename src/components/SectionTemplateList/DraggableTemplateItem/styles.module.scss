@@ -1,0 +1,19 @@
+.draggableItem {
+  width: 185px;
+  height: 100px;
+  background-color: $gray2;
+  border-radius: $radii-sm;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: $gray4;
+  }
+}
+
+.title {
+  font-size: 1.4rem;
+  color: $gray7;
+}

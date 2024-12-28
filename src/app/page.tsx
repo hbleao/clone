@@ -33,7 +33,7 @@ export default function LoginPage() {
 
 		try {
 			await authenticateUser(formData);
-			router.push("/meus-aplicativos");
+			router.push("/apps");
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "Erro ao fazer login");
 		}

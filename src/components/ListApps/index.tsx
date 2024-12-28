@@ -1,15 +1,31 @@
 "use client";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+
 import s from "./styles.module.scss";
 
-import { Button } from "../Button";
+import { Button } from "../Base/Button";
+import { getPagesByAppId } from "@/actions/page";
 
-import { useRouter } from "next/navigation";
-
+import type { App } from "@/app/apps/types";
 import type { ListAppsProps } from "./types";
-import type { App } from "@/app/meus-aplicativos/types";
 
 export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 	const router = useRouter();
+	const [pageCountMap, setPageCountMap] = useState<Record<string, number>>({});
+
+	useEffect(() => {
+		const fetchPageCounts = async () => {
+			const counts: Record<string, number> = {};
+			for (const app of apps) {
+				const result = await getPagesByAppId(app.id);
+				counts[app.id] = result.success ? result.pages.length : 0;
+			}
+			setPageCountMap(counts);
+		};
+
+		fetchPageCounts();
+	}, [apps]);
 
 	return (
 		<div className={s["apps-grid"]}>
@@ -73,9 +89,7 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 					<div className={s["app-stats"]}>
 						<div className={s["stat-item"]}>
 							<span className={s.label}>Link público</span>
-							<span className={s.value}>
-								app.portoservicos.com.br/{app.slug}
-							</span>
+							<span className={s.value}>http://localhost:3000/{app.slug}</span>
 						</div>
 						<div className={s["stat-item"]}>
 							<span className={s.label}>Usuários com acesso</span>
@@ -83,13 +97,15 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 						</div>
 						<div className={s["stat-item"]}>
 							<span className={s.label}>Páginas cadastradas</span>
-							<span className={s.value}>0 páginas</span>
+							<span className={s.value}>
+								{pageCountMap[app.id] ?? 0} páginas
+							</span>
 						</div>
 					</div>
 					<Button
 						type="button"
 						width="contain"
-						onClick={() => router.push(`/meus-aplicativos/${app.slug}`)}
+						onClick={() => router.push(`/apps/${app.slug}`)}
 					>
 						Acessar páginas
 					</Button>

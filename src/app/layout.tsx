@@ -2,7 +2,7 @@
 
 import "../styles/globals.css";
 
-import { DesignerContextProvider } from "@/context";
+import { PageBuilderContextProvider } from "@/context";
 
 export default function RootLayout({
 	children,
@@ -12,7 +12,7 @@ export default function RootLayout({
 	return (
 		<html lang="pt-BR">
 			<body>
-				<DesignerContextProvider>{children}</DesignerContextProvider>
+				<PageBuilderContextProvider>{children}</PageBuilderContextProvider>
 			</body>
 		</html>
 	);

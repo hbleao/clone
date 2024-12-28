@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CMS (Sistema de Gerenciamento de Conteúdo)
 
-## Getting Started
+## Descrição
+O projeto é um CMS (Sistema de Gerenciamento de Conteúdo), focado na criação e gerenciamento de sites/aplicativos de forma estruturada e otimizada para SEO.
 
-First, run the development server:
+## Funcionalidades Principais
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Sistema de Usuários:
+- Cadastro e autenticação
+- Níveis de acesso (roles)
+- Atributos: nome, email, senha, registro
+- Role padrão: "AUTHOR"
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Gerenciamento de Aplicativos:
+- Criação, edição e exclusão de apps
+- Atributos: título, nome, descrição, slug
+- Vinculação a usuários específicos
+- Interface de listagem de apps
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Sistema de Páginas:
+- Gerenciamento de páginas por app
+- Status: rascunho, publicado, arquivado
+- Tipos: landing, blog, form
+- Sistema de autoria e datas
+- Conteúdo em JSON
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Otimização SEO:
+- Meta títulos e descrições
+- Palavras-chave
+- Tags Open Graph
+- URLs canônicas
+- Controle de robots
 
-## Learn More
+### Templates de Seção:
+- Templates reutilizáveis
+- Tipos: hero, features, testimonials
+- Esquema de campos personalizável
+- Dados padrão configuráveis
+- Thumbnails
 
-To learn more about Next.js, take a look at the following resources:
+### Interface do Usuário:
+- Drag-and-drop
+- Formulários interativos
+- Modais
+- Feedback visual
+- Interface responsiva
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Recursos Técnicos:
+- SQLite + Prisma ORM
+- Rotas dinâmicas
+- Validações
+- URLs amigáveis
+- Sistema de slugs únicos
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Organização:
+- Estrutura: App > Páginas > Seções
+- Templates reutilizáveis
+- Versionamento (draft/published)
+- Organização por slugs

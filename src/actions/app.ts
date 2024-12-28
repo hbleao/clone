@@ -3,6 +3,8 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+import { generateSlug, logger } from "@/utils";
+
 interface CreateAppData {
 	name: string;
 	description?: string;
@@ -16,16 +18,6 @@ interface UpdateAppData {
 	owner?: string;
 }
 
-// Função auxiliar para gerar slug
-function generateSlug(name: string): string {
-	return name
-		.toLowerCase()
-		.replace(/[^\w\s-]/g, "") // Remove caracteres especiais
-		.replace(/\s+/g, "-") // Substitui espaços por hífens
-		.replace(/-+/g, "-"); // Remove hífens duplicados
-}
-
-// Criar um novo app
 export async function createApp(data: CreateAppData) {
 	try {
 		let slug = generateSlug(data.name);
@@ -56,9 +48,12 @@ export async function createApp(data: CreateAppData) {
 			},
 		});
 
+		logger.info(`Criado app com os dados: ${data}`);
+
 		revalidatePath("/meus-aplicativos");
 		return { app };
 	} catch (error) {
+		logger.error("Erro ao criar app:", error);
 		return { error: "Erro ao criar o app" };
 	}
 }
@@ -71,8 +66,10 @@ export async function getAllApps() {
 				user: true,
 			},
 		});
+		logger.info("Páginas todos os aplicativos");
 		return { apps };
 	} catch (error) {
+		logger.error("Erro ao buscar todos os apps:", error);
 		return { error: "Erro ao buscar os apps" };
 	}
 }
@@ -86,8 +83,11 @@ export async function getAppBySlug(slug: string) {
 				user: true,
 			},
 		});
+
+		logger.info("Páginas todos os aplicativos");
 		return { app };
 	} catch (error) {
+		logger.error("Erro ao buscar appBySlug:", error);
 		return { error: "Erro ao buscar o app" };
 	}
 }
@@ -126,9 +126,12 @@ export async function updateApp(id: string, data: UpdateAppData) {
 			data: updateData,
 		});
 
+		logger.info("Atualizado app com os dados:", app);
+
 		revalidatePath("/meus-aplicativos");
 		return { app };
 	} catch (error) {
+		logger.error("Erro ao buscar páginas:", error);
 		return { error: "Erro ao atualizar o app" };
 	}
 }
@@ -140,9 +143,12 @@ export async function deleteApp(id: string) {
 			where: { id },
 		});
 
+		logger.info("Deletado aplicativo com o id:", id);
+
 		revalidatePath("/meus-aplicativos");
 		return { success: true };
 	} catch (error) {
+		logger.error("Erro ao deletar app:", error);
 		return { error: "Erro ao deletar o app" };
 	}
 }
