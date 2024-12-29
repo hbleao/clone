@@ -162,46 +162,16 @@ export async function getPageById(id: string) {
 			type: typeof page.content,
 		});
 
-		let parsedContent: FormElementInstance[] = [];
+		let parsedContent = [];
 		try {
-			const initialContent = page.content
-				? typeof page.content === "string"
-					? JSON.parse(page.content)
-					: page.content
-				: [];
-
-			logger.info("Initial parsed content:", initialContent);
-
-			if (Array.isArray(initialContent)) {
-				parsedContent = initialContent
-					.map((item): FormElementInstance | null => {
-						if (item?.content && typeof item.content === "string") {
-							try {
-								const parsedItemContent = JSON.parse(item.content);
-								const element: FormElementInstance = {
-									id: item.id,
-									type: "SectionField" as ElementsType,
-									extraAttributes: {
-										templateId: item.templateId,
-										content: parsedItemContent,
-										order: item.order,
-									},
-								};
-								return element;
-							} catch (innerError) {
-								logger.error(
-									"Erro ao fazer parse do content interno:",
-									innerError,
-								);
-								return null;
-							}
-						}
-						return null;
-					})
-					.filter((item): item is FormElementInstance => item !== null);
+			// Se o conteúdo for string, tenta fazer parse
+			if (typeof page.content === "string") {
+				parsedContent = JSON.parse(page.content);
+			} else if (page.content) {
+				parsedContent = page.content;
 			}
 
-			logger.info("Final parsed content:", {
+			logger.info("Parsed content:", {
 				content: parsedContent,
 				type: typeof parsedContent,
 				isArray: Array.isArray(parsedContent),
@@ -234,6 +204,7 @@ export async function getPageById(id: string) {
 export async function updatePage(pageId: string, data: UpdatePageData) {
 	logger.info("Updating page:", { pageId, data });
 	try {
+		// Se o conteúdo for objeto, converte para string
 		const processedData = {
 			...data,
 			content: data.content
@@ -242,6 +213,11 @@ export async function updatePage(pageId: string, data: UpdatePageData) {
 					: JSON.stringify(data.content)
 				: undefined,
 		};
+
+		logger.info("Processed data for update:", {
+			original: data.content,
+			processed: processedData.content,
+		});
 
 		const page = await prisma.page.update({
 			where: { id: pageId },

@@ -1,119 +1,84 @@
 "use client";
-
-import {
-	DndContext,
-	MouseSensor,
-	TouchSensor,
-	useSensor,
-	useSensors,
-} from "@dnd-kit/core";
-import { useEffect, useState } from "react";
+import { DndContext } from "@dnd-kit/core";
+import { nanoid } from "nanoid";
 
 import s from "./styles.module.scss";
 
-import {
-	PageBuilderCanvas,
-	PageBuilderSidebar,
-	Header,
-	Spinner,
-} from "@/components";
-
-import { usePageBuilder } from "@/hooks";
+import { Header, PageBuilderCanvas, PageBuilderSidebar } from "@/components";
+import { PageBuilderContextProvider } from "@/context";
 
 import type { PageBuilderProps } from "./types";
 
-export const PageBuilder = ({ page }: PageBuilderProps) => {
-	const { setElements } = usePageBuilder();
-	const [isReady, setIsReady] = useState(false);
-	const mouseSensor = useSensor(MouseSensor, {
-		activationConstraint: {
-			distance: 10,
-		},
-	});
-	const touchSensor = useSensor(TouchSensor, {
-		activationConstraint: {
-			delay: 300,
-			tolerance: 5,
-		},
-	});
-	const sensors = useSensors(mouseSensor, touchSensor);
-
-	useEffect(() => {
-		if (isReady) return;
-
-		try {
-			let pageContent = page.content;
-
-			if (typeof pageContent === "string") {
-				try {
-					pageContent = JSON.parse(pageContent);
-				} catch {
-					pageContent = [];
-				}
-			}
-
-			if (!Array.isArray(pageContent)) {
-				pageContent = [];
-			}
-
-			const elements = pageContent.map((item: any) => {
-				let content = item.content;
-
-				if (typeof content === "string") {
-					try {
-						content = JSON.parse(content);
-					} catch {
-						content = {};
-					}
-				}
-
-				return {
-					id: item.id,
-					type: "SectionField",
-					extraAttributes: {
-						template: {
-							id: item.templateId,
-						},
-						content: content || {},
-					},
-				};
-			});
-
-			setElements(elements);
-		} catch (error) {
-			console.error("Erro ao carregar elementos:", error);
-			setElements([]);
-		}
-
-		setIsReady(true);
-	}, [page, setElements, isReady]);
-
-	if (!isReady) {
-		return (
-			<div className={s.notReady}>
-				<Spinner size="md" />
-			</div>
-		);
+export function PageBuilder({ page }: PageBuilderProps) {
+	// Tenta fazer o parse do conteúdo se for string
+	let parsedContent;
+	try {
+		parsedContent =
+			typeof page.content === "string"
+				? JSON.parse(page.content)
+				: page.content;
+	} catch (error) {
+		console.error("Error parsing page content:", error);
+		parsedContent = [];
 	}
 
+	// Converte o conteúdo da página para elementos do PageBuilder
+	const initialElements = (parsedContent || [])
+		.map((item: any) => {
+			try {
+				// Se o item já estiver no formato correto
+				if (item.type === "section") {
+					// Valida campos obrigatórios
+					if (!item.id || !item.template?.id) {
+						console.warn("Item inválido:", item);
+						return null;
+					}
+					return item;
+				}
+
+				// Se o item estiver no formato SectionField
+				if (item.type === "SectionField") {
+					// Valida campos obrigatórios
+					if (!item.id || !item.extraAttributes?.templateId) {
+						console.warn("Item inválido:", item);
+						return null;
+					}
+
+					return {
+						id: item.id || nanoid(),
+						type: "section",
+						template: {
+							id: item.extraAttributes?.templateId,
+							name: item.extraAttributes?.name,
+							type: item.extraAttributes?.type,
+							schema: item.extraAttributes?.schema,
+						},
+						content: item.extraAttributes?.content || {},
+					};
+				}
+
+				// Formato desconhecido
+				console.warn("Formato desconhecido:", item);
+				return null;
+			} catch (error) {
+				console.error("Erro ao processar item:", error);
+				return null;
+			}
+		})
+		.filter(Boolean);
+
 	return (
-		<DndContext sensors={sensors}>
-			<main>
-				<Header>
-					<div className={s.container}>
-						<h2 className={s.title}>
-							<span>Página: </span>
-							{page.title}
-						</h2>
-					</div>
-				</Header>
-				<div className={s.canvas}>
-					<div className={s.designerWrapper}>
+		<PageBuilderContextProvider initialElements={initialElements}>
+			<DndContext>
+				<Header />
+				<div className={s.pageBuilder}>
+					<PageBuilderSidebar />
+					<div className={s.containerCanvas}>
+						<h1 className={s.title}>Construtor de páginas</h1>
 						<PageBuilderCanvas />
 					</div>
-					<PageBuilderSidebar />
 				</div>
-			</main>
-		</DndContext>
+			</DndContext>
+		</PageBuilderContextProvider>
 	);
-};
+}

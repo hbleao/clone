@@ -1,4 +1,4 @@
-export type SectionDialogProps = {
+export type SectionTemplateDialogProps = {
 	onOpenChange: (open: boolean) => void;
 	template: SectionTemplateField;
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>

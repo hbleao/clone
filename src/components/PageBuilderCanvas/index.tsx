@@ -1,17 +1,30 @@
 "use client";
 
-import { type DragEndEvent, useDndMonitor, useDroppable } from "@dnd-kit/core";
+import {
+	type DragEndEvent,
+	useDndMonitor,
+	useDroppable,
+	DndContext,
+	closestCenter,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+} from "@dnd-kit/core";
+import {
+	SortableContext,
+	sortableKeyboardCoordinates,
+	verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { nanoid } from "nanoid";
 
 import { usePageBuilder } from "@/hooks";
-import { FormElements } from "../FormElements";
-import type { ElementsType } from "../FormElements";
-import { CanvasElementWrapper } from "./CanvasElementWrapper";
+import { PageBuilderElement } from "@/components";
 
 import s from "./styles.module.scss";
 
 export const PageBuilderCanvas = () => {
-	const { elements, addElement, removeElement } = usePageBuilder();
+	const { elements, addElement, removeElement, setElements } = usePageBuilder();
 	const droppable = useDroppable({
 		id: "designer-drop-area",
 		data: {
@@ -19,152 +32,92 @@ export const PageBuilderCanvas = () => {
 		},
 	});
 
-	useDndMonitor({
-		onDragEnd: (event: DragEndEvent) => {
-			const { active, over } = event;
-			if (!active || !over) return;
+	const sensors = useSensors(
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 5,
+			},
+		}),
+		useSensor(KeyboardSensor, {
+			coordinateGetter: sortableKeyboardCoordinates,
+		})
+	);
 
-			const isDesignerBtnElement = active?.data?.current?.isDesignerBtnElement;
-			const isDroppingOverDesignerDropArea =
-				over?.data?.current?.isDesignerDropArea;
+	const handleDragEnd = (event: DragEndEvent) => {
+		const { active, over } = event;
+		console.log("DragEnd:", { active, over });
 
-			// First scenario: dropping a sidebar btn element over the designer drop area
-			if (isDesignerBtnElement && isDroppingOverDesignerDropArea) {
-				const type = active?.data?.current?.type as ElementsType;
-				const template = active?.data?.current?.template;
+		if (!active || !over) return;
 
-				if (!type || !FormElements[type]) {
-					console.error("Invalid element type:", type);
-					return;
-				}
+		// Se estamos arrastando um elemento do sidebar
+		const isDesignerBtnElement = active?.data?.current?.isDesignerBtnElement;
+		const isDroppingOverDesignerDropArea = over?.data?.current?.isDesignerDropArea;
 
-				if (type === "SectionField" && template) {
-					const element = FormElements[type].construct(nanoid());
-					element.extraAttributes = {
-						template,
-						content: "",
-					};
-					console.log("Created section element:", element);
-					addElement(elements.length, element);
-					return;
-				}
+		if (isDesignerBtnElement && isDroppingOverDesignerDropArea) {
+			const template = active?.data?.current?.template;
+			console.log("Template:", template);
 
-				const newElement = FormElements[type].construct(nanoid());
-				addElement(elements.length, newElement);
+			if (!template) {
+				console.error("Template not found");
 				return;
 			}
 
-			// Second scenario: dropping a sidebar btn element over a designer element
-			const isDroppingOverDesignerElement =
-				over?.data?.current?.isTopHalfDesignerElement ||
-				over?.data?.current?.isBottomHalfDesignerElement;
+			const element = {
+				id: nanoid(),
+				type: "section",
+				template,
+				content: template.defaultData || {},
+			};
 
-			if (isDesignerBtnElement && isDroppingOverDesignerElement) {
-				const type = active?.data?.current?.type as ElementsType;
-				const template = active?.data?.current?.template;
-				const overId = over?.data?.current?.elementId;
+			console.log("Adding element:", element);
+			addElement(elements.length, element);
+			return;
+		}
 
-				if (!type || !FormElements[type]) {
-					console.error("Invalid element type:", type);
-					return;
-				}
+		// Se estamos reordenando elementos existentes
+		if (active.id !== over.id) {
+			console.log("Reordering elements:", { active, over });
+			const oldIndex = elements.findIndex((item) => item.id === active.id);
+			const newIndex = elements.findIndex((item) => item.id === over.id);
 
-				const overElementIndex = elements.findIndex((el) => el.id === overId);
-				if (overElementIndex === -1) return;
-
-				let indexForNewElement = overElementIndex;
-				if (over?.data?.current?.isBottomHalfDesignerElement) {
-					indexForNewElement = overElementIndex + 1;
-				}
-
-				if (type === "SectionField" && template) {
-					const element = FormElements[type].construct(nanoid());
-					element.extraAttributes = {
-						template,
-						content: "",
-					};
-					addElement(indexForNewElement, element);
-					return;
-				}
-
-				const newElement = FormElements[type].construct(nanoid());
-				addElement(indexForNewElement, newElement);
-				return;
+			if (oldIndex !== -1 && newIndex !== -1) {
+				const newElements = [...elements];
+				const [movedItem] = newElements.splice(oldIndex, 1);
+				newElements.splice(newIndex, 0, movedItem);
+				console.log("New elements order:", newElements);
+				setElements(newElements);
 			}
-
-			// Third scenario: dropping a designer element over another designer element
-			const isDraggingDesignerElement =
-				active?.data?.current?.isDesignerElement;
-
-			if (isDraggingDesignerElement && isDroppingOverDesignerElement) {
-				const activeId = active.data?.current?.elementId;
-				const overId = over.data?.current?.elementId;
-
-				const activeElementIndex = elements.findIndex(
-					(el) => el.id === activeId,
-				);
-				const overElementIndex = elements.findIndex((el) => el.id === overId);
-
-				if (activeElementIndex === -1 || overElementIndex === -1) return;
-
-				const activeElement = { ...elements[activeElementIndex] };
-				removeElement(activeId);
-
-				let indexForNewElement = overElementIndex;
-				if (over?.data?.current?.isBottomHalfDesignerElement) {
-					indexForNewElement = overElementIndex + 1;
-				}
-
-				addElement(indexForNewElement, activeElement);
-			}
-		},
-	});
+		}
+	};
 
 	return (
-		<div className={s.designerWrapper}>
-			<div ref={droppable.setNodeRef} className={s.designer}>
-				<div className={s.elementsWrapper}>
-					{!elements.length && (
-						<div className={s.placeholder}>
-							<p>Arraste e solte elementos aqui</p>
-						</div>
-					)}
-					{elements.map((element) => {
-						const type = (element.type as ElementsType) || "SectionField";
-						console.log("Rendering element:", {
-							id: element.id,
-							type,
-							extraAttributes: element.extraAttributes,
-							isTypeValid: FormElements[type],
-							availableTypes: Object.keys(FormElements),
-						});
-
-						if (!FormElements[type]) {
-							console.error("Invalid element type:", { element, type });
-							return null;
-						}
-
-						const formElement = FormElements[type];
-						const DesignerElement = formElement.designerComponent;
-
-						if (!DesignerElement) {
-							console.error("Designer component not found for type:", type);
-							return null;
-						}
-
-						return (
-							<div key={element.id} className={s.elementContainer}>
-								<CanvasElementWrapper
-									element={{
-										...element,
-										type,
-									}}
-								/>
-							</div>
-						);
-					})}
+		<div ref={droppable.setNodeRef} className={s.canvas}>
+			{!elements.length && (
+				<div className={s.placeholder}>
+					<p>Arraste e solte elementos aqui</p>
 				</div>
-			</div>
+			)}
+			<DndContext
+				sensors={sensors}
+				collisionDetection={closestCenter}
+				onDragEnd={handleDragEnd}
+			>
+				<SortableContext
+					items={elements.map((e) => e.id)}
+					strategy={verticalListSortingStrategy}
+				>
+					{elements.map((element) => (
+						<PageBuilderElement
+							key={element.id}
+							element={element}
+							onEdit={() => {
+								// Implementar atualização do elemento
+							}}
+							onRemove={() => removeElement(element.id)}
+						/>
+					))}
+				</SortableContext>
+			</DndContext>
 		</div>
 	);
 };

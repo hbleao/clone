@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 import s from "./styles.module.scss";
 
-import { Button } from "../Base/Button";
+import { Button } from "../Button";
 import { getPagesByAppId } from "@/actions/page";
 
 import type { App } from "@/app/apps/types";

@@ -6,30 +6,36 @@ import {
 	useState,
 } from "react";
 
-import type { FormElementInstance } from "@/components/FormElements";
+import type { PageBuilderElement } from "@/types/pageBuilder";
 
 type PageBuilderContextType = {
-	elements: FormElementInstance[];
-	setElements: Dispatch<SetStateAction<FormElementInstance[]>>;
-	addElement: (index: number, element: FormElementInstance) => void;
-	updateElement: (id: string, element: FormElementInstance) => void;
+	elements: PageBuilderElement[];
+	setElements: Dispatch<SetStateAction<PageBuilderElement[]>>;
+	addElement: (index: number, element: PageBuilderElement) => void;
+	updateElement: (id: string, element: PageBuilderElement) => void;
 	removeElement: (id: string) => void;
-	selectedElement: FormElementInstance | null;
-	setSelectedElement: Dispatch<SetStateAction<FormElementInstance | null>>;
+	selectedElement: PageBuilderElement | null;
+	setSelectedElement: Dispatch<SetStateAction<PageBuilderElement | null>>;
 };
 
 export const PageBuilderContext = createContext<PageBuilderContextType | null>(
 	null,
 );
 
+interface PageBuilderContextProviderProps {
+	children: React.ReactNode;
+	initialElements?: PageBuilderElement[];
+}
+
 export const PageBuilderContextProvider = ({
 	children,
-}: { children: React.ReactNode }) => {
-	const [elements, setElements] = useState<FormElementInstance[]>([]);
+	initialElements = [],
+}: PageBuilderContextProviderProps) => {
+	const [elements, setElements] = useState<PageBuilderElement[]>(initialElements);
 	const [selectedElement, setSelectedElement] =
-		useState<FormElementInstance | null>(null);
+		useState<PageBuilderElement | null>(null);
 
-	const addElement = (index: number, element: FormElementInstance) => {
+	const addElement = (index: number, element: PageBuilderElement) => {
 		setElements((oldState) => {
 			const newElements = [...oldState];
 			newElements.splice(index, 0, element);
@@ -37,19 +43,21 @@ export const PageBuilderContextProvider = ({
 		});
 	};
 
-	const updateElement = (id: string, element: FormElementInstance) => {
+	const updateElement = (id: string, element: PageBuilderElement) => {
 		setElements((oldState) => {
 			const newElements = [...oldState];
-			const elementIndex = newElements.findIndex(
-				(element) => element.id === id,
-			);
-			newElements[elementIndex] = element;
+			const elementIndex = newElements.findIndex((el) => el.id === id);
+			if (elementIndex !== -1) {
+				newElements[elementIndex] = element;
+			}
 			return newElements;
 		});
 	};
 
 	const removeElement = (id: string) => {
-		setElements((oldState) => oldState.filter((element) => element.id !== id));
+		setElements((oldState) =>
+			oldState.filter((element) => element.id !== id),
+		);
 	};
 
 	return (
@@ -57,11 +65,11 @@ export const PageBuilderContextProvider = ({
 			value={{
 				elements,
 				setElements,
-				selectedElement,
-				setSelectedElement,
 				addElement,
 				updateElement,
 				removeElement,
+				selectedElement,
+				setSelectedElement,
 			}}
 		>
 			{children}

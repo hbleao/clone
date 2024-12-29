@@ -1,55 +1,19 @@
-.container {
+.pageBuilder {
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.title {
-  font-size: $text-lg;
-  font-weight: $semi;
-  color: $gray7;
-
-  span {
-    color: $gray6;
-    font-weight: $normal;
-  }
-}
-
-.buttons {
-  display: flex;
-  gap: 0.8rem;
-}
-
-.canvas {
+.containerCanvas {
   width: 100%;
-  height: calc(100vh - 64px);
-  padding: 2rem;
-  overflow-y: auto;
-  position: relative;
-  background-color: $gray2;
-  background-image: linear-gradient(to right, $gray3 1px, transparent 1px),
-    linear-gradient(to bottom, $gray3 1px, transparent 1px);
-  background-size: 20px 20px;
-  display: flex;
-  gap: 2rem;
+  padding: 2.4rem;
 }
 
-.designerWrapper {
-  flex: 1;
-  min-height: 100%;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 0 1px $gray4;
-  padding: 2rem;
-}
-
-.notReady {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.title {
+  font-size: $text-2xl;
+  font-weight: $bold;
+  color: $gray7;
+  margin-bottom: 3.2rem;
 }

@@ -9,8 +9,9 @@ import s from "./styles.module.scss";
 
 import { Button, SectionTemplateList } from "@/components";
 import { usePageBuilder } from "@/hooks";
-import type { FormElementInstance } from "@/components/FormElements";
 import { updatePage } from "@/actions";
+import type { PageBuilderElement } from "@/types/pageBuilder";
+import type { SectionTemplate } from "@/types/section";
 
 export const PageBuilderSidebar = () => {
 	const params = useParams();
@@ -28,16 +29,11 @@ export const PageBuilderSidebar = () => {
 			schema: template.schema,
 		};
 
-		// // Usa o defaultData diretamente, pois já vem parseado do banco
-		const processedContent = template.defaultData || {};
-
-		const element: FormElementInstance = {
+		const element: PageBuilderElement = {
 			id: nanoid(),
-			type: "SectionField",
-			extraAttributes: {
-				template: cleanTemplate,
-				content: processedContent,
-			},
+			type: "section",
+			template: cleanTemplate,
+			content: template.defaultData || {},
 		};
 
 		addElement(elements?.length || 0, element);
@@ -45,72 +41,39 @@ export const PageBuilderSidebar = () => {
 	};
 
 	const handleSaveChanges = async () => {
-		console.log("FORM DATA", elements);
 		setIsSaving(true);
 		try {
-			// Converte os elementos para o formato de conteúdo
-			const content =
-				elements?.map((element) => {
-					// Garante que o content seja uma string JSON válida
-					const elementContent =
-						typeof element.extraAttributes?.content === "string"
-							? element.extraAttributes.content
-							: JSON.stringify(element.extraAttributes?.content || {});
+			console.log("Elementos a serem salvos:", elements);
 
-					return {
-						id: element.id,
-						templateId: element.extraAttributes?.template.id,
-						content: elementContent,
-						order: elements?.indexOf(element),
-					};
-				}) || [];
+			// Salva os elementos diretamente
+			const result = await updatePage(pageId, { content: elements });
 
-			// Salva o conteúdo na página
-			const result = await updatePage(pageId, {
-				content: JSON.stringify(content),
-			});
-
-			if (result.success) {
-				toast.success("Alterações salvas com sucesso!");
-			} else {
-				toast.error("Erro ao salvar alterações");
+			if (!result.success) {
+				throw new Error(result.error);
 			}
+
+			toast.success("Página salva com sucesso!");
 		} catch (error) {
-			console.error("Erro ao salvar alterações:", error);
-			toast.error("Erro ao salvar alterações");
+			console.error("Error saving page:", error);
+			toast.error("Erro ao salvar página");
 		} finally {
 			setIsSaving(false);
 		}
 	};
 
 	return (
-		<aside className={s.designerSidebar}>
-			<div className={s.designerSidebarForm}>
-				<div className={s.designerSidebarFormHeader}>
-					<Button
-						type="button"
-						width="contain"
-						onClick={handleSaveChanges}
-						disabled={isSaving}
-					>
-						{isSaving ? (
-							<>
-								<Loader2 className={s.loadingIcon} />
-								Salvando...
-							</>
-						) : (
-							"Salvar Alterações"
-						)}
-					</Button>
-				</div>
-				<p className={s.title}>Templates de Seção</p>
-				<div className={s.designerSidebarFormContent}>
-					<SectionTemplateList
-						slug={slug}
-						onSelectTemplate={handleAddSection}
-					/>
-				</div>
+		<div className={s.pageBuilderSidebar}>
+			<div className={s.header}>
+				<h2>Seções</h2>
+				<Button type="button" onClick={handleSaveChanges} disabled={isSaving}>
+					{isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+					Salvar Alterações
+				</Button>
 			</div>
-		</aside>
+
+			<div className={s.content}>
+				<SectionTemplateList slug={slug} onSelectTemplate={handleAddSection} />
+			</div>
+		</div>
 	);
 };

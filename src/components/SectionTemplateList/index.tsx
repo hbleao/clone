@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
 import styles from "./styles.module.scss";
@@ -23,8 +23,9 @@ export function SectionTemplateList({
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	useEffect(() => {
-		async function loadTemplates() {
+	// Memoiza a função de carregamento para evitar recriações
+	const loadTemplates = useMemo(
+		() => async () => {
 			try {
 				setIsLoading(true);
 				setError(null);
@@ -32,79 +33,75 @@ export function SectionTemplateList({
 				const response = await getAllSectionTemplateService(slug);
 
 				if (response.success && response.data) {
-					// Valida e filtra templates
-					const validTemplates = response.data.filter(
-						(template) =>
-							template.id &&
-							template.name &&
-							template.schema &&
-							Array.isArray(template.schema.fields),
-					);
-
-					if (validTemplates.length === 0) {
-						console.warn("Nenhum template válido encontrado");
-						setError("Nenhum template válido encontrado");
-						toast.warning("Nenhum template disponível", {
-							description: "Crie um novo template para começar",
-						});
-					}
-
-					setTemplates(validTemplates);
+					setTemplates(response.data);
 				} else {
-					console.error("Erro ao carregar templates:", response.error);
-					setError(response.error?.message || "Erro desconhecido");
-					toast.error("Erro ao carregar templates", {
-						description:
-							response.error?.message || "Tente novamente mais tarde",
-					});
+					const errorMessage = response.error?.message || "Erro ao carregar templates";
+					setError(errorMessage);
+					toast.error(errorMessage);
 				}
 			} catch (error) {
-				console.error("Erro inesperado ao carregar templates:", error);
-				setError("Erro inesperado ao carregar templates");
-				toast.error("Erro ao carregar templates", {
-					description: "Verifique sua conexão e tente novamente",
-				});
+				const message =
+					error instanceof Error ? error.message : "Erro ao carregar templates";
+				setError(message);
+				toast.error(message);
 			} finally {
 				setIsLoading(false);
 			}
+		},
+		[slug], // Só recria quando o slug mudar
+	);
+
+	// Usa useEffect com cleanup para evitar memory leaks
+	useEffect(() => {
+		let mounted = true;
+
+		const load = async () => {
+			await loadTemplates();
+		};
+
+		if (mounted) {
+			load();
 		}
 
-		if (slug) {
-			loadTemplates();
-		} else {
-			console.warn("Slug não fornecido");
-			setError("Slug do aplicativo não encontrado");
-			toast.warning("Slug não encontrado", {
-				description: "Selecione um aplicativo válido",
-			});
-			setIsLoading(false);
-		}
-	}, [slug]);
+		return () => {
+			mounted = false;
+		};
+	}, [loadTemplates]); // Depende apenas da função memoizada
 
 	if (isLoading) {
-		return <div>Carregando templates...</div>;
+		return <div className={styles.loading}>Carregando templates...</div>;
 	}
 
 	if (error) {
 		return (
-			<div className={styles.errorContainer}>
-				<p>Erro: {error}</p>
-				<Button type="button" onClick={() => window.location.reload()}>
-					Tentar Novamente
+			<div className={styles.error}>
+				<p>{error}</p>
+				<Button type="button" onClick={() => loadTemplates()}>
+					Tentar novamente
+				</Button>
+			</div>
+		);
+	}
+
+	if (templates.length === 0) {
+		return (
+			<div className={styles.empty}>
+				<p>Nenhum template disponível</p>
+				<Button type="button" onClick={() => loadTemplates()}>
+					Atualizar
 				</Button>
 			</div>
 		);
 	}
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.list}>
 			{templates.map((template) => (
-				<div key={template.id} className={styles.templateItem}>
-					<DraggableTemplateItem
-						template={template}
-						onSelectTemplate={onSelectTemplate}
-					/>
-				</div>
+				<DraggableTemplateItem
+					key={template.id}
+					template={template}
+					onSelectTemplate={onSelectTemplate}
+				/>
 			))}
 		</div>
 	);

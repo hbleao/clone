@@ -1,26 +1,25 @@
-// Base
-export * from "./Base/Dialog";
-export * from "./Base/Header";
-export * from "./Base/Input";
-export * from "./Base/Button";
-export * from "./Base/Textarea";
-export * from "./Base/Skeleton";
-export * from "./Base/Link";
-export * from "./Base/Switch";
-export * from "./Base/Spinner";
+// UI
+export * from "./Button";
+export * from "./Dialog";
+export * from "./Header";
+export * from "./Input";
+export * from "./Link";
+export * from "./Skeleton";
+export * from "./Spinner";
+export * from "./Switch";
+export * from "./Textarea";
 
 // Apps
-export * from "./FormCreateApp";
 export * from "./ListApps";
-
-// Form
-export * from "./FormElements";
-export * from "./SectionTemplateList";
+export * from "./FormCreateApp";
 
 // Page builder
 export * from "./PageBuilder";
 export * from "./PageBuilderCanvas";
 export * from "./PageBuilderSidebar";
-export * from "./PageBuilderAuthorDialog";
-export * from "./PageBuilderSectionOnCanvas";
-export * from "./PageBuilderRenderField";
+export * from "./PageBuilderElement";
+
+// SectionTemplate
+export * from "./SectionTemplateList";
+export * from "./SectionTemplateDialog";
+export * from "./SectionTemplateRenderField";
