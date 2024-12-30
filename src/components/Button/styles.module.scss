@@ -1,7 +1,4 @@
 .button {
-  padding: 0.8rem 1.6rem;
-  font-size: $text-md;
-  font-weight: $semi;
   border: none;
   border-radius: 0.6rem;
   cursor: pointer;
@@ -58,4 +55,31 @@
   &:hover {
     background: rgba($color: $gray1, $alpha: 0.8);
   }
+}
+
+.black {
+  color: $white;
+  background: $black;
+
+  &:hover {
+    background: rgba($color: $gray9, $alpha: 0.8);
+  }
+}
+
+.sm {
+  padding: 0 0.8rem;
+  font-size: $text-md;
+  font-weight: $semi;
+}
+
+.md {
+  padding: 0.4rem 0.8rem;
+  font-size: $text-md;
+  font-weight: $semi;
+}
+
+.lg {
+  padding: 0.8rem 1.6rem;
+  font-size: $text-md;
+  font-weight: $semi;
 }

@@ -6,9 +6,24 @@
   justify-content: space-between;
 }
 
-.containerCanvas {
+.containerContent {
   width: 100%;
+  height: calc(100vh - 60px);
   padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons {
+  :first-child {
+    margin-right: 8px;
+  }
 }
 
 .title {

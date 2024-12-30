@@ -2,15 +2,15 @@
 import { DndContext } from "@dnd-kit/core";
 import { nanoid } from "nanoid";
 
-import s from "./styles.module.scss";
-
-import { Header, PageBuilderCanvas, PageBuilderSidebar } from "@/components";
+import { Header } from "@/components";
 import { PageBuilderContextProvider } from "@/context";
 
 import type { PageBuilderProps } from "./types";
+import { PageBuilderContent } from "./content";
 
 export function PageBuilder({ page }: PageBuilderProps) {
 	// Tenta fazer o parse do conteúdo se for string
+	// biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
 	let parsedContent;
 	try {
 		parsedContent =
@@ -71,13 +71,7 @@ export function PageBuilder({ page }: PageBuilderProps) {
 		<PageBuilderContextProvider initialElements={initialElements}>
 			<DndContext>
 				<Header />
-				<div className={s.pageBuilder}>
-					<PageBuilderSidebar />
-					<div className={s.containerCanvas}>
-						<h1 className={s.title}>Construtor de páginas</h1>
-						<PageBuilderCanvas />
-					</div>
-				</div>
+				<PageBuilderContent />
 			</DndContext>
 		</PageBuilderContextProvider>
 	);

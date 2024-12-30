@@ -2,7 +2,6 @@
 
 import {
 	type DragEndEvent,
-	useDndMonitor,
 	useDroppable,
 	DndContext,
 	closestCenter,
@@ -40,7 +39,7 @@ export const PageBuilderCanvas = () => {
 		}),
 		useSensor(KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
-		})
+		}),
 	);
 
 	const handleDragEnd = (event: DragEndEvent) => {
@@ -51,7 +50,8 @@ export const PageBuilderCanvas = () => {
 
 		// Se estamos arrastando um elemento do sidebar
 		const isDesignerBtnElement = active?.data?.current?.isDesignerBtnElement;
-		const isDroppingOverDesignerDropArea = over?.data?.current?.isDesignerDropArea;
+		const isDroppingOverDesignerDropArea =
+			over?.data?.current?.isDesignerDropArea;
 
 		if (isDesignerBtnElement && isDroppingOverDesignerDropArea) {
 			const template = active?.data?.current?.template;

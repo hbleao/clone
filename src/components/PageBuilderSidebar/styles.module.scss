@@ -1,6 +1,6 @@
 .pageBuilderSidebar {
   width: 400px;
-  height: 100%;
+  height: calc(100vh - 60px);
   border-left: 1px solid #e5e7eb;
   background-color: white;
   display: flex;
