@@ -12,13 +12,6 @@ export default function PreviewPage() {
 	const [pageContent, setPageContent] = useState<any>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
-	const [exportPath, setExportPath] = useState("");
-
-	useEffect(() => {
-		// Carregar caminho salvo do localStorage
-		const savedPath = localStorage.getItem("@harbor:export-path") || "";
-		setExportPath(savedPath);
-	}, []);
 
 	useEffect(() => {
 		const fetchPageContent = async () => {
