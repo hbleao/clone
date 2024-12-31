@@ -8,15 +8,15 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  name         String
-  email        String   @unique
-  password     String
-  registration String   @unique
-  role         String   @default("AUTHOR")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  apps         App[]
+  id            String          @id @default(uuid())
+  name          String
+  email         String          @unique
+  password      String
+  registration  String          @unique
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  apps          App[]
+  AppMembership AppMembership[]
 
   @@map("users")
 }
@@ -34,6 +34,7 @@ model App {
   user            User              @relation(fields: [userId], references: [id])
   Page            Page[]
   SectionTemplate SectionTemplate[]
+  AppMembership   AppMembership[]
 
   @@map("apps")
 }
@@ -90,4 +91,19 @@ model SectionTemplate {
   app         App      @relation(fields: [appId], references: [id])
 
   @@map("section_templates")
+}
+
+model AppMembership {
+  id     String @id @default(cuid())
+  userId String
+  appId  String
+  role   String @default("AUTHOR")
+
+  // Relacionamentos
+  user User @relation(fields: [userId], references: [id])
+  app  App  @relation(fields: [appId], references: [id])
+
+  // Garante que um usuário tenha apenas um papel por app
+  @@unique([userId, appId])
+  @@map("app_memberships")
 }

@@ -23,7 +23,7 @@ export function PageBuilder({ page }: PageBuilderProps) {
 	}
 
 	// Converte o conteúdo da página para elementos do PageBuilder
-	const initialElements = (parsedContent || [])
+	const initialElements = ((parsedContent?.sections || []))
 		.map((item: any) => {
 			try {
 				// Se o item já estiver no formato correto
@@ -71,7 +71,7 @@ export function PageBuilder({ page }: PageBuilderProps) {
 		<PageBuilderContextProvider initialElements={initialElements}>
 			<DndContext>
 				<Header />
-				<PageBuilderContent />
+				<PageBuilderContent page={page} />
 			</DndContext>
 		</PageBuilderContextProvider>
 	);

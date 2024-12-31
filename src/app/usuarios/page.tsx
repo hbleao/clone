@@ -198,7 +198,6 @@ export default function UsersPage() {
 						<div className="name">Nome</div>
 						<div className="email">Email</div>
 						<div className="registration">Matrícula</div>
-						<div className="role">Função</div>
 						<div className="last-access">Criado em</div>
 						<div className="actions">Ações</div>
 					</div>
@@ -208,11 +207,6 @@ export default function UsersPage() {
 							<div className="name">{user.name}</div>
 							<div className="email">{user.email}</div>
 							<div className="registration">{user.registration}</div>
-							<div className="role">
-								<span className={`role-tag ${user.role.toLowerCase()}`}>
-									{user.role}
-								</span>
-							</div>
 							<div className="last-access">
 								{new Date(user.createdAt).toLocaleDateString("pt-BR")}
 							</div>
@@ -299,23 +293,6 @@ export default function UsersPage() {
 							onChange={(value) => handleInputChange("registration", value)}
 							required
 						/>
-						<div className="select-wrapper">
-							<label htmlFor="role">Função</label>
-							<select
-								name="role"
-								value={formData.role}
-								onChange={(e) => handleInputChange("role", e.target.value)}
-								className={errors.role ? "error" : ""}
-								required
-							>
-								<option value="AUTHOR">Autor</option>
-								<option value="EDITOR">Editor</option>
-								<option value="ADMIN">Admin</option>
-							</select>
-							{errors.role && (
-								<span className="error-message">{errors.role}</span>
-							)}
-						</div>
 						<Input
 							label="Senha"
 							type="password"
@@ -385,23 +362,7 @@ export default function UsersPage() {
 							onChange={(value) => handleInputChange("registration", value)}
 							required
 						/>
-						<div className="select-wrapper">
-							<label htmlFor="role">Função</label>
-							<select
-								name="role"
-								value={formData.role}
-								onChange={(e) => handleInputChange("role", e.target.value)}
-								className={errors.role ? "error" : ""}
-								required
-							>
-								<option value="AUTHOR">Autor</option>
-								<option value="EDITOR">Editor</option>
-								<option value="ADMIN">Admin</option>
-							</select>
-							{errors.role && (
-								<span className="error-message">{errors.role}</span>
-							)}
-						</div>
+
 						<Input
 							label="Nova Senha"
 							type="password"

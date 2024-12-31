@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import { FileOutput, Loader2, Save } from "lucide-react";
+import { ExternalLink, Loader2, Save } from "lucide-react";
 import { toast } from "sonner";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import s from "./styles.module.scss";
 
@@ -10,30 +10,39 @@ import { updatePage } from "@/actions";
 import { Button, PageBuilderCanvas, PageBuilderSidebar } from "@/components";
 import { usePageBuilder } from "@/hooks";
 
-export const PageBuilderContent = () => {
+export const PageBuilderContent = ({ page }) => {
 	const params = useParams();
+	const router = useRouter();
 	const { elements } = usePageBuilder();
 	const pageId = params.pageId as string;
 	const [isSaving, setIsSaving] = useState(false);
 
-	const handleSaveChanges = async () => {
-		setIsSaving(true);
+	const handleSave = async () => {
 		try {
-			console.log("Elementos a serem salvos:", elements);
+			setIsSaving(true);
 
-			// Salva os elementos diretamente
+			// Converte os elementos para o formato esperado pela API
+			const formattedContent = {
+				sections: elements.map((element) => ({
+					...element,
+					content: element.content || {},
+				})),
+			};
+
+			// Salva os elementos formatados
 			const result = await updatePage(pageId, {
-				content: JSON.stringify(elements),
+				content: formattedContent,
 			});
 
 			if (!result.success) {
-				throw new Error(result.error);
+				throw new Error(result.error || "Erro ao salvar a página");
 			}
 
 			toast.success("Página salva com sucesso!");
 		} catch (error) {
-			console.error("Error saving page:", error);
-			toast.error("Erro ao salvar página");
+			toast.error(
+				error instanceof Error ? error.message : "Erro ao salvar a página",
+			);
 		} finally {
 			setIsSaving(false);
 		}
@@ -49,21 +58,20 @@ export const PageBuilderContent = () => {
 						<Button
 							type="button"
 							width="contain"
-							onClick={handleSaveChanges}
+							onClick={() => router.push(`/preview/${page.id}`)}
+						>
+							<ExternalLink />
+							Preview
+						</Button>
+						<Button
+							type="button"
+							width="contain"
+							onClick={handleSave}
 							disabled={isSaving}
 						>
 							{isSaving && <Loader2 />}
 							<Save />
 							Salvar
-						</Button>
-						<Button
-							type="button"
-							variant="black"
-							width="contain"
-							onClick={() => alert("exportou")}
-						>
-							<FileOutput />
-							Exportar
 						</Button>
 					</div>
 				</div>

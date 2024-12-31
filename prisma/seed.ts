@@ -12,7 +12,6 @@ async function main() {
 			email: "admin@example.com",
 			password: "admin123", // Você deve alterar esta senha em produção
 			registration: "admin123",
-			role: "ADMIN",
 		},
 	});
 }
