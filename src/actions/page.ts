@@ -61,8 +61,10 @@ export async function createPage(data: CreatePageData) {
 
 		const existingPage = await prisma.page.findFirst({
 			where: {
-				appId: data.appId,
-				slug: data.slug,
+				appId_slug: {
+					appId: data.appId,
+					slug: data.slug,
+				},
 			},
 		});
 
@@ -116,8 +118,10 @@ export async function getPageBySlug(appId: string, slug: string) {
 	try {
 		const page = await prisma.page.findFirst({
 			where: {
-				appId,
-				slug,
+				appId_slug: {
+					appId,
+					slug,
+				},
 			},
 			include: {
 				seo: true,
@@ -299,5 +303,72 @@ export async function deletePageById(id: string) {
 	} catch (error) {
 		logger.error("Erro ao deletar página:", error);
 		return { success: false, error: "Falha ao deletar página" };
+	}
+}
+
+export async function duplicatePage(pageId: string) {
+	try {
+		// Buscar página completa com todas as relações
+		const page = await prisma.page.findUnique({
+			where: { id: pageId },
+			include: {
+				seo: true,
+				// Adicionar outras relações se necessário
+			},
+		});
+
+		if (!page) {
+			return { success: false, error: "Página não encontrada" };
+		}
+
+		// Gerar slug único
+		const baseSlug = `${page.slug}-copia`;
+		let uniqueSlug = baseSlug;
+		let counter = 1;
+
+		// Verificar se já existe um slug igual
+		// biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
+		let existingPage;
+		do {
+			existingPage = await prisma.page.findUnique({
+				where: {
+					appId_slug: {
+						appId: page.appId,
+						slug: uniqueSlug,
+					},
+				},
+			});
+			if (existingPage) {
+				uniqueSlug = `${baseSlug}-${counter}`;
+				counter++;
+			}
+		} while (existingPage);
+
+		const newPage = await prisma.page.create({
+			data: {
+				title: `Cópia de ${page.title}`,
+				slug: uniqueSlug,
+				type: page.type,
+				status: "draft",
+				appId: page.appId,
+				userId: page.userId,
+				content: page.content,
+				author: page.author,
+			},
+			include: {
+				seo: true,
+			},
+		});
+
+		return {
+			success: true,
+			page: newPage,
+		};
+	} catch (error) {
+		console.error("Erro ao duplicar página:", error);
+		return {
+			success: false,
+			error: "Erro interno ao duplicar página",
+		};
 	}
 }

@@ -5,6 +5,7 @@ import { Trash2, Plus } from "lucide-react";
 import s from "./styles.module.scss";
 
 import { Button } from "@/components";
+import { WysiwygEditor } from "../WysiwygEditor";
 import type { SectionTemplateRenderFieldProps } from "./types";
 
 export const SectionTemplateRenderField = ({
@@ -212,6 +213,14 @@ export const SectionTemplateRenderField = ({
 						/>
 					</div>
 				</div>
+			);
+
+		case "wysiwyg":
+			return (
+				<WysiwygEditor
+					value={value || ""}
+					onChange={handleChange}
+				/>
 			);
 
 		default:

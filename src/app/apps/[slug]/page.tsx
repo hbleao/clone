@@ -9,9 +9,12 @@ import {
 	createPage,
 	updatePageFull,
 	deletePageById,
+	duplicatePage,
 } from "@/actions/page";
 import "./styles.scss";
 import { Header, Button, Dialog, Input, Textarea } from "@/components";
+import { Copy } from "lucide-react";
+import { toast } from "sonner";
 
 import type { App, Page, PageForm } from "./types";
 
@@ -135,6 +138,29 @@ export default function AppDetailsPage() {
 			}
 		} catch (error) {
 			console.error("Error deleting page:", error);
+		}
+	};
+
+	const handleDuplicatePage = async (page: Page) => {
+		try {
+			const result = await duplicatePage(page.id);
+			if (result.success) {
+				toast.success("Página duplicada com sucesso!");
+
+				// Recarregar páginas
+				const pagesResult = await getPagesByAppId(app.id);
+				if (pagesResult.success) {
+					setPages(pagesResult.pages);
+				}
+
+				// Redirecionar para página duplicada
+				router.push(`/apps/${params.slug}/pages/${result.page.id}`);
+			} else {
+				toast.error(result.error || "Erro ao duplicar página");
+			}
+		} catch (error) {
+			console.error("Erro ao duplicar página:", error);
+			toast.error("Erro ao duplicar página");
 		}
 	};
 
@@ -446,6 +472,17 @@ export default function AppDetailsPage() {
 									<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
 									<path d="m15 5 4 4" />
 								</svg>
+							</button>
+							<button
+								type="button"
+								className="action-button duplicate"
+								onClick={(e) => {
+									e.stopPropagation();
+									handleDuplicatePage(page);
+								}}
+								title="Duplicar página"
+							>
+								<Copy size={16} />
 							</button>
 							<button
 								type="button"

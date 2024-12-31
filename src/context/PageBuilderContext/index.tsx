@@ -6,7 +6,12 @@ import {
 	useState,
 } from "react";
 
-import type { PageBuilderElement } from "@/types/pageBuilder";
+type PageBuilderElement = {
+	id: string;
+	type: string;
+	content?: string;
+	styles?: Record<string, string>;
+};
 
 type PageBuilderContextType = {
 	elements: PageBuilderElement[];
@@ -31,7 +36,8 @@ export const PageBuilderContextProvider = ({
 	children,
 	initialElements = [],
 }: PageBuilderContextProviderProps) => {
-	const [elements, setElements] = useState<PageBuilderElement[]>(initialElements);
+	const [elements, setElements] =
+		useState<PageBuilderElement[]>(initialElements);
 	const [selectedElement, setSelectedElement] =
 		useState<PageBuilderElement | null>(null);
 
@@ -55,9 +61,7 @@ export const PageBuilderContextProvider = ({
 	};
 
 	const removeElement = (id: string) => {
-		setElements((oldState) =>
-			oldState.filter((element) => element.id !== id),
-		);
+		setElements((oldState) => oldState.filter((element) => element.id !== id));
 	};
 
 	return (

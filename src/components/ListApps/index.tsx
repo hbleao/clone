@@ -1,18 +1,20 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-
-import s from "./styles.module.scss";
-
-import { Button } from "../Button";
+import { ChevronRight, Users } from "lucide-react";
 import { getPagesByAppId } from "@/actions/page";
 
 import type { App } from "@/app/apps/types";
 import type { ListAppsProps } from "./types";
 
+import s from "./styles.module.scss";
+
+import { Button } from "../Button";
+
 export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 	const router = useRouter();
 	const [pageCountMap, setPageCountMap] = useState<Record<string, number>>({});
+	const [userCountMap, setUserCountMap] = useState<Record<string, number>>({});
 
 	useEffect(() => {
 		const fetchPageCounts = async () => {
@@ -24,7 +26,25 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 			setPageCountMap(counts);
 		};
 
+		const fetchUserCounts = async () => {
+			try {
+				const response = await fetch("/api/memberships");
+				const memberships = await response.json();
+
+				const counts: Record<string, number> = {};
+				memberships.forEach((membership: any) => {
+					const appId = membership.app.id;
+					counts[appId] = (counts[appId] || 0) + 1;
+				});
+
+				setUserCountMap(counts);
+			} catch (error) {
+				console.error("Erro ao buscar usuários:", error);
+			}
+		};
+
 		fetchPageCounts();
+		fetchUserCounts();
 	}, [apps]);
 
 	return (
@@ -93,7 +113,10 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 						</div>
 						<div className={s["stat-item"]}>
 							<span className={s.label}>Usuários com acesso</span>
-							<span className={s.value}>0 usuários</span>
+							<span className={s.value}>
+								<Users size={14} />
+								{userCountMap[app.id] || 0} usuários
+							</span>
 						</div>
 						<div className={s["stat-item"]}>
 							<span className={s.label}>Páginas cadastradas</span>
@@ -105,9 +128,11 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 					<Button
 						type="button"
 						width="contain"
+						size="md"
 						onClick={() => router.push(`/apps/${app.slug}`)}
 					>
 						Acessar páginas
+						<ChevronRight />
 					</Button>
 				</div>
 			))}

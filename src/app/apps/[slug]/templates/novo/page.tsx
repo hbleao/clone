@@ -6,11 +6,11 @@ import { toast } from "sonner";
 
 import s from "./styles.module.scss";
 
-import { Input, Textarea } from "@/components";
+import { Input, Textarea, Button } from "@/components";
 import { createSectionTemplateService } from "@/services";
 
 import type { SectionTemplateType } from "@/types/section";
-import type { Field, FieldType } from "./types";
+import type { Field, FieldType, Option } from "./types";
 
 export default function NewTemplatePage() {
 	const router = useRouter();
@@ -143,7 +143,8 @@ export default function NewTemplatePage() {
 
 	const handleFieldChange = (
 		fieldIndex: number,
-		value: string,
+		property: string,
+		value: string | boolean,
 		isNested: boolean,
 		parentIndex?: number,
 		isArrayField?: boolean,
@@ -161,22 +162,167 @@ export default function NewTemplatePage() {
 				const arrayFields = [...(parentField.arrayType.fields || [])];
 				arrayFields[fieldIndex] = {
 					...arrayFields[fieldIndex],
-					name: value,
+					[property]: value,
 				};
 				parentField.arrayType.fields = arrayFields;
 			} else if (parentField?.type === "object" && parentField.fields) {
 				const nestedFields = [...parentField.fields];
 				nestedFields[fieldIndex] = {
 					...nestedFields[fieldIndex],
-					name: value,
+					[property]: value,
 				};
 				parentField.fields = nestedFields;
 			}
 		} else {
 			newSchemaFields[fieldIndex] = {
 				...newSchemaFields[fieldIndex],
-				name: value,
+				[property]: value,
 			};
+		}
+
+		setFormData((prev) => ({
+			...prev,
+			schema: { fields: newSchemaFields },
+		}));
+	};
+
+	const handleOptionChange = (
+		fieldIndex: number,
+		optionIndex: number,
+		property: string,
+		value: string,
+		isNested: boolean,
+		parentIndex?: number,
+		isArrayField?: boolean,
+	) => {
+		const newSchemaFields = [...formData.schema.fields];
+
+		if (isNested && typeof parentIndex === "number") {
+			const parentField = newSchemaFields[parentIndex];
+
+			if (
+				isArrayField &&
+				parentField?.type === "array" &&
+				parentField.arrayType?.type === "object"
+			) {
+				const arrayFields = [...(parentField.arrayType.fields || [])];
+				const arrayField = arrayFields[fieldIndex];
+				if (arrayField.options) {
+					arrayField.options[optionIndex] = {
+						...arrayField.options[optionIndex],
+						[property]: value,
+					};
+				}
+				parentField.arrayType.fields = arrayFields;
+			} else if (parentField?.type === "object" && parentField.fields) {
+				const nestedFields = [...parentField.fields];
+				const nestedField = nestedFields[fieldIndex];
+				if (nestedField.options) {
+					nestedField.options[optionIndex] = {
+						...nestedField.options[optionIndex],
+						[property]: value,
+					};
+				}
+				parentField.fields = nestedFields;
+			}
+		} else {
+			const field = newSchemaFields[fieldIndex];
+			if (field.options) {
+				field.options[optionIndex] = {
+					...field.options[optionIndex],
+					[property]: value,
+				};
+			}
+		}
+
+		setFormData((prev) => ({
+			...prev,
+			schema: { fields: newSchemaFields },
+		}));
+	};
+
+	const handleRemoveOption = (
+		fieldIndex: number,
+		optionIndex: number,
+		isNested: boolean,
+		parentIndex?: number,
+		isArrayField?: boolean,
+	) => {
+		const newSchemaFields = [...formData.schema.fields];
+
+		if (isNested && typeof parentIndex === "number") {
+			const parentField = newSchemaFields[parentIndex];
+
+			if (
+				isArrayField &&
+				parentField?.type === "array" &&
+				parentField.arrayType?.type === "object"
+			) {
+				const arrayFields = [...(parentField.arrayType.fields || [])];
+				const arrayField = arrayFields[fieldIndex];
+				if (arrayField.options) {
+					arrayField.options.splice(optionIndex, 1);
+				}
+				parentField.arrayType.fields = arrayFields;
+			} else if (parentField?.type === "object" && parentField.fields) {
+				const nestedFields = [...parentField.fields];
+				const nestedField = nestedFields[fieldIndex];
+				if (nestedField.options) {
+					nestedField.options.splice(optionIndex, 1);
+				}
+				parentField.fields = nestedFields;
+			}
+		} else {
+			const field = newSchemaFields[fieldIndex];
+			if (field.options) {
+				field.options.splice(optionIndex, 1);
+			}
+		}
+
+		setFormData((prev) => ({
+			...prev,
+			schema: { fields: newSchemaFields },
+		}));
+	};
+
+	const handleAddOption = (
+		fieldIndex: number,
+		isNested: boolean,
+		parentIndex?: number,
+		isArrayField?: boolean,
+	) => {
+		const newSchemaFields = [...formData.schema.fields];
+
+		if (isNested && typeof parentIndex === "number") {
+			const parentField = newSchemaFields[parentIndex];
+
+			if (
+				isArrayField &&
+				parentField?.type === "array" &&
+				parentField.arrayType?.type === "object"
+			) {
+				const arrayFields = [...(parentField.arrayType.fields || [])];
+				const arrayField = arrayFields[fieldIndex];
+				if (!arrayField.options) {
+					arrayField.options = [];
+				}
+				arrayField.options.push({ label: "", value: "" });
+				parentField.arrayType.fields = arrayFields;
+			} else if (parentField?.type === "object" && parentField.fields) {
+				const nestedFields = [...parentField.fields];
+				const nestedField = nestedFields[fieldIndex];
+				if (!nestedField.options) {
+					nestedField.options = [];
+				}
+				nestedField.options.push({ label: "", value: "" });
+				parentField.fields = nestedFields;
+			}
+		} else {
+			const field = newSchemaFields[fieldIndex];
+			if (!field.options) {
+				field.options = [];
+			}
+			field.options.push({ label: "", value: "" });
 		}
 
 		setFormData((prev) => ({
@@ -203,6 +349,7 @@ export default function NewTemplatePage() {
 						onChange={(e) =>
 							handleFieldChange(
 								index,
+								"name",
 								e.target.value,
 								isNested,
 								parentIndex,
@@ -214,114 +361,142 @@ export default function NewTemplatePage() {
 				</div>
 
 				<div className={s.field}>
-					<label>Tipo do Campo</label>
-					<select
-						value={field.type}
-						onChange={(e) => {
-							const newType = e.target.value as FieldType;
-							const newFields = [...parentFields];
-							newFields[index] = {
-								...field,
-								type: newType,
-								fields: newType === "object" ? [] : undefined,
-								arrayType: newType === "array" ? { type: "text" } : undefined,
-							};
-							if (isNested) {
-								const newSchemaFields = [...formData.schema.fields];
-								if (newSchemaFields[parentIndex as number].type === "object") {
-									newSchemaFields[parentIndex as number].fields = newFields;
-								} else if (
-									newSchemaFields[parentIndex as number].type === "array"
-								) {
-									newSchemaFields[parentIndex as number].arrayType!.fields =
-										newFields;
-								}
-								setFormData((prev) => ({
-									...prev,
-									schema: { fields: newSchemaFields },
-								}));
-							} else {
-								setFormData((prev) => ({
-									...prev,
-									schema: { fields: newFields },
-								}));
-							}
-						}}
-					>
-						<option value="text">Texto</option>
-						<option value="textarea">Área de Texto</option>
-						<option value="number">Número</option>
-						<option value="select">Seleção</option>
-						<option value="image">Imagem</option>
-						<option value="object">Objeto</option>
-						<option value="array">Array</option>
-					</select>
-				</div>
-
-				<div className={s.field}>
 					<label>Label</label>
 					<input
 						type="text"
 						value={field.label}
-						onChange={(e) => {
-							const newFields = [...parentFields];
-							newFields[index].label = e.target.value;
-							if (isNested) {
-								const newSchemaFields = [...formData.schema.fields];
-								if (newSchemaFields[parentIndex as number].type === "object") {
-									newSchemaFields[parentIndex as number].fields = newFields;
-								} else if (
-									newSchemaFields[parentIndex as number].type === "array"
-								) {
-									newSchemaFields[parentIndex as number].arrayType!.fields =
-										newFields;
-								}
-								setFormData((prev) => ({
-									...prev,
-									schema: { fields: newSchemaFields },
-								}));
-							} else {
-								setFormData((prev) => ({
-									...prev,
-									schema: { fields: newFields },
-								}));
-							}
-						}}
+						onChange={(e) =>
+							handleFieldChange(
+								index,
+								"label",
+								e.target.value,
+								isNested,
+								parentIndex,
+								isArrayField,
+							)
+						}
 						required
 					/>
 				</div>
 
-				<div className={s.fieldCheckbox}>
-					<label>
+				<div className={s.field}>
+					<label>Tipo</label>
+					<select
+						value={field.type}
+						onChange={(e) =>
+							handleFieldChange(
+								index,
+								"type",
+								e.target.value,
+								isNested,
+								parentIndex,
+								isArrayField,
+							)
+						}
+						required
+					>
+						<option value="">Selecione</option>
+						<option value="text">Texto</option>
+						<option value="textarea">Texto Multilinha</option>
+						<option value="wysiwyg">Editor de Texto</option>
+						<option value="number">Número</option>
+						<option value="select">Seleção</option>
+						<option value="image">Imagem</option>
+						<option value="object">Objeto</option>
+						<option value="array">Lista</option>
+					</select>
+				</div>
+
+				{field.type === "select" && (
+					<div className={s.optionsField}>
+						<label>Opções</label>
+						<div className={s.optionsList}>
+							{field.options?.map((option, optionIndex) => (
+								<div key={optionIndex} className={s.optionItem}>
+									<input
+										type="text"
+										placeholder="Label"
+										value={option.label}
+										onChange={(e) =>
+											handleOptionChange(
+												index,
+												optionIndex,
+												"label",
+												e.target.value,
+												isNested,
+												parentIndex,
+												isArrayField,
+											)
+										}
+									/>
+									<input
+										type="text"
+										placeholder="Valor"
+										value={option.value}
+										onChange={(e) =>
+											handleOptionChange(
+												index,
+												optionIndex,
+												"value",
+												e.target.value,
+												isNested,
+												parentIndex,
+												isArrayField,
+											)
+										}
+									/>
+									<Button
+										type="button"
+										onClick={() =>
+											handleRemoveOption(
+												index,
+												optionIndex,
+												isNested,
+												parentIndex,
+												isArrayField,
+											)
+										}
+										variant="ghost"
+										size="sm"
+									>
+										Remover
+									</Button>
+								</div>
+							))}
+							<Button
+								type="button"
+								onClick={() =>
+									handleAddOption(
+										index,
+										isNested,
+										parentIndex,
+										isArrayField,
+									)
+								}
+								variant="ghost"
+								size="sm"
+							>
+								Adicionar Opção
+							</Button>
+						</div>
+					</div>
+				)}
+
+				<div className={s.field}>
+					<label className={s.checkboxLabel}>
 						<input
 							type="checkbox"
 							checked={field.required}
-							onChange={(e) => {
-								const newFields = [...parentFields];
-								newFields[index].required = e.target.checked;
-								if (isNested) {
-									const newSchemaFields = [...formData.schema.fields];
-									if (
-										newSchemaFields[parentIndex as number].type === "object"
-									) {
-										newSchemaFields[parentIndex as number].fields = newFields;
-									} else if (
-										newSchemaFields[parentIndex as number].type === "array"
-									) {
-										newSchemaFields[parentIndex as number].arrayType!.fields =
-											newFields;
-									}
-									setFormData((prev) => ({
-										...prev,
-										schema: { fields: newSchemaFields },
-									}));
-								} else {
-									setFormData((prev) => ({
-										...prev,
-										schema: { fields: newFields },
-									}));
-								}
-							}}
+							onChange={(e) =>
+								handleFieldChange(
+									index,
+									"required",
+									e.target.checked,
+									isNested,
+									parentIndex,
+									isArrayField,
+								)
+							}
 						/>
 						Campo Obrigatório
 					</label>
@@ -355,36 +530,16 @@ export default function NewTemplatePage() {
 							<label>Tipo dos Itens do Array</label>
 							<select
 								value={field.arrayType?.type}
-								onChange={(e) => {
-									const newType = e.target.value as FieldType;
-									const newFields = [...parentFields];
-									newFields[index].arrayType = {
-										type: newType,
-										fields: newType === "object" ? [] : undefined,
-									};
-									if (isNested) {
-										const newSchemaFields = [...formData.schema.fields];
-										if (
-											newSchemaFields[parentIndex as number].type === "object"
-										) {
-											newSchemaFields[parentIndex as number].fields = newFields;
-										} else if (
-											newSchemaFields[parentIndex as number].type === "array"
-										) {
-											newSchemaFields[parentIndex as number].arrayType!.fields =
-												newFields;
-										}
-										setFormData((prev) => ({
-											...prev,
-											schema: { fields: newSchemaFields },
-										}));
-									} else {
-										setFormData((prev) => ({
-											...prev,
-											schema: { fields: newFields },
-										}));
-									}
-								}}
+								onChange={(e) =>
+									handleFieldChange(
+										index,
+										"arrayType.type",
+										e.target.value,
+										isNested,
+										parentIndex,
+										isArrayField,
+									)
+								}
 							>
 								<option value="text">Texto</option>
 								<option value="number">Número</option>

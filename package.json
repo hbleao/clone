@@ -24,6 +24,7 @@
     "react-ace": "^13.0.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",
+    "react-quill": "^2.0.0",
     "sass": "^1.83.0",
     "sonner": "^1.7.1",
     "winston": "^3.17.0",
