@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Header, Dialog, Input } from "@/components";
+import { Button, Header, Dialog, Input, DashboardLayout } from "@/components";
 import { Plus } from "lucide-react";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "@/actions/user";
 
 import "./styles.scss";
+import { useParams } from "next/navigation";
 
 interface User {
 	id: string;
@@ -38,6 +39,7 @@ export default function UsersPage() {
 		password: "",
 		confirmPassword: "",
 	});
+	const params = useParams();
 
 	useEffect(() => {
 		loadUsers();
@@ -178,259 +180,272 @@ export default function UsersPage() {
 	};
 
 	return (
-		<div className="users-container">
-			<Header />
-			<div className="content">
-				<div className="header">
-					<h1>Usuários</h1>
-					<Button
-						type="button"
-						width="contain"
-						onClick={() => setIsCreateModalOpen(true)}
+		<DashboardLayout slug={params.slug}>
+			<div className="users-container">
+				<div className="content">
+					<div className="header">
+						<h1>Usuários</h1>
+						<Button
+							type="button"
+							width="contain"
+							onClick={() => setIsCreateModalOpen(true)}
+						>
+							<Plus />
+							Novo usuário
+						</Button>
+					</div>
+
+					<div className="users-list">
+						<div className="users-header">
+							<div className="name">Nome</div>
+							<div className="email">Email</div>
+							<div className="registration">Matrícula</div>
+							<div className="last-access">Criado em</div>
+							<div className="actions">Ações</div>
+						</div>
+
+						{users.map((user) => (
+							<div key={user.id} className="user-item">
+								<div className="name">{user.name}</div>
+								<div className="email">{user.email}</div>
+								<div className="registration">{user.registration}</div>
+								<div className="last-access">
+									{new Date(user.createdAt).toLocaleDateString("pt-BR")}
+								</div>
+								<div className="actions">
+									<button
+										type="button"
+										className="action-button edit"
+										title="Editar usuário"
+										onClick={() => handleEditClick(user)}
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											strokeWidth="2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										>
+											<title>Editar usuário</title>
+											<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+										</svg>
+									</button>
+									<button
+										type="button"
+										className="action-button delete"
+										title="Excluir usuário"
+										onClick={() => handleDeleteClick(user)}
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											strokeWidth="2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										>
+											<title>Excluir usuário</title>
+											<path d="M3 6h18" />
+											<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+											<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+										</svg>
+									</button>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+
+				{/* Modal de Criação */}
+				{isCreateModalOpen && (
+					<Dialog
+						title="Criar Novo Usuário"
+						handleCloseModal={() => {
+							setIsCreateModalOpen(false);
+							setErrors({});
+						}}
 					>
-						<Plus />
-						Novo usuário
-					</Button>
-				</div>
-
-				<div className="users-list">
-					<div className="users-header">
-						<div className="name">Nome</div>
-						<div className="email">Email</div>
-						<div className="registration">Matrícula</div>
-						<div className="last-access">Criado em</div>
-						<div className="actions">Ações</div>
-					</div>
-
-					{users.map((user) => (
-						<div key={user.id} className="user-item">
-							<div className="name">{user.name}</div>
-							<div className="email">{user.email}</div>
-							<div className="registration">{user.registration}</div>
-							<div className="last-access">
-								{new Date(user.createdAt).toLocaleDateString("pt-BR")}
+						<form onSubmit={handleCreateUser}>
+							<Input
+								label="Nome"
+								name="name"
+								value={formData.name}
+								onChange={(value) => handleInputChange("name", value)}
+								required
+							/>
+							<Input
+								label="Email"
+								type="email"
+								name="email"
+								value={formData.email}
+								onChange={(value) => handleInputChange("email", value)}
+								required
+							/>
+							<Input
+								label="Matrícula"
+								name="registration"
+								value={formData.registration}
+								onChange={(value) => handleInputChange("registration", value)}
+								required
+							/>
+							<Input
+								label="Senha"
+								type="password"
+								name="password"
+								value={formData.password}
+								onChange={(value) => handleInputChange("password", value)}
+								required
+							/>
+							<Input
+								label="Confirmar Senha"
+								type="password"
+								name="confirmPassword"
+								value={formData.confirmPassword}
+								onChange={(value) =>
+									handleInputChange("confirmPassword", value)
+								}
+								required
+							/>
+							{errors.root && (
+								<div className="error-message">{errors.root}</div>
+							)}
+							<div className="form-actions">
+								<Button
+									type="button"
+									variant="disabled"
+									onClick={() => {
+										setIsCreateModalOpen(false);
+										setErrors({});
+									}}
+								>
+									Cancelar
+								</Button>
+								<Button type="submit">
+									{isLoading ? "Criando..." : "Criar"}
+								</Button>
 							</div>
-							<div className="actions">
-								<button
+						</form>
+					</Dialog>
+				)}
+
+				{/* Modal de Edição */}
+				{isEditModalOpen && selectedUser && (
+					<Dialog
+						title="Editar Usuário"
+						handleCloseModal={() => {
+							setIsEditModalOpen(false);
+							setSelectedUser(null);
+							setErrors({});
+						}}
+					>
+						<form onSubmit={handleEditUser}>
+							<Input
+								label="Nome"
+								name="name"
+								value={formData.name}
+								onChange={(value) => handleInputChange("name", value)}
+								required
+							/>
+							<Input
+								label="Email"
+								type="email"
+								name="email"
+								value={formData.email}
+								onChange={(value) => handleInputChange("email", value)}
+								required
+							/>
+							<Input
+								label="Matrícula"
+								name="registration"
+								value={formData.registration}
+								onChange={(value) => handleInputChange("registration", value)}
+								required
+							/>
+
+							<Input
+								label="Nova Senha"
+								type="password"
+								name="password"
+								value={formData.password}
+								onChange={(value) => handleInputChange("password", value)}
+							/>
+							<Input
+								label="Confirmar Nova Senha"
+								type="password"
+								name="confirmPassword"
+								value={formData.confirmPassword}
+								onChange={(value) =>
+									handleInputChange("confirmPassword", value)
+								}
+							/>
+							{errors.root && (
+								<div className="error-message">{errors.root}</div>
+							)}
+							<div className="form-actions">
+								<Button
 									type="button"
-									className="action-button edit"
-									title="Editar usuário"
-									onClick={() => handleEditClick(user)}
+									variant="disabled"
+									onClick={() => {
+										setIsEditModalOpen(false);
+										setSelectedUser(null);
+										setErrors({});
+									}}
 								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									>
-										<title>Editar usuário</title>
-										<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-									</svg>
-								</button>
-								<button
+									Cancelar
+								</Button>
+								<Button type="submit">
+									{isLoading ? "Salvando..." : "Salvar alterações"}
+								</Button>
+							</div>
+						</form>
+					</Dialog>
+				)}
+
+				{/* Modal de Exclusão */}
+				{isDeleteModalOpen && selectedUser && (
+					<Dialog
+						title="Excluir Usuário"
+						handleCloseModal={() => {
+							setIsDeleteModalOpen(false);
+							setSelectedUser(null);
+						}}
+					>
+						<div className="delete-confirmation">
+							<p>
+								Tem certeza que deseja excluir o usuário{" "}
+								<strong>{selectedUser.name}</strong>?
+							</p>
+							<p className="warning">Esta ação não poderá ser desfeita.</p>
+							<div className="form-actions">
+								<Button
 									type="button"
-									className="action-button delete"
-									title="Excluir usuário"
-									onClick={() => handleDeleteClick(user)}
+									variant="disabled"
+									onClick={() => {
+										setIsDeleteModalOpen(false);
+										setSelectedUser(null);
+									}}
 								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									>
-										<title>Excluir usuário</title>
-										<path d="M3 6h18" />
-										<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-										<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-									</svg>
-								</button>
+									Cancelar
+								</Button>
+								<Button
+									type="button"
+									variant="danger"
+									onClick={handleDeleteUser}
+								>
+									{isLoading ? "Excluindo..." : "Excluir"}
+								</Button>
 							</div>
 						</div>
-					))}
-				</div>
+					</Dialog>
+				)}
 			</div>
-
-			{/* Modal de Criação */}
-			{isCreateModalOpen && (
-				<Dialog
-					title="Criar Novo Usuário"
-					handleCloseModal={() => {
-						setIsCreateModalOpen(false);
-						setErrors({});
-					}}
-				>
-					<form onSubmit={handleCreateUser}>
-						<Input
-							label="Nome"
-							name="name"
-							value={formData.name}
-							onChange={(value) => handleInputChange("name", value)}
-							required
-						/>
-						<Input
-							label="Email"
-							type="email"
-							name="email"
-							value={formData.email}
-							onChange={(value) => handleInputChange("email", value)}
-							required
-						/>
-						<Input
-							label="Matrícula"
-							name="registration"
-							value={formData.registration}
-							onChange={(value) => handleInputChange("registration", value)}
-							required
-						/>
-						<Input
-							label="Senha"
-							type="password"
-							name="password"
-							value={formData.password}
-							onChange={(value) => handleInputChange("password", value)}
-							required
-						/>
-						<Input
-							label="Confirmar Senha"
-							type="password"
-							name="confirmPassword"
-							value={formData.confirmPassword}
-							onChange={(value) => handleInputChange("confirmPassword", value)}
-							required
-						/>
-						{errors.root && <div className="error-message">{errors.root}</div>}
-						<div className="form-actions">
-							<Button
-								type="button"
-								variant="disabled"
-								onClick={() => {
-									setIsCreateModalOpen(false);
-									setErrors({});
-								}}
-							>
-								Cancelar
-							</Button>
-							<Button type="submit">
-								{isLoading ? "Criando..." : "Criar"}
-							</Button>
-						</div>
-					</form>
-				</Dialog>
-			)}
-
-			{/* Modal de Edição */}
-			{isEditModalOpen && selectedUser && (
-				<Dialog
-					title="Editar Usuário"
-					handleCloseModal={() => {
-						setIsEditModalOpen(false);
-						setSelectedUser(null);
-						setErrors({});
-					}}
-				>
-					<form onSubmit={handleEditUser}>
-						<Input
-							label="Nome"
-							name="name"
-							value={formData.name}
-							onChange={(value) => handleInputChange("name", value)}
-							required
-						/>
-						<Input
-							label="Email"
-							type="email"
-							name="email"
-							value={formData.email}
-							onChange={(value) => handleInputChange("email", value)}
-							required
-						/>
-						<Input
-							label="Matrícula"
-							name="registration"
-							value={formData.registration}
-							onChange={(value) => handleInputChange("registration", value)}
-							required
-						/>
-
-						<Input
-							label="Nova Senha"
-							type="password"
-							name="password"
-							value={formData.password}
-							onChange={(value) => handleInputChange("password", value)}
-						/>
-						<Input
-							label="Confirmar Nova Senha"
-							type="password"
-							name="confirmPassword"
-							value={formData.confirmPassword}
-							onChange={(value) => handleInputChange("confirmPassword", value)}
-						/>
-						{errors.root && <div className="error-message">{errors.root}</div>}
-						<div className="form-actions">
-							<Button
-								type="button"
-								variant="disabled"
-								onClick={() => {
-									setIsEditModalOpen(false);
-									setSelectedUser(null);
-									setErrors({});
-								}}
-							>
-								Cancelar
-							</Button>
-							<Button type="submit">
-								{isLoading ? "Salvando..." : "Salvar alterações"}
-							</Button>
-						</div>
-					</form>
-				</Dialog>
-			)}
-
-			{/* Modal de Exclusão */}
-			{isDeleteModalOpen && selectedUser && (
-				<Dialog
-					title="Excluir Usuário"
-					handleCloseModal={() => {
-						setIsDeleteModalOpen(false);
-						setSelectedUser(null);
-					}}
-				>
-					<div className="delete-confirmation">
-						<p>
-							Tem certeza que deseja excluir o usuário{" "}
-							<strong>{selectedUser.name}</strong>?
-						</p>
-						<p className="warning">Esta ação não poderá ser desfeita.</p>
-						<div className="form-actions">
-							<Button
-								type="button"
-								variant="disabled"
-								onClick={() => {
-									setIsDeleteModalOpen(false);
-									setSelectedUser(null);
-								}}
-							>
-								Cancelar
-							</Button>
-							<Button type="button" variant="danger" onClick={handleDeleteUser}>
-								{isLoading ? "Excluindo..." : "Excluir"}
-							</Button>
-						</div>
-					</div>
-				</Dialog>
-			)}
-		</div>
+		</DashboardLayout>
 	);
 }

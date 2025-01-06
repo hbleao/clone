@@ -5,5 +5,6 @@ export type LinkProps = NextLinkProps & {
 	children: React.ReactNode;
 	width?: "fluid" | "contain";
 	variant?: "insurance" | "disabled" | "danger" | "ghost";
+	size?: "sm" | "md" | "lg";
 	disabled?: boolean;
 };

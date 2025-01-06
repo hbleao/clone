@@ -1,0 +1,171 @@
+.container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0;
+
+  h1 {
+    font-size: 2.4rem;
+    color: $gray8;
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+.newButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #0070f3;
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #0051cc;
+  }
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.category {
+  .categoryTitle {
+    font-size: 1.5rem;
+    color: #1a1a1a;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f3f4f6;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.templateCard {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.templateInfo {
+  padding: 1.5rem;
+  flex: 1;
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #666;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+}
+
+.templateMeta {
+  padding: 1rem 1.5rem;
+  background-color: #f9fafb;
+  border-top: 1px solid #e5e5e5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e5e5;
+
+  .editButton,
+  .deleteButton {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .editButton {
+    background-color: #f3f4f6;
+    color: #374151;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #e5e7eb;
+    }
+  }
+
+  .deleteButton {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #fecaca;
+    }
+  }
+}
+
+.empty {
+  text-align: center;
+  padding: 3rem;
+  background-color: $white;
+  border-radius: 0.5rem;
+  box-shadow: $shadow-sm;
+  margin-top: 2rem;
+
+  p {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #718096;
+    font-size: 1.6rem;
+
+    :first-child {
+      margin-bottom: 0.8rem;
+    }
+  }
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.125rem;
+}

@@ -12,6 +12,16 @@ interface CreatePageData {
 	content?: string;
 	appId: string;
 	author: string;
+	seo?: {
+		title: string;
+		description: string;
+		keywords: string;
+		ogTitle: string;
+		ogDescription: string;
+		ogImage: string;
+		canonical: string;
+		robots: string;
+	};
 }
 
 interface UpdatePageData {
@@ -53,30 +63,50 @@ export async function createPage(data: CreatePageData) {
 			return { success: false, error: "Aplicativo não encontrado" };
 		}
 
+		// Verificar se já existe uma página com o mesmo slug no app
+		const existingPage = await prisma.page.findFirst({
+			where: {
+				AND: [
+					{ appId: data.appId },
+					{ slug: data.slug }
+				]
+			},
+		});
+
+		if (existingPage) {
+			throw new Error("Já existe uma página com este slug neste app");
+		}
+
 		const content = data.content
 			? typeof data.content === "string"
 				? data.content
 				: JSON.stringify(data.content)
 			: undefined;
 
-		const existingPage = await prisma.page.findFirst({
-			where: {
-				appId_slug: {
-					appId: data.appId,
-					slug: data.slug,
-				},
-			},
-		});
-
-		if (existingPage) {
-			logger.warn(`Já existe uma página com este slug: ${data.slug}`);
-			return { success: false, error: "Já existe uma página com este slug" };
-		}
-
 		const page = await prisma.page.create({
 			data: {
-				...data,
-				content,
+				title: data.title,
+				slug: data.slug,
+				type: data.type,
+				content: content,
+				status: data.status,
+				appId: data.appId,
+				author: data.author,
+				seo: data.seo ? {
+					create: {
+						title: data.seo.title,
+						description: data.seo.description,
+						keywords: data.seo.keywords,
+						ogTitle: data.seo.ogTitle,
+						ogDescription: data.seo.ogDescription,
+						ogImage: data.seo.ogImage,
+						canonical: data.seo.canonical,
+						robots: data.seo.robots,
+					}
+				} : undefined,
+			},
+			include: {
+				seo: true,
 			},
 		});
 

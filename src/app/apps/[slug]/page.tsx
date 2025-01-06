@@ -2,8 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { Copy, PlusIcon } from "lucide-react";
+import { toast } from "sonner";
 import { getAppBySlug } from "@/actions/app";
-import { ChevronLeft } from "lucide-react";
+
+import "./styles.scss";
+
 import {
 	getPagesByAppId,
 	createPage,
@@ -11,10 +15,14 @@ import {
 	deletePageById,
 	duplicatePage,
 } from "@/actions/page";
-import "./styles.scss";
-import { Header, Button, Dialog, Input, Textarea } from "@/components";
-import { Copy } from "lucide-react";
-import { toast } from "sonner";
+import {
+	Header,
+	Button,
+	Dialog,
+	Input,
+	Textarea,
+	DashboardLayout,
+} from "@/components";
 
 import type { App, Page, PageForm } from "./types";
 
@@ -36,8 +44,7 @@ const initialFormState: PageForm = {
 	},
 };
 
-export default function AppDetailsPage() {
-	const params = useParams();
+export default function AppDetailsPage({ params }) {
 	const router = useRouter();
 	const [app, setApp] = useState<App | null>(null);
 	const [pages, setPages] = useState<Page[]>([]);
@@ -74,7 +81,7 @@ export default function AppDetailsPage() {
 		}));
 
 		// Auto-generate slug from title if it's empty
-		if (field === "title" && !formData.slug) {
+		if (field === "title") {
 			const slug = value
 				.toLowerCase()
 				.replace(/[^\w\s-]/g, "")
@@ -235,292 +242,295 @@ export default function AppDetailsPage() {
 	}
 
 	return (
-		<div className="app-details-container">
-			<Header />
-			<div className="header">
-				<Button
-					type="button"
-					width="contain"
-					variant="disabled"
-					onClick={() => router.back()}
-				>
-					<ChevronLeft />
-					Voltar
-				</Button>
+		<DashboardLayout slug={params?.slug}>
+			<div className="app-details-container">
+				<div className="pageHeader">
+					<h1>Lista de páginas</h1>
 
-				<Button
-					type="button"
-					width="contain"
-					onClick={() => setIsCreateModalOpen(true)}
-				>
-					Nova Página
-				</Button>
-			</div>
-
-			{isCreateModalOpen && (
-				<Dialog
-					handleCloseModal={handleCloseModal}
-					title={editingPageId ? "Editar Página" : "Criar Nova Página"}
-				>
-					<form onSubmit={handleSubmit}>
-						<div
-							className="tabs"
-							onClick={(e) => e.stopPropagation()}
-							onkeyDown={(e) => e.stopPropagation()}
-						>
-							<button
-								type="button"
-								className={`tab ${activeTab === "page" ? "active" : ""}`}
-								onClick={() => setActiveTab("page")}
-							>
-								Página
-							</button>
-							<button
-								type="button"
-								className={`tab ${activeTab === "seo" ? "active" : ""}`}
-								onClick={() => setActiveTab("seo")}
-							>
-								SEO
-							</button>
-						</div>
-
-						{activeTab === "page" ? (
-							<div className="tab-content">
-								<Input
-									label="Título"
-									value={formData.title}
-									onChange={(value) => handleChange("title", value)}
-									required
-								/>
-								<Input
-									label="Slug"
-									value={formData.slug}
-									onChange={(value) => handleChange("slug", value)}
-									required
-								/>
-								<Input
-									label="Tipo"
-									value={formData.type}
-									onChange={(value) => handleChange("type", value)}
-									required
-								/>
-								<Textarea
-									label="Conteúdo"
-									value={formData.content}
-									onChange={(value) => handleChange("content", value)}
-								/>
-								<div className="status-select">
-									<label>Status</label>
-									<select
-										value={formData.status}
-										onChange={(e) => handleChange("status", e.target.value)}
-									>
-										<option value="draft">Rascunho</option>
-										<option value="live">Publicado</option>
-									</select>
-								</div>
-							</div>
-						) : (
-							<div className="tab-content">
-								<Input
-									label="Meta Title"
-									value={formData.seo.title}
-									onChange={(value) => handleSeoChange("title", value)}
-									placeholder="Título otimizado para SEO"
-								/>
-								<Textarea
-									label="Meta Description"
-									value={formData.seo.description}
-									onChange={(value) => handleSeoChange("description", value)}
-									placeholder="Descrição curta para resultados de busca"
-								/>
-								<Input
-									label="Keywords"
-									value={formData.seo.keywords}
-									onChange={(value) => handleSeoChange("keywords", value)}
-									placeholder="Palavras-chave separadas por vírgula"
-								/>
-								<Input
-									label="OG Title"
-									value={formData.seo.ogTitle}
-									onChange={(value) => handleSeoChange("ogTitle", value)}
-									placeholder="Título para compartilhamento em redes sociais"
-								/>
-								<Textarea
-									label="OG Description"
-									value={formData.seo.ogDescription}
-									onChange={(value) => handleSeoChange("ogDescription", value)}
-									placeholder="Descrição para compartilhamento em redes sociais"
-								/>
-								<Input
-									label="OG Image URL"
-									value={formData.seo.ogImage}
-									onChange={(value) => handleSeoChange("ogImage", value)}
-									placeholder="URL da imagem para compartilhamento"
-								/>
-								<Input
-									label="Canonical URL"
-									value={formData.seo.canonical}
-									onChange={(value) => handleSeoChange("canonical", value)}
-									placeholder="URL canônica da página"
-								/>
-								<Input
-									label="Meta Robots"
-									value={formData.seo.robots}
-									onChange={(value) => handleSeoChange("robots", value)}
-									placeholder="Ex: index, follow"
-								/>
-							</div>
-						)}
-
-						<div className="form-actions">
-							<Button
-								type="button"
-								variant="disabled"
-								onClick={handleCloseModal}
-							>
-								Cancelar
-							</Button>
-							<Button type="submit">
-								{editingPageId ? "Salvar" : "Criar Página"}
-							</Button>
-						</div>
-					</form>
-				</Dialog>
-			)}
-
-			{isDeleteModalOpen && pageToDelete && (
-				<Dialog
-					handleCloseModal={() => {
-						setIsDeleteModalOpen(false);
-						setPageToDelete(null);
-					}}
-					title="Excluir Página"
-				>
-					<div className="delete-confirmation">
-						<p>
-							Tem certeza que deseja excluir a página "{pageToDelete.title}"?
-							Esta ação não pode ser desfeita.
-						</p>
-						<div className="form-actions">
-							<Button
-								type="button"
-								variant="disabled"
-								onClick={() => {
-									setIsDeleteModalOpen(false);
-									setPageToDelete(null);
-								}}
-							>
-								Cancelar
-							</Button>
-							<Button type="button" variant="danger" onClick={handleDeletePage}>
-								Excluir
-							</Button>
-						</div>
-					</div>
-				</Dialog>
-			)}
-
-			<div className="pages-list">
-				<div className="pages-header">
-					<div className="status">Status</div>
-					<div className="name">Nome</div>
-					<div className="type">Tipo</div>
-					<div className="last-update">Última atualização</div>
-					<div className="author">Autor</div>
-					<div className="actions">Ações</div>
+					<Button
+						type="button"
+						width="contain"
+						size="lg"
+						onClick={() => setIsCreateModalOpen(true)}
+					>
+						<PlusIcon size={20} />
+						Nova Página
+					</Button>
 				</div>
 
-				{pages.map((page) => (
-					<div
-						key={page.id}
-						className="page-item"
-						onClick={() => handlePageClick(page)}
+				{isCreateModalOpen && (
+					<Dialog
+						handleCloseModal={handleCloseModal}
+						title={editingPageId ? "Editar Página" : "Criar Nova Página"}
 					>
-						<div className="status">
-							<span className={`status-tag ${page.status}`}>
-								{page.status === "draft" ? "Rascunho" : "Publicado"}
-							</span>
-						</div>
-						<div className="name">{page.title}</div>
-						<div className="type">{page.type}</div>
-						<div className="last-update">
-							{new Date(page.updatedAt).toLocaleDateString("pt-BR")}
-						</div>
-						<div className="author">{page.author}</div>
-						<div className="actions">
-							<button
-								type="button"
-								className="action-button edit"
-								onClick={(e) => {
-									e.stopPropagation();
-									handleEditPage(page);
-								}}
-								title="Editar página"
+						<form onSubmit={handleSubmit}>
+							<div
+								className="tabs"
+								onClick={(e) => e.stopPropagation()}
+								onkeyDown={(e) => e.stopPropagation()}
 							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="20"
-									height="20"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
+								<button
+									type="button"
+									className={`tab ${activeTab === "page" ? "active" : ""}`}
+									onClick={() => setActiveTab("page")}
 								>
-									<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-									<path d="m15 5 4 4" />
-								</svg>
-							</button>
-							<button
-								type="button"
-								className="action-button duplicate"
-								onClick={(e) => {
-									e.stopPropagation();
-									handleDuplicatePage(page);
-								}}
-								title="Duplicar página"
-							>
-								<Copy size={16} />
-							</button>
-							<button
-								type="button"
-								className="action-button delete"
-								onClick={() => {
-									setPageToDelete(page);
-									setIsDeleteModalOpen(true);
-								}}
-								title="Excluir página"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="20"
-									height="20"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
+									Página
+								</button>
+								<button
+									type="button"
+									className={`tab ${activeTab === "seo" ? "active" : ""}`}
+									onClick={() => setActiveTab("seo")}
 								>
-									<path d="M3 6h18" />
-									<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-									<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-									<line x1="10" y1="11" x2="10" y2="17" />
-									<line x1="14" y1="11" x2="14" y2="17" />
-								</svg>
-							</button>
-						</div>
-					</div>
-				))}
+									SEO
+								</button>
+							</div>
 
-				{pages.length === 0 && (
-					<div className="empty-state">
-						<p>Nenhuma página encontrada. Crie sua primeira página!</p>
-					</div>
+							{activeTab === "page" ? (
+								<div className="tab-content">
+									<Input
+										label="Título"
+										value={formData.title}
+										onChange={(value) => handleChange("title", value)}
+										required
+									/>
+									<Input
+										label="Slug"
+										value={formData.slug}
+										onChange={(value) => handleChange("slug", value)}
+										required
+									/>
+									<Input
+										label="Tipo"
+										value={formData.type}
+										onChange={(value) => handleChange("type", value)}
+										required
+									/>
+									<Textarea
+										label="Conteúdo"
+										value={formData.content}
+										placeholder="Digite uma descrição para a página"
+										onChange={(value) => handleChange("content", value)}
+									/>
+									<div className="status-select">
+										<label>Status</label>
+										<select
+											value={formData.status}
+											onChange={(e) => handleChange("status", e.target.value)}
+										>
+											<option value="draft">Rascunho</option>
+											<option value="live">Publicado</option>
+										</select>
+									</div>
+								</div>
+							) : (
+								<div className="tab-content">
+									<Input
+										label="Meta Title"
+										value={formData.seo.title}
+										onChange={(value) => handleSeoChange("title", value)}
+										placeholder="Título otimizado para SEO"
+									/>
+									<Textarea
+										label="Meta Description"
+										value={formData.seo.description}
+										onChange={(value) => handleSeoChange("description", value)}
+										placeholder="Descrição curta para resultados de busca"
+									/>
+									<Input
+										label="Keywords"
+										value={formData.seo.keywords}
+										onChange={(value) => handleSeoChange("keywords", value)}
+										placeholder="Palavras-chave separadas por vírgula"
+									/>
+									<Input
+										label="OG Title"
+										value={formData.seo.ogTitle}
+										onChange={(value) => handleSeoChange("ogTitle", value)}
+										placeholder="Título para compartilhamento em redes sociais"
+									/>
+									<Textarea
+										label="OG Description"
+										value={formData.seo.ogDescription}
+										onChange={(value) =>
+											handleSeoChange("ogDescription", value)
+										}
+										placeholder="Descrição para compartilhamento em redes sociais"
+									/>
+									<Input
+										label="OG Image URL"
+										value={formData.seo.ogImage}
+										onChange={(value) => handleSeoChange("ogImage", value)}
+										placeholder="URL da imagem para compartilhamento"
+									/>
+									<Input
+										label="Canonical URL"
+										value={formData.seo.canonical}
+										onChange={(value) => handleSeoChange("canonical", value)}
+										placeholder="URL canônica da página"
+									/>
+									<Input
+										label="Meta Robots"
+										value={formData.seo.robots}
+										onChange={(value) => handleSeoChange("robots", value)}
+										placeholder="Ex: index, follow"
+									/>
+								</div>
+							)}
+
+							<div className="form-actions">
+								<Button
+									type="button"
+									variant="disabled"
+									onClick={handleCloseModal}
+								>
+									Cancelar
+								</Button>
+								<Button type="submit">
+									{editingPageId ? "Salvar" : "Criar Página"}
+								</Button>
+							</div>
+						</form>
+					</Dialog>
 				)}
+
+				{isDeleteModalOpen && pageToDelete && (
+					<Dialog
+						handleCloseModal={() => {
+							setIsDeleteModalOpen(false);
+							setPageToDelete(null);
+						}}
+						title="Excluir Página"
+					>
+						<div className="delete-confirmation">
+							<p>
+								Tem certeza que deseja excluir a página "{pageToDelete.title}"?
+								Esta ação não pode ser desfeita.
+							</p>
+							<div className="form-actions">
+								<Button
+									type="button"
+									variant="disabled"
+									onClick={() => {
+										setIsDeleteModalOpen(false);
+										setPageToDelete(null);
+									}}
+								>
+									Cancelar
+								</Button>
+								<Button
+									type="button"
+									variant="danger"
+									onClick={handleDeletePage}
+								>
+									Excluir
+								</Button>
+							</div>
+						</div>
+					</Dialog>
+				)}
+
+				<div className="pages-list">
+					<div className="pages-header">
+						<div className="status">Status</div>
+						<div className="name">Nome</div>
+						<div className="type">Tipo</div>
+						<div className="last-update">Última atualização</div>
+						<div className="author">Autor</div>
+						<div className="actions">Ações</div>
+					</div>
+
+					{pages.map((page) => (
+						<div
+							key={page.id}
+							className="page-item"
+							onClick={() => handlePageClick(page)}
+						>
+							<div className="status">
+								<span className={`status-tag ${page.status}`}>
+									{page.status === "draft" ? "Rascunho" : "Publicado"}
+								</span>
+							</div>
+							<div className="name">{page.title}</div>
+							<div className="type">{page.type}</div>
+							<div className="last-update">
+								{new Date(page.updatedAt).toLocaleDateString("pt-BR")}
+							</div>
+							<div className="author">{page.author}</div>
+							<div className="actions">
+								<button
+									type="button"
+									className="action-button edit"
+									onClick={(e) => {
+										e.stopPropagation();
+										handleEditPage(page);
+									}}
+									title="Editar página"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="20"
+										height="20"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									>
+										<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+										<path d="m15 5 4 4" />
+									</svg>
+								</button>
+								<button
+									type="button"
+									className="action-button duplicate"
+									onClick={(e) => {
+										e.stopPropagation();
+										handleDuplicatePage(page);
+									}}
+									title="Duplicar página"
+								>
+									<Copy size={16} />
+								</button>
+								<button
+									type="button"
+									className="action-button delete"
+									onClick={() => {
+										setPageToDelete(page);
+										setIsDeleteModalOpen(true);
+									}}
+									title="Excluir página"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="20"
+										height="20"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									>
+										<path d="M3 6h18" />
+										<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+										<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+										<line x1="10" y1="11" x2="10" y2="17" />
+										<line x1="14" y1="11" x2="14" y2="17" />
+									</svg>
+								</button>
+							</div>
+						</div>
+					))}
+
+					{pages.length === 0 && (
+						<div className="empty-state">
+							<p>Nenhuma página encontrada.</p>
+							<p>Crie sua primeira página!</p>
+						</div>
+					)}
+				</div>
 			</div>
-		</div>
+		</DashboardLayout>
 	);
 }

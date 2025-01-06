@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #e9ebed 0%, #e4e5e6 100%);
+  background: $gray1;
 
   .login-card {
     background: rgba(255, 255, 255, 0.95);

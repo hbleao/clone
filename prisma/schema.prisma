@@ -17,6 +17,7 @@ model User {
   updatedAt     DateTime        @updatedAt
   apps          App[]
   AppMembership AppMembership[]
+  PageChange    PageChange[]
 
   @@map("users")
 }
@@ -53,8 +54,10 @@ model Page {
   publishedAt DateTime?
   app         App       @relation(fields: [appId], references: [id])
   seo         Seo?
+  PageChange  PageChange[]
 
   @@unique([appId, slug])
+  @@index([appId, slug])
   @@index([status])
   @@map("pages")
 }
@@ -106,4 +109,24 @@ model AppMembership {
   // Garante que um usuário tenha apenas um papel por app
   @@unique([userId, appId])
   @@map("app_memberships")
+}
+
+model PageChange {
+  id          String   @id @default(uuid())
+  pageId      String
+  pageName    String
+  timestamp   DateTime @default(now())
+  userId      String
+  userName    String
+  action      String
+  changeData  String   // JSON string
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  page        Page     @relation(fields: [pageId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([timestamp])
+  @@index([userId])
+  @@index([pageId])
+  @@map("page_changes")
 }

@@ -8,6 +8,7 @@ export const Link = ({
 	width = "fluid",
 	disabled = false,
 	variant = "insurance",
+	size = "md",
 	href,
 	children,
 	...props
@@ -16,7 +17,7 @@ export const Link = ({
 	return (
 		<NextLink
 			href={href}
-			className={`${s.link} ${s[width]} ${s[variant]} ${isDisabled}`}
+			className={`${s.link} ${s[width]} ${s[variant]} ${s[size]} ${isDisabled}`}
 			{...props}
 		>
 			{children}

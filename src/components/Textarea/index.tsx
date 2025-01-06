@@ -16,7 +16,6 @@ export const Textarea = ({
 			<textarea
 				id="description"
 				className={s.textarea}
-				placeholder="Digite uma descrição para o app"
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
 				{...props}

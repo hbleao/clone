@@ -9,6 +9,9 @@ export * from "./Spinner";
 export * from "./Switch";
 export * from "./Textarea";
 
+// Layout
+export * from "./DashboardLayout";
+
 // Apps
 export * from "./ListApps";
 export * from "./FormCreateApp";

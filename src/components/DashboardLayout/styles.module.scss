@@ -1,18 +1,18 @@
-.sidebar {
+.dashboardLayout {
+  display: flex;
+}
+
+.aside {
   width: 260px;
   height: 100vh;
-  background-color: $gray2;
+  background-color: $white;
   padding: 1.5rem;
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
   overflow-y: auto;
   transition: width 0.3s ease;
 
   .logo {
     text-align: center;
-    font-size: 2.4rem;
+    font-size: 2rem;
     padding: 2rem 0;
     margin-bottom: 2rem;
     font-weight: bold;
@@ -50,8 +50,8 @@
       }
 
       svg {
-        width: 2.4rem;
-        height: 2.4rem;
+        width: 2rem;
+        height: 2rem;
         margin-right: 1rem;
         stroke-width: 1.5;
         transition: stroke-width 0.2s ease;
@@ -81,4 +81,16 @@
       }
     }
   }
+}
+
+.contentContainer {
+  background-color: $gray1;
+  width: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  padding: 2.4rem;
 }

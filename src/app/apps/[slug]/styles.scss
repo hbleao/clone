@@ -2,17 +2,16 @@
   min-height: 100vh;
   background-color: $gray1;
 
-  .header {
-    margin: 3.2rem 0;
-    padding: 0 2.4rem;
+  .pageHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 2rem 0;
 
     h1 {
       font-size: 2.4rem;
-      font-weight: 600;
       color: $gray8;
+      font-weight: 600;
       margin: 0;
     }
   }
@@ -80,8 +79,7 @@
   .pages-list {
     background: white;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    margin: 0 2.4rem;
+    box-shadow: $shadow-sm;
     margin-top: 2rem;
 
     .pages-header {
@@ -211,6 +209,10 @@
     padding: 4rem 2rem;
     color: #718096;
     font-size: 1.6rem;
+
+    :first-child {
+      margin-bottom: 0.8rem;
+    }
   }
 
   .loading {
@@ -231,7 +233,7 @@
     background: white;
     border-radius: 8px;
     padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: $shadow-sm;
 
     h1 {
       color: #333;
@@ -249,7 +251,6 @@
           display: block;
           font-size: 0.9rem;
           color: #666;
-          margin-bottom: 0.5rem;
           font-weight: 500;
         }
 

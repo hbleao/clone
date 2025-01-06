@@ -1,11 +1,7 @@
 .link {
-  padding: 0.8rem 1.6rem;
-  font-size: $text-md;
-  font-weight: $semi;
   border: none;
   border-radius: 0.6rem;
   cursor: pointer;
-  transition: all 0.3s;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -26,10 +22,10 @@
 
 .insurance {
   color: $white;
-  background: linear-gradient(135deg, $blue3, $blue7);
+  background: $blue6;
 
   &:hover {
-    background: linear-gradient(135deg, $blue7, $blue7);
+    background: $blue7;
   }
 }
 
@@ -58,4 +54,31 @@
   &:hover {
     background: rgba($color: $gray1, $alpha: 0.8);
   }
+}
+
+.black {
+  color: $white;
+  background: $black;
+
+  &:hover {
+    background: rgba($color: $gray9, $alpha: 0.8);
+  }
+}
+
+.sm {
+  padding: 0.4rem 0.8rem;
+  font-size: $text-md;
+  font-weight: $semi;
+}
+
+.md {
+  padding: 0.8rem;
+  font-size: $text-md;
+  font-weight: $semi;
+}
+
+.lg {
+  padding: 0.8rem 1.6rem;
+  font-size: $text-md;
+  font-weight: $semi;
 }
