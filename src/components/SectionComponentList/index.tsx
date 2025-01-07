@@ -3,45 +3,49 @@ import React, { useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
 import styles from "./styles.module.scss";
-import { DraggableTemplateItem } from "./DraggableTemplateItem";
+import {
+	DraggableComponentItem,
+	type Component,
+} from "./DraggableComponentItem";
 
 import { Button } from "@/components";
-import { getAllSectionTemplateService } from "@/services";
+import { getComponentsBySlugService } from "@/services";
 
-import type { SectionTemplate } from "@/types/section";
-
-interface SectionTemplateListProps {
+interface SectionComponentListProps {
 	slug: string;
-	onSelectTemplate?: (template: SectionTemplate) => void;
+	onSelectComponent?: (template: Component) => void;
 }
 
-export function SectionTemplateList({
+export function SectionComponentList({
 	slug,
-	onSelectTemplate = () => {},
-}: SectionTemplateListProps) {
-	const [templates, setTemplates] = useState<SectionTemplate[]>([]);
+	onSelectComponent = () => {},
+}: SectionComponentListProps) {
+	const [components, setComponents] = useState<Component[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
 	// Memoiza a função de carregamento para evitar recriações
-	const loadTemplates = useMemo(
+	const loadComponents = useMemo(
 		() => async () => {
 			try {
 				setIsLoading(true);
 				setError(null);
 
-				const response = await getAllSectionTemplateService(slug);
+				const response = await getComponentsBySlugService(slug);
 
 				if (response.success && response.data) {
-					setTemplates(response.data);
+					setComponents(response.data);
 				} else {
-					const errorMessage = response.error?.message || "Erro ao carregar templates";
+					const errorMessage =
+						response.error?.message || "Erro ao carregar os componentes";
 					setError(errorMessage);
 					toast.error(errorMessage);
 				}
 			} catch (error) {
 				const message =
-					error instanceof Error ? error.message : "Erro ao carregar templates";
+					error instanceof Error
+						? error.message
+						: "Erro ao carregar os componentes";
 				setError(message);
 				toast.error(message);
 			} finally {
@@ -56,7 +60,7 @@ export function SectionTemplateList({
 		let mounted = true;
 
 		const load = async () => {
-			await loadTemplates();
+			await loadComponents();
 		};
 
 		if (mounted) {
@@ -66,28 +70,28 @@ export function SectionTemplateList({
 		return () => {
 			mounted = false;
 		};
-	}, [loadTemplates]); // Depende apenas da função memoizada
+	}, [loadComponents]); // Depende apenas da função memoizada
 
 	if (isLoading) {
-		return <div className={styles.loading}>Carregando templates...</div>;
+		return <div className={styles.loading}>Carregando componentes...</div>;
 	}
 
 	if (error) {
 		return (
 			<div className={styles.error}>
 				<p>{error}</p>
-				<Button type="button" onClick={() => loadTemplates()}>
+				<Button type="button" onClick={() => loadComponents()}>
 					Tentar novamente
 				</Button>
 			</div>
 		);
 	}
 
-	if (templates.length === 0) {
+	if (components.length === 0) {
 		return (
 			<div className={styles.empty}>
 				<p>Nenhum template disponível</p>
-				<Button type="button" onClick={() => loadTemplates()}>
+				<Button type="button" onClick={() => loadComponents()}>
 					Atualizar
 				</Button>
 			</div>
@@ -96,11 +100,11 @@ export function SectionTemplateList({
 
 	return (
 		<div className={styles.list}>
-			{templates.map((template) => (
-				<DraggableTemplateItem
-					key={template.id}
-					template={template}
-					onSelectTemplate={onSelectTemplate}
+			{components.map((component) => (
+				<DraggableComponentItem
+					key={component.id}
+					component={component}
+					onSelectComponent={onSelectComponent}
 				/>
 			))}
 		</div>

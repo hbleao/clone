@@ -9,7 +9,7 @@ import {
 type PageBuilderElement = {
 	id: string;
 	type: string;
-	content?: string;
+	content?: string | Record<string, any>;
 	styles?: Record<string, string>;
 };
 

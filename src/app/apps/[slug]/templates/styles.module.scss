@@ -1,0 +1,13 @@
+.pageHeader {
+  margin-bottom: 6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-size: 2.4rem;
+    color: $gray8;
+    font-weight: 600;
+    margin: 0;
+  }
+}

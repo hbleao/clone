@@ -1,0 +1,146 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  .pageHeader {
+    margin-bottom: 4rem;
+
+    h1 {
+      font-size: 2.4rem;
+      color: $gray8;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.6rem;
+      color: $gray7;
+    }
+  }
+
+  .form {
+    background-color: $white;
+    border-radius: 0.8rem;
+    box-shadow: $shadow-sm;
+    padding: 2.4rem;
+
+    .formGroup {
+      margin-bottom: 2.4rem;
+
+      label {
+        display: block;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: $gray8;
+        margin-bottom: 0.8rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+        color: $gray7;
+        margin-top: 0.4rem;
+      }
+    }
+
+    .components {
+      margin-top: 4rem;
+
+      .componentsHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+
+        h2 {
+          font-size: 1.8rem;
+          font-weight: 600;
+          color: $gray8;
+        }
+
+        p {
+          font-size: 1.4rem;
+          color: $gray7;
+        }
+      }
+
+      .componentList {
+        min-height: 200px;
+        border: 2px dashed $gray4;
+        border-radius: 0.8rem;
+        padding: 1.6rem;
+        margin-bottom: 1.6rem;
+
+        &.isEmpty {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4rem;
+          text-align: center;
+
+          p {
+            font-size: 1.6rem;
+            color: $gray7;
+            margin-bottom: 1.6rem;
+          }
+        }
+      }
+
+      .component {
+        background-color: $white;
+        border: 1px solid $gray4;
+        border-radius: 0.8rem;
+        padding: 1.6rem;
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        transition: all 0.2s;
+
+        &:hover {
+          border-color: $gray6;
+          box-shadow: $shadow-sm;
+        }
+
+        .dragHandle {
+          color: $gray6;
+          cursor: grab;
+
+          &:active {
+            cursor: grabbing;
+          }
+        }
+
+        .componentInfo {
+          flex: 1;
+
+          h3 {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: $gray8;
+            margin-bottom: 0.4rem;
+          }
+
+          p {
+            font-size: 1.2rem;
+            color: $gray7;
+          }
+        }
+
+        .componentActions {
+          display: flex;
+          gap: 0.8rem;
+        }
+      }
+    }
+
+    .formActions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.2rem;
+      margin-top: 4rem;
+      padding-top: 2.4rem;
+      border-top: 1px solid $gray4;
+    }
+  }
+}

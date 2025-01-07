@@ -6,11 +6,11 @@ import { toast } from "sonner";
 
 import s from "./styles.module.scss";
 
-import { Input, Textarea, Button } from "@/components";
-import { createSectionTemplateService } from "@/services";
+import { Input, Textarea, Button, DashboardLayout } from "@/components";
+import { createComponent } from "@/actions/component";
 
-import type { SectionTemplateType } from "@/types/section";
-import type { Field, FieldType, Option } from "./types";
+import type { Field } from "./types";
+import { createComponentService } from "@/services";
 
 export default function NewTemplatePage() {
 	const router = useRouter();
@@ -37,73 +37,41 @@ export default function NewTemplatePage() {
 		setLoading(true);
 
 		try {
-			// Validar se todos os campos obrigatórios estão preenchidos
 			if (!formData.name || !formData.description) {
 				toast.error("Preencha todos os campos obrigatórios");
 				return;
 			}
 
-			// Validar se todos os campos do template têm nome e label
-			const validateFields = (fields: Field[]): boolean => {
-				return fields.every((field) => {
-					if (!field.name || !field.label) {
-						return false;
-					}
-
-					if (field.type === "object" && field.fields) {
-						return validateFields(field.fields);
-					}
-
-					if (
-						field.type === "array" &&
-						field.arrayType?.type === "object" &&
-						field.arrayType.fields
-					) {
-						return validateFields(field.arrayType.fields);
-					}
-
-					return true;
-				});
-			};
-
-			if (!validateFields(formData.schema.fields)) {
-				toast.error("Todos os campos precisam ter nome e label");
-				return;
-			}
-
-			// Salvar template
-			const result = await createSectionTemplateService(
+			const result = await createComponentService(
 				params.slug as string,
 				formData,
 			);
 
-			// const result = await createSectionTemplate(
-			// 	params.slug as string,
-			// 	formData,
-			// );
-
 			if (result.success) {
-				toast.success("Template criado com sucesso!");
-				router.push(`/apps/${params.slug}/templates`);
+				toast.success("Componente criado com sucesso!");
+				router.push(`/apps/${params.slug}/componentes`);
 			} else {
-				if (Array.isArray(result.error)) {
-					// Mostrar erros de validação do Zod
-					result.error.forEach((err) => {
+				if (Array.isArray(result?.error)) {
+					result?.error.forEach((err) => {
 						toast.error(err.message);
 					});
 				} else {
-					toast.error(result.error || "Erro ao criar template");
+					toast.error(result.error || "Erro ao criar componente");
 				}
 			}
 		} catch (error) {
-			console.error("Erro ao salvar template:", error);
-			toast.error("Erro ao criar template. Tente novamente.");
+			console.error("Erro ao criar componente:", error);
+			toast.error("Erro ao criar componente. Tente novamente.");
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const addField = (parentFields: Field[], parentIndex?: number) => {
+	const addField = (
+		parentFields: Field[],
+		parentIndex?: number,
+		isArrayField?: boolean,
+	) => {
 		const newField: Field = {
 			name: "",
 			type: "text",
@@ -113,17 +81,29 @@ export default function NewTemplatePage() {
 
 		if (parentIndex !== undefined) {
 			const newFields = [...formData.schema.fields];
-			if (newFields[parentIndex].type === "object") {
-				newFields[parentIndex].fields = [
-					...(newFields[parentIndex].fields || []),
+			if (isArrayField && newFields[parentIndex].type === "array") {
+				// Se não tiver arrayType, inicializa com type 'object'
+				if (!newFields[parentIndex].arrayType) {
+					newFields[parentIndex].arrayType = {
+						type: "object",
+						fields: [],
+					};
+				}
+				// Se não tiver fields, inicializa como array vazio
+				if (!newFields[parentIndex].arrayType.fields) {
+					newFields[parentIndex].arrayType.fields = [];
+				}
+				newFields[parentIndex].arrayType.fields = [
+					...newFields[parentIndex].arrayType.fields!,
 					newField,
 				];
-			} else if (
-				newFields[parentIndex].type === "array" &&
-				newFields[parentIndex].arrayType?.type === "object"
-			) {
-				newFields[parentIndex].arrayType.fields = [
-					...(newFields[parentIndex].arrayType.fields || []),
+			} else if (newFields[parentIndex].type === "object") {
+				// Se não tiver fields, inicializa como array vazio
+				if (!newFields[parentIndex].fields) {
+					newFields[parentIndex].fields = [];
+				}
+				newFields[parentIndex].fields = [
+					...newFields[parentIndex].fields!,
 					newField,
 				];
 			}
@@ -144,7 +124,7 @@ export default function NewTemplatePage() {
 	const handleFieldChange = (
 		fieldIndex: number,
 		property: string,
-		value: string | boolean,
+		value: any,
 		isNested: boolean,
 		parentIndex?: number,
 		isArrayField?: boolean,
@@ -159,25 +139,174 @@ export default function NewTemplatePage() {
 				parentField?.type === "array" &&
 				parentField.arrayType?.type === "object"
 			) {
-				const arrayFields = [...(parentField.arrayType.fields || [])];
-				arrayFields[fieldIndex] = {
-					...arrayFields[fieldIndex],
-					[property]: value,
-				};
+				// Inicializa fields se não existir
+				if (!parentField.arrayType.fields) {
+					parentField.arrayType.fields = [];
+				}
+
+				const arrayFields = [...parentField.arrayType.fields];
+
+				// Se o campo não existir, cria um novo
+				if (!arrayFields[fieldIndex]) {
+					arrayFields[fieldIndex] = {
+						name: "",
+						type: "text",
+						label: "",
+						required: false,
+					};
+				}
+
+				// Se a propriedade contém um ponto, é uma propriedade aninhada
+				if (property.includes(".")) {
+					const [parentProp, childProp] = property.split(".");
+					arrayFields[fieldIndex][parentProp] = {
+						...arrayFields[fieldIndex][parentProp],
+						[childProp]: value,
+					};
+				} else {
+					// Atualiza a propriedade
+					arrayFields[fieldIndex] = {
+						...arrayFields[fieldIndex],
+						[property]: value,
+					};
+				}
+
+				// Se mudou o tipo, reseta as propriedades específicas
+				if (property === "type") {
+					const newType = value as FieldType;
+					if (newType === "object") {
+						arrayFields[fieldIndex].fields = [];
+						delete arrayFields[fieldIndex].options;
+						delete arrayFields[fieldIndex].arrayType;
+					} else if (newType === "array") {
+						arrayFields[fieldIndex].arrayType = {
+							type: "text",
+							fields: [],
+						};
+						delete arrayFields[fieldIndex].fields;
+						delete arrayFields[fieldIndex].options;
+					} else if (newType === "select") {
+						arrayFields[fieldIndex].options = [];
+						delete arrayFields[fieldIndex].fields;
+						delete arrayFields[fieldIndex].arrayType;
+					} else {
+						delete arrayFields[fieldIndex].fields;
+						delete arrayFields[fieldIndex].arrayType;
+						delete arrayFields[fieldIndex].options;
+					}
+				}
+
 				parentField.arrayType.fields = arrayFields;
-			} else if (parentField?.type === "object" && parentField.fields) {
+			} else if (parentField?.type === "object") {
+				// Inicializa fields se não existir
+				if (!parentField.fields) {
+					parentField.fields = [];
+				}
+
 				const nestedFields = [...parentField.fields];
-				nestedFields[fieldIndex] = {
-					...nestedFields[fieldIndex],
-					[property]: value,
-				};
+
+				// Se o campo não existir, cria um novo
+				if (!nestedFields[fieldIndex]) {
+					nestedFields[fieldIndex] = {
+						name: "",
+						type: "text",
+						label: "",
+						required: false,
+					};
+				}
+
+				// Se a propriedade contém um ponto, é uma propriedade aninhada
+				if (property.includes(".")) {
+					const [parentProp, childProp] = property.split(".");
+					nestedFields[fieldIndex][parentProp] = {
+						...nestedFields[fieldIndex][parentProp],
+						[childProp]: value,
+					};
+				} else {
+					// Atualiza a propriedade
+					nestedFields[fieldIndex] = {
+						...nestedFields[fieldIndex],
+						[property]: value,
+					};
+				}
+
+				// Se mudou o tipo, reseta as propriedades específicas
+				if (property === "type") {
+					const newType = value as FieldType;
+					if (newType === "object") {
+						nestedFields[fieldIndex].fields = [];
+						delete nestedFields[fieldIndex].options;
+						delete nestedFields[fieldIndex].arrayType;
+					} else if (newType === "array") {
+						nestedFields[fieldIndex].arrayType = {
+							type: "text",
+							fields: [],
+						};
+						delete nestedFields[fieldIndex].fields;
+						delete nestedFields[fieldIndex].options;
+					} else if (newType === "select") {
+						nestedFields[fieldIndex].options = [];
+						delete nestedFields[fieldIndex].fields;
+						delete nestedFields[fieldIndex].arrayType;
+					} else {
+						delete nestedFields[fieldIndex].fields;
+						delete nestedFields[fieldIndex].arrayType;
+						delete nestedFields[fieldIndex].options;
+					}
+				}
+
 				parentField.fields = nestedFields;
 			}
 		} else {
-			newSchemaFields[fieldIndex] = {
-				...newSchemaFields[fieldIndex],
-				[property]: value,
-			};
+			// Se o campo não existir, cria um novo
+			if (!newSchemaFields[fieldIndex]) {
+				newSchemaFields[fieldIndex] = {
+					name: "",
+					type: "text",
+					label: "",
+					required: false,
+				};
+			}
+
+			// Se a propriedade contém um ponto, é uma propriedade aninhada
+			if (property.includes(".")) {
+				const [parentProp, childProp] = property.split(".");
+				newSchemaFields[fieldIndex][parentProp] = {
+					...newSchemaFields[fieldIndex][parentProp],
+					[childProp]: value,
+				};
+			} else {
+				// Atualiza a propriedade
+				newSchemaFields[fieldIndex] = {
+					...newSchemaFields[fieldIndex],
+					[property]: value,
+				};
+			}
+
+			// Se mudou o tipo, reseta as propriedades específicas
+			if (property === "type") {
+				const newType = value as FieldType;
+				if (newType === "object") {
+					newSchemaFields[fieldIndex].fields = [];
+					delete newSchemaFields[fieldIndex].options;
+					delete newSchemaFields[fieldIndex].arrayType;
+				} else if (newType === "array") {
+					newSchemaFields[fieldIndex].arrayType = {
+						type: "text",
+						fields: [],
+					};
+					delete newSchemaFields[fieldIndex].fields;
+					delete newSchemaFields[fieldIndex].options;
+				} else if (newType === "select") {
+					newSchemaFields[fieldIndex].options = [];
+					delete newSchemaFields[fieldIndex].fields;
+					delete newSchemaFields[fieldIndex].arrayType;
+				} else {
+					delete newSchemaFields[fieldIndex].fields;
+					delete newSchemaFields[fieldIndex].arrayType;
+					delete newSchemaFields[fieldIndex].options;
+				}
+			}
 		}
 
 		setFormData((prev) => ({
@@ -404,6 +533,10 @@ export default function NewTemplatePage() {
 						<option value="image">Imagem</option>
 						<option value="object">Objeto</option>
 						<option value="array">Lista</option>
+						<option value="date">Data</option>
+						<option value="datetime">Data e Hora</option>
+						<option value="time">Hora</option>
+						<option value="boolean">Sim/Não</option>
 					</select>
 				</div>
 
@@ -456,7 +589,7 @@ export default function NewTemplatePage() {
 												isArrayField,
 											)
 										}
-										variant="ghost"
+										variant="danger"
 										size="sm"
 									>
 										Remover
@@ -466,12 +599,7 @@ export default function NewTemplatePage() {
 							<Button
 								type="button"
 								onClick={() =>
-									handleAddOption(
-										index,
-										isNested,
-										parentIndex,
-										isArrayField,
-									)
+									handleAddOption(index, isNested, parentIndex, isArrayField)
 								}
 								variant="ghost"
 								size="sm"
@@ -512,6 +640,7 @@ export default function NewTemplatePage() {
 								field.fields || [],
 								true,
 								index,
+								false,
 							),
 						)}
 						<button
@@ -529,21 +658,35 @@ export default function NewTemplatePage() {
 						<div className={s.field}>
 							<label>Tipo dos Itens do Array</label>
 							<select
-								value={field.arrayType?.type}
-								onChange={(e) =>
+								value={field.arrayType?.type || "text"}
+								onChange={(e) => {
+									const newType = e.target.value as FieldType;
+									// Inicializa as propriedades corretas para o novo tipo
+									const newArrayType = {
+										type: newType,
+										fields: newType === "object" ? [] : undefined,
+									};
 									handleFieldChange(
 										index,
-										"arrayType.type",
-										e.target.value,
+										"arrayType",
+										newArrayType,
 										isNested,
 										parentIndex,
 										isArrayField,
-									)
-								}
+									);
+								}}
 							>
 								<option value="text">Texto</option>
+								<option value="textarea">Texto Multilinha</option>
+								<option value="wysiwyg">Editor de Texto</option>
 								<option value="number">Número</option>
+								<option value="select">Seleção</option>
+								<option value="image">Imagem</option>
 								<option value="object">Objeto</option>
+								<option value="date">Data</option>
+								<option value="datetime">Data e Hora</option>
+								<option value="time">Hora</option>
+								<option value="boolean">Sim/Não</option>
 							</select>
 						</div>
 
@@ -562,7 +705,9 @@ export default function NewTemplatePage() {
 								)}
 								<button
 									type="button"
-									onClick={() => addField(field.arrayType?.fields || [], index)}
+									onClick={() =>
+										addField(field.arrayType?.fields || [], index, true)
+									}
 									className={s.addNestedField}
 								>
 									Adicionar Campo aos Objetos do Array
@@ -571,83 +716,117 @@ export default function NewTemplatePage() {
 						)}
 					</div>
 				)}
+
+				<Button
+					type="button"
+					onClick={() => {
+						const newFields = [...parentFields];
+						newFields.splice(index, 1);
+						if (isNested && typeof parentIndex === "number") {
+							const newSchemaFields = [...formData.schema.fields];
+							if (
+								isArrayField &&
+								newSchemaFields[parentIndex].type === "array"
+							) {
+								newSchemaFields[parentIndex].arrayType!.fields = newFields;
+							} else if (newSchemaFields[parentIndex].type === "object") {
+								newSchemaFields[parentIndex].fields = newFields;
+							}
+							setFormData((prev) => ({
+								...prev,
+								schema: { fields: newSchemaFields },
+							}));
+						} else {
+							setFormData((prev) => ({
+								...prev,
+								schema: { fields: newFields },
+							}));
+						}
+					}}
+					variant="ghost"
+					size="sm"
+				>
+					Remover Campo
+				</Button>
 			</div>
 		);
 	};
 
 	return (
-		<div className={s.container}>
-			<h1>Novo Template de Seção</h1>
+		<DashboardLayout slug={params.slug}>
+			<div className={s.container}>
+				<h1>Novo Template de Seção</h1>
 
-			<form onSubmit={handleSubmit} className={s.form}>
-				<div className={s.field}>
-					<Input
-						label="Nome do Template"
-						value={formData.name}
-						onChange={(value) =>
-							setFormData((prev) => ({ ...prev, name: value }))
-						}
-						required
-					/>
-				</div>
+				<form onSubmit={handleSubmit} className={s.form}>
+					<div className={s.field}>
+						<Input
+							label="Nome do Template"
+							value={formData.name}
+							onChange={(value) =>
+								setFormData((prev) => ({ ...prev, name: value }))
+							}
+							required
+						/>
+					</div>
 
-				<div className={s.field}>
-					<label>Tipo</label>
-					<select
-						value={formData.type}
-						onChange={(e) =>
-							setFormData((prev) => ({
-								...prev,
-								type: e.target.value as SectionTemplateType,
-							}))
-						}
-					>
-						<option value="hero">Base</option>
-						<option value="hero">Hero</option>
-						<option value="features">Features</option>
-						<option value="testimonials">Depoimentos</option>
-						<option value="custom">Personalizado</option>
-					</select>
-				</div>
+					<div className={s.field}>
+						<label>Tipo</label>
+						<select
+							value={formData.type}
+							onChange={(e) =>
+								setFormData((prev) => ({
+									...prev,
+									type: e.target.value as SectionTemplateType,
+								}))
+							}
+						>
+							<option value="hero">Base</option>
+							<option value="hero">Hero</option>
+							<option value="features">Features</option>
+							<option value="testimonials">Depoimentos</option>
+							<option value="custom">Personalizado</option>
+						</select>
+					</div>
 
-				<div className={s.field}>
-					<Textarea
-						label="Descrição"
-						value={formData.description}
-						onChange={(value) =>
-							setFormData((prev) => ({ ...prev, description: value }))
-						}
-						required
-					/>
-				</div>
+					<div className={s.field}>
+						<Textarea
+							label="Descrição"
+							value={formData.description}
+							onChange={(value) =>
+								setFormData((prev) => ({ ...prev, description: value }))
+							}
+							required
+						/>
+					</div>
 
-				<div className={s.fields}>
-					<h2>Campos do Template</h2>
-					{formData.schema.fields.map((field, index) =>
-						renderField(field, index, formData.schema.fields),
-					)}
+					<div className={s.fields}>
+						<h2>Campos do Componente</h2>
+						{formData.schema.fields.map((field, index) =>
+							renderField(field, index, formData.schema.fields),
+						)}
 
-					<button
-						type="button"
-						onClick={() => addField(formData.schema.fields)}
-						className={s.addField}
-					>
-						Adicionar Campo
-					</button>
-				</div>
+						<button
+							type="button"
+							onClick={() => addField(formData.schema.fields)}
+							className={s.addField}
+						>
+							Adicionar Campo
+						</button>
+					</div>
 
-				<div className={s.actions}>
-					<button
-						type="button"
-						onClick={() => router.push(`/apps/${params.slug}/templates`)}
-					>
-						Cancelar
-					</button>
-					<button type="submit" disabled={loading}>
-						{loading ? "Salvando..." : "Salvar Template"}
-					</button>
-				</div>
-			</form>
-		</div>
+					<div className={s.actions}>
+						<button
+							type="button"
+							onClick={() => router.push(`/apps/${params.slug}/templates`)}
+						>
+							Cancelar
+						</button>
+						<button type="submit" disabled={loading}>
+							{loading ? "Salvando..." : "Salvar Template"}
+						</button>
+					</div>
+				</form>
+			</div>
+		</DashboardLayout>
 	);
 }

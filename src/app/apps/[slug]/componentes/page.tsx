@@ -1,128 +1,182 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { Plus, Trash, Copy } from "lucide-react";
 import { toast } from "sonner";
-import { PlusIcon } from "lucide-react";
-
-import { Link, DashboardLayout } from "@/components";
-import { getAllSectionTemplateService } from "@/services";
 
 import s from "./styles.module.scss";
 
-type TemplatesByCategory = {
-	[key: string]: SectionTemplateField[];
-};
+import { DashboardLayout, Button, Link } from "@/components";
+import { deleteComponent, duplicateComponent } from "@/actions/component";
+import { getComponentsBySlugService } from "@/services";
+
+interface Component {
+	id: string;
+	name: string;
+	type: string;
+	description: string | null;
+	createdAt: string;
+	updatedAt: string;
+}
 
 export default function ComponentsPage() {
 	const params = useParams();
-	const [templates, setTemplates] = useState<SectionTemplateField[]>([]);
-	const [loading, setLoading] = useState(true);
+	const router = useRouter();
+	const [components, setComponents] = useState<Component[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
 
-	async function loadTemplates() {
+	const formatDate = (dateString: string) => {
+		if (!dateString) return "";
+		const date = new Date(dateString);
+		const day = String(date.getDate()).padStart(2, "0");
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		const year = date.getFullYear();
+		return `${day}/${month}/${year}`;
+	};
+
+	const loadComponents = async () => {
 		try {
-			const result = await getAllSectionTemplateService(params.slug as string);
+			const result = await getComponentsBySlugService(params.slug as string);
 			if (result.success && result.data) {
-				setTemplates(result.data);
+				setComponents(result.data);
 			} else {
-				toast.error(result.error?.message || "Erro ao carregar templates");
+				toast.error(result.error?.message || "Erro ao carregar componentes");
 			}
 		} catch (error) {
-			console.error("Erro ao carregar templates:", error);
-			toast.error("Erro ao carregar templates");
+			console.error("Erro ao carregar componentes:", error);
+			toast.error("Erro ao carregar componentes");
 		} finally {
-			setLoading(false);
+			setIsLoading(false);
 		}
-	}
+	};
 
-	const templatesByCategory = templates.reduce<TemplatesByCategory>(
-		(acc, template) => {
-			const category = template.type || "Outros";
-			if (!acc[category]) {
-				acc[category] = [];
+	const handleEdit = (component: Component) => {
+		router.push(`/apps/${params.slug}/componentes/${component.id}`);
+	};
+
+	const handleDuplicate = async (component: Component) => {
+		try {
+			const result = await duplicateComponent(component.id);
+			if (result.success) {
+				toast.success("Componente duplicado com sucesso!");
+				loadComponents();
+			} else {
+				toast.error(result.error as string);
 			}
-			acc[category].push(template);
-			return acc;
-		},
-		{},
-	);
+		} catch (error) {
+			console.error("Erro ao duplicar componente:", error);
+			toast.error("Erro ao duplicar componente");
+		}
+	};
+
+	const handleDelete = async (component: Component) => {
+		if (!confirm("Tem certeza que deseja excluir este componente?")) {
+			return;
+		}
+
+		try {
+			const result = await deleteComponent(component.id);
+			if (result.success) {
+				toast.success("Componente excluído com sucesso!");
+				loadComponents();
+			} else {
+				toast.error(result.error as string);
+			}
+		} catch (error) {
+			console.error("Erro ao excluir componente:", error);
+			toast.error("Erro ao excluir componente");
+		}
+	};
 
 	useEffect(() => {
-		loadTemplates();
+		loadComponents();
 	}, [params.slug]);
-
-	if (loading) {
-		return <div className={s.loading}>Carregando templates...</div>;
-	}
 
 	return (
 		<DashboardLayout slug={params.slug}>
-			<div className={s.container}>
-				<div className={s.pageHeader}>
-					<h1>Lista de Componentes</h1>
-					<Link
-						href={`/apps/${params.slug}/componentes/novo`}
-						width="contain"
-						size="lg"
-					>
-						<PlusIcon size={20} />
-						Novo Componente
+			<div className={s.header}>
+				<div className={s.header__title}>
+					<h1>Gerencie os componentes do seu aplicativo</h1>
+				</div>
+				<Link
+					href={`/apps/${params.slug}/componentes/novo`}
+					width="contain"
+					size="lg"
+				>
+					<Plus size={16} />
+					Novo componente
+				</Link>
+			</div>
+
+			{isLoading ? (
+				<div className={s.loading}>
+					<div className={s.loading__spinner} />
+				</div>
+			) : components.length === 0 ? (
+				<div className={s.empty}>
+					<p>Nenhum componente encontrado</p>
+					<Link href={`/apps/${params.slug}/componentes/novo`}>
+						<Plus size={16} />
+						Criar primeiro componente
 					</Link>
 				</div>
-
-				{templates.length === 0 ? (
-					<div className={s.empty}>
-						<p>Nenhum componente cadastrado</p>
-					</div>
-				) : (
-					<div className={s.categories}>
-						{Object.entries(templatesByCategory).map(
-							([category, categoryTemplates]) => (
-								<div key={category} className={s.category}>
-									<h2 className={s.categoryTitle}>{category}</h2>
-									<div className={s.grid}>
-										{categoryTemplates.map((template) => (
-											<div key={template.id} className={s.templateCard}>
-												<div className={s.templateInfo}>
-													<h3>{template.name}</h3>
-													<p>{template.description}</p>
-												</div>
-												<div className={s.templateMeta}>
-													<span>
-														Criado em:{" "}
-														{template.createdAt.toLocaleDateString("pt-BR", {
-															day: "2-digit",
-															month: "long",
-															year: "numeric",
-														})}
-													</span>
-													<span>
-														Última atualização:{" "}
-														{template.updatedAt.toLocaleDateString("pt-BR", {
-															day: "2-digit",
-															month: "long",
-															year: "numeric",
-														})}
-													</span>
-												</div>
-												<div className={s.actions}>
-													<Link
-														href={`/apps/${params.slug}/templates/${template.id}/editar`}
-														className={s.editButton}
-													>
-														Editar
-													</Link>
-													<button className={s.deleteButton}>Excluir</button>
-												</div>
-											</div>
-										))}
-									</div>
+			) : (
+				<div className={s.grid}>
+					{components.map((component) => (
+						<div
+							key={component.id}
+							className={s.card}
+							onClick={() => handleEdit(component)}
+							onKeyDown={() => handleEdit(component)}
+						>
+							<div className={s.card__header}>
+								<div className={s.card__title}>
+									<h3>{component.name}</h3>
+									<span className={s.card__type}>{component.type}</span>
 								</div>
-							),
-						)}
-					</div>
-				)}
-			</div>
+								<div className={s.card__actions}>
+									<Button
+										type="button"
+										variant="ghost"
+										size="sm"
+										onClick={(e) => {
+											e.stopPropagation();
+											handleDuplicate(component);
+										}}
+										title="Duplicar componente"
+									>
+										<Copy size={16} />
+									</Button>
+									<Button
+										type="button"
+										variant="ghost"
+										size="sm"
+										onClick={(e) => {
+											e.stopPropagation();
+											handleDelete(component);
+										}}
+										title="Excluir componente"
+									>
+										<Trash size={16} />
+									</Button>
+								</div>
+							</div>
+
+							<p className={s.card__description}>{component.description}</p>
+
+							<div className={s.card__footer}>
+								<span>
+									Criado em: {formatDate(String(component.createdAt))}
+								</span>
+								<span>
+									Atualizado em: {formatDate(String(component.updatedAt))}
+								</span>
+							</div>
+						</div>
+					))}
+				</div>
+			)}
 		</DashboardLayout>
 	);
 }

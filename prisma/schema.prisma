@@ -23,77 +23,102 @@ model User {
 }
 
 model App {
-  id              String            @id @default(uuid())
-  title           String
-  name            String
-  slug            String            @unique
-  description     String?
-  owner           String
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  userId          String
-  user            User              @relation(fields: [userId], references: [id])
-  Page            Page[]
-  SectionTemplate SectionTemplate[]
-  AppMembership   AppMembership[]
+  id            String          @id @default(uuid())
+  title         String
+  name          String
+  slug          String          @unique
+  description   String?
+  owner         String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  userId        String
+  user          User            @relation(fields: [userId], references: [id])
+  Page          Page[]
+  Component     Component[]
+  PageTemplate  PageTemplate[]
+  AppMembership AppMembership[]
 
   @@map("apps")
 }
 
 model Page {
-  id          String    @id @default(uuid())
+  id          String       @id @default(uuid())
   title       String
   slug        String
   content     String?
-  status      String    @default("draft")
+  status      String       @default("draft")
   type        String
   author      String
   appId       String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   publishedAt DateTime?
-  app         App       @relation(fields: [appId], references: [id])
+  app         App          @relation(fields: [appId], references: [id])
   seo         Seo?
   PageChange  PageChange[]
+  template    PageTemplate? @relation(fields: [templateId], references: [id])
+  templateId  String?
 
   @@unique([appId, slug])
-  @@index([appId, slug])
-  @@index([status])
   @@map("pages")
 }
 
 model Seo {
-  id            String   @id @default(uuid())
-  title         String
-  description   String?
-  keywords      String?
-  ogTitle       String?
-  ogDescription String?
-  ogImage       String?
-  canonical     String?
-  robots        String?
-  pageId        String   @unique
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  page          Page     @relation(fields: [pageId], references: [id])
+  id          String   @id @default(uuid())
+  pageId      String   @unique
+  title       String?
+  description String?
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  page        Page     @relation(fields: [pageId], references: [id])
 
   @@map("seos")
 }
 
-model SectionTemplate {
+model Component {
   id          String   @id @default(uuid())
   name        String
   type        String
-  description String
-  thumbnail   String?
-  schema      String
-  defaultData String?
+  description String?
+  schema      String   // JSON string
+  content     String?  // JSON string
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   appId       String
   app         App      @relation(fields: [appId], references: [id])
+  PageTemplateComponent PageTemplateComponent[]
 
-  @@map("section_templates")
+  @@map("components")
+}
+
+model PageTemplate {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  appId       String
+  app         App      @relation(fields: [appId], references: [id])
+  pages       Page[]
+  components  PageTemplateComponent[]
+
+  @@map("page_templates")
+}
+
+model PageTemplateComponent {
+  id            String      @id @default(uuid())
+  templateId    String
+  componentId   String
+  position      Int         // Ordem do componente no template
+  initialData   String?     // JSON string com dados iniciais do componente
+  template      PageTemplate @relation(fields: [templateId], references: [id])
+  component     Component    @relation(fields: [componentId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([templateId, position])
+  @@map("page_template_components")
 }
 
 model AppMembership {
@@ -112,18 +137,18 @@ model AppMembership {
 }
 
 model PageChange {
-  id          String   @id @default(uuid())
-  pageId      String
-  pageName    String
-  timestamp   DateTime @default(now())
-  userId      String
-  userName    String
-  action      String
-  changeData  String   // JSON string
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  page        Page     @relation(fields: [pageId], references: [id])
-  user        User     @relation(fields: [userId], references: [id])
+  id         String   @id @default(uuid())
+  pageId     String
+  pageName   String
+  timestamp  DateTime @default(now())
+  userId     String
+  userName   String
+  action     String
+  changeData String // JSON string
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  page       Page     @relation(fields: [pageId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 
   @@index([timestamp])
   @@index([userId])

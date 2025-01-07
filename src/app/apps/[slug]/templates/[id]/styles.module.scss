@@ -1,0 +1,89 @@
+.container {
+  padding: 1.5rem;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    .title {
+      h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      p {
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+      }
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+      
+      @media (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .components {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .componentsHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .componentsTitle {
+          h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+          }
+
+          p {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+          }
+        }
+      }
+
+      .componentsList {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .componentItem {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem;
+          border: 1px solid var(--border);
+          border-radius: 0.5rem;
+
+          .grip {
+            cursor: move;
+            color: var(--muted-foreground);
+          }
+
+          .select {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

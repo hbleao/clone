@@ -1,14 +1,11 @@
 "use client";
-import { useState, useEffect, type FormEvent } from "react";
 
-import s from "./style.module.scss";
+import { type FormEvent, useEffect, useState } from "react";
+import { getCurrentUser } from "@/actions/auth";
+import { createApp } from "@/actions/app";
 
-import { Input } from "../Input";
-import { Textarea } from "../Textarea";
-import { Button } from "../Button";
-
-import { createApp } from "../../actions/app";
-import { getCurrentUser } from "../../actions/auth";
+import { Button, Input, Textarea } from "@/components";
+import s from "./styles.module.scss";
 
 export const FormCreateApp = ({
 	setIsModalOpen,
@@ -23,6 +20,7 @@ export const FormCreateApp = ({
 		userId: "",
 	});
 	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState("");
 
 	useEffect(() => {
 		async function loadUser() {
@@ -42,6 +40,12 @@ export const FormCreateApp = ({
 		try {
 			e.preventDefault();
 			setIsLoading(true);
+			setError("");
+
+			if (!formData.userId) {
+				setError("Usuário não autenticado. Por favor, faça login novamente.");
+				return;
+			}
 
 			const result = await createApp(formData);
 			if (result.app) {
@@ -53,9 +57,12 @@ export const FormCreateApp = ({
 					userId: "",
 				});
 				setIsModalOpen(false);
+			} else if (result.error) {
+				setError(result.error);
 			}
 		} catch (error) {
 			console.error("Erro ao criar app:", error);
+			setError("Erro ao criar o app. Por favor, tente novamente.");
 		} finally {
 			setIsLoading(false);
 		}
@@ -95,6 +102,9 @@ export const FormCreateApp = ({
 					/>
 				</div>
 			</div>
+
+			{error && <div className={s.error}>{error}</div>}
+
 			<div className={s["modal-footer"]}>
 				<Button
 					type="button"
@@ -108,7 +118,7 @@ export const FormCreateApp = ({
 					type="submit"
 					variant="insurance"
 					width="contain"
-					disabled={isLoading}
+					disabled={isLoading || !formData.userId}
 				>
 					{isLoading ? "Criando..." : "Criar Aplicativo"}
 				</Button>

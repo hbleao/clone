@@ -15,12 +15,7 @@ interface CreatePageData {
 	seo?: {
 		title: string;
 		description: string;
-		keywords: string;
-		ogTitle: string;
-		ogDescription: string;
-		ogImage: string;
-		canonical: string;
-		robots: string;
+		image?: string;
 	};
 }
 
@@ -42,12 +37,7 @@ interface UpdatePageParams {
 	seo: {
 		title: string;
 		description: string;
-		keywords: string;
-		ogTitle: string;
-		ogDescription: string;
-		ogImage: string;
-		canonical: string;
-		robots: string;
+		image?: string;
 	};
 }
 
@@ -89,25 +79,20 @@ export async function createPage(data: CreatePageData) {
 				slug: data.slug,
 				type: data.type,
 				content: content,
-				status: data.status,
+				status: "draft",
 				appId: data.appId,
 				author: data.author,
 				seo: data.seo ? {
 					create: {
 						title: data.seo.title,
 						description: data.seo.description,
-						keywords: data.seo.keywords,
-						ogTitle: data.seo.ogTitle,
-						ogDescription: data.seo.ogDescription,
-						ogImage: data.seo.ogImage,
-						canonical: data.seo.canonical,
-						robots: data.seo.robots,
+						image: data.seo.image
 					}
-				} : undefined,
+				} : undefined
 			},
 			include: {
-				seo: true,
-			},
+				seo: true
+			}
 		});
 
 		logger.info(`Página criada com sucesso: ${page.id}`);

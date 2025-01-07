@@ -1,8 +1,9 @@
 "use client";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-import "./styles.scss";
+import s from "./styles.module.scss";
 
 import { Button, Input } from "@/components";
 import { authenticateUser } from "@/actions/auth";
@@ -40,12 +41,13 @@ export default function LoginPage() {
 	};
 
 	return (
-		<div className="login-container">
-			<div className="login-card">
-				<h1>Marine CMS</h1>
+		<div className={s.container}>
+			<div className={s.login}>
+				<h1>Harbor CMS</h1>
+				<p>Sistema de gerenciamento de conteúdo da porto seguro.</p>
 
 				<form onSubmit={handleSubmit}>
-					<div className="form-group">
+					<div className={s["form-group"]}>
 						<Input
 							label="Matrícula"
 							value={formData.registration}
@@ -55,7 +57,7 @@ export default function LoginPage() {
 						/>
 					</div>
 
-					<div className="form-group">
+					<div className={s["form-group"]}>
 						<Input
 							type="password"
 							label="Senha"
@@ -66,10 +68,22 @@ export default function LoginPage() {
 						/>
 					</div>
 
-					{error && <p className="error-message">{error}</p>}
+					{error && <p className={s["error-message"]}>{error}</p>}
 
-					<Button type="submit">Entrar</Button>
+					<Button type="submit" size="lg">
+						Entrar
+					</Button>
 				</form>
+			</div>
+			<div className={s.banner}>
+				<Image
+					src="https://www.portoseguro.com.br/content/dam/home/logo.portosegurowhite.webp"
+					alt="logo da porto"
+					width={240}
+					height={40}
+				/>
+				<h1>Bem vindo de volta</h1>
+				<p>Acesse sua conta agora mesmo</p>
 			</div>
 		</div>
 	);

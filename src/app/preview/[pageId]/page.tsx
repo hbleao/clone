@@ -23,6 +23,7 @@ export default function PreviewPage() {
 				}
 
 				const data = await response.json();
+				console.log("data", data);
 				setPageContent(data);
 			} catch (err) {
 				setError(err instanceof Error ? err.message : "Erro desconhecido");
@@ -41,7 +42,13 @@ export default function PreviewPage() {
 			const pageName =
 				pageContent.content.sections[index].template.name.toLowerCase();
 			return {
-				[pageName]: { ...item.content },
+				seo: {
+					title: pageContent.seo.title || "",
+					description: pageContent.seo?.description || "",
+					canonical: pageContent.seo?.canonical || "",
+				},
+				name: pageName,
+				component: { ...item.content },
 			};
 		}) || [];
 	const jsonContent = JSON.stringify(formattedContent, null, 2);

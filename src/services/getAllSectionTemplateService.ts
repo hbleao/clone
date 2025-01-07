@@ -32,7 +32,7 @@ export async function getAllSectionTemplateService(
 	}
 
 	try {
-		const response = await fetch(`/api/apps/${slug}/templates`, {
+		const response = await fetch(`/api/apps/${slug}/components`, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
@@ -100,8 +100,12 @@ export async function getAllSectionTemplateService(
 					// Processa datas
 					const processedTemplate = {
 						...template,
-						createdAt: template.createdAt ? new Date(template.createdAt) : new Date(),
-						updatedAt: template.updatedAt ? new Date(template.updatedAt) : new Date(),
+						createdAt: template.createdAt
+							? new Date(template.createdAt)
+							: new Date(),
+						updatedAt: template.updatedAt
+							? new Date(template.updatedAt)
+							: new Date(),
 					};
 
 					// Processa schema
@@ -128,7 +132,9 @@ export async function getAllSectionTemplateService(
 					if (template.defaultData) {
 						if (typeof template.defaultData === "string") {
 							try {
-								processedTemplate.defaultData = JSON.parse(template.defaultData);
+								processedTemplate.defaultData = JSON.parse(
+									template.defaultData,
+								);
 							} catch (error) {
 								console.error("Erro ao processar defaultData:", error);
 								processedTemplate.defaultData = {};

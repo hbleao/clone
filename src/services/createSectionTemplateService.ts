@@ -13,7 +13,8 @@ export async function createSectionTemplateService(
 	data: SectionTemplateFormData,
 ): Promise<CreateTemplateResponse> {
 	try {
-		const response = await fetch(`/api/apps/${slug}/templates`, {
+		const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+		const response = await fetch(`${baseUrl}/api/apps/${slug}/templates`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

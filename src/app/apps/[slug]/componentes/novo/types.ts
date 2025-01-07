@@ -6,7 +6,11 @@ export type FieldType =
 	| "select"
 	| "image"
 	| "object"
-	| "array";
+	| "array"
+	| "date"
+	| "datetime"
+	| "time"
+	| "boolean";
 
 export type Option = {
 	label: string;

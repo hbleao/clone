@@ -24,11 +24,13 @@ export async function GET(
 
     // Tenta parsear o conteúdo se for uma string
     let parsedContent = page.content;
-    if (typeof page.content === "string") {
+    if (typeof page.content === "string" && page.content.trim().startsWith("{")) {
       try {
         parsedContent = JSON.parse(page.content);
       } catch (parseError) {
         console.error("Erro ao parsear conteúdo:", parseError);
+        // Em caso de erro de parsing, mantém o conteúdo original
+        parsedContent = page.content;
       }
     }
 

@@ -1,17 +1,16 @@
 "use client";
-import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
 
 import { nanoid } from "nanoid";
 
 import s from "./styles.module.scss";
 
-import { Button, SectionTemplateList } from "@/components";
+import { Button, SectionComponentList } from "@/components";
 import { usePageBuilder } from "@/hooks";
 
-import type { SectionTemplate } from "@/types/section";
-import { ChevronLeft } from "lucide-react";
+import type { Component } from "@/components/SectionComponentList/DraggableComponentItem";
 
 export const PageBuilderSidebar = () => {
 	const params = useParams();
@@ -19,23 +18,23 @@ export const PageBuilderSidebar = () => {
 	const slug = params.slug as string;
 	const { elements, addElement } = usePageBuilder();
 
-	const handleAddSection = (template: SectionTemplate) => {
+	const handleAddSection = (component: Component) => {
 		// Cria uma cópia limpa do template
-		const cleanTemplate = {
-			id: template.id,
-			name: template.name,
-			type: template.type,
-			schema: template.schema,
+		const cleanComponent = {
+			id: component.id,
+			name: component.name,
+			type: component.type,
+			schema: component.schema,
 		};
 
 		const element = {
 			id: nanoid(),
 			type: "section",
-			template: cleanTemplate,
-			content: template.defaultData || {},
+			template: cleanComponent,
+			content: component.defaultData || {},
 		};
 
-		console.log("TEMPLATE SELECIONADO", elements);
+		console.log("COMPONENT SELECIONADO", elements);
 
 		addElement(elements?.length || 0, element);
 		toast.success("Seção adicionada com sucesso");
@@ -58,7 +57,10 @@ export const PageBuilderSidebar = () => {
 			<div className={s.content}>
 				<h2>Seções</h2>
 
-				<SectionTemplateList slug={slug} onSelectTemplate={handleAddSection} />
+				<SectionComponentList
+					slug={slug}
+					onSelectComponent={handleAddSection}
+				/>
 			</div>
 		</div>
 	);

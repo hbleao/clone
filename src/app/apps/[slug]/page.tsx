@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Copy, PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Copy, Edit, PlusIcon, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { getAppBySlug } from "@/actions/app";
 
@@ -15,14 +15,7 @@ import {
 	deletePageById,
 	duplicatePage,
 } from "@/actions/page";
-import {
-	Header,
-	Button,
-	Dialog,
-	Input,
-	Textarea,
-	DashboardLayout,
-} from "@/components";
+import { Button, Dialog, Input, Textarea, DashboardLayout } from "@/components";
 
 import type { App, Page, PageForm } from "./types";
 
@@ -56,23 +49,21 @@ export default function AppDetailsPage({ params }) {
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 	const [pageToDelete, setPageToDelete] = useState<Page | null>(null);
 
-	useEffect(() => {
-		const loadApp = async () => {
-			if (params.slug) {
-				const result = await getAppBySlug(params.slug as string);
-				if (result.app) {
-					setApp(result.app);
-					const pagesResult = await getPagesByAppId(result.app.id);
-					if (pagesResult.success) {
-						setPages(pagesResult.pages);
-					}
-				}
-			}
+	const loadAppBySlug = async () => {
+		try {
+			if (!params.slug) return;
+			const { app } = await getAppBySlug(params.slug);
+			if (!app?.id) return;
+			setApp(app!);
+			const pagesResult = await getPagesByAppId(app.id);
+			console.log("pagesResult:", pagesResult);
+			setPages(pagesResult.pages);
+		} catch (error) {
+			console.error("Falha ao carregar as paginas", error);
+		} finally {
 			setLoading(false);
-		};
-
-		loadApp();
-	}, [params.slug]);
+		}
+	};
 
 	const handleChange = (field: keyof Omit<PageForm, "seo">, value: string) => {
 		setFormData((prev) => ({
@@ -225,27 +216,15 @@ export default function AppDetailsPage({ params }) {
 		router.push(`/apps/${params.slug}/pages/${page.id}`);
 	};
 
-	if (loading) {
-		return (
-			<div className="app-details-container">
-				<div className="loading">Carregando...</div>
-			</div>
-		);
-	}
-
-	if (!app) {
-		return (
-			<div className="app-details-container">
-				<div className="error">Aplicativo não encontrado</div>
-			</div>
-		);
-	}
+	useEffect(() => {
+		loadAppBySlug();
+	}, [params.slug]);
 
 	return (
 		<DashboardLayout slug={params?.slug}>
 			<div className="app-details-container">
 				<div className="pageHeader">
-					<h1>Lista de páginas</h1>
+					<h1>Gerencie a lista de páginas do seu aplicativo</h1>
 
 					<Button
 						type="button"
@@ -466,20 +445,7 @@ export default function AppDetailsPage({ params }) {
 									}}
 									title="Editar página"
 								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="20"
-										height="20"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									>
-										<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-										<path d="m15 5 4 4" />
-									</svg>
+									<Edit />
 								</button>
 								<button
 									type="button"
@@ -501,34 +467,11 @@ export default function AppDetailsPage({ params }) {
 									}}
 									title="Excluir página"
 								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="20"
-										height="20"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									>
-										<path d="M3 6h18" />
-										<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-										<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-										<line x1="10" y1="11" x2="10" y2="17" />
-										<line x1="14" y1="11" x2="14" y2="17" />
-									</svg>
+									<Trash />
 								</button>
 							</div>
 						</div>
 					))}
-
-					{pages.length === 0 && (
-						<div className="empty-state">
-							<p>Nenhuma página encontrada.</p>
-							<p>Crie sua primeira página!</p>
-						</div>
-					)}
 				</div>
 			</div>
 		</DashboardLayout>

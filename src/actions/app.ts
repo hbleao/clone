@@ -84,11 +84,14 @@ export async function getAppBySlug(slug: string) {
 			},
 		});
 
-		logger.info("Páginas todos os aplicativos");
-		return { app };
+		if (!app) {
+			return { success: false, error: "Aplicativo não encontrado" };
+		}
+
+		return { success: true, app };
 	} catch (error) {
 		logger.error("Erro ao buscar appBySlug:", error);
-		return { error: "Erro ao buscar o app" };
+		return { success: false, error: "Erro ao buscar o app" };
 	}
 }
 

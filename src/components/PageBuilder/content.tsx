@@ -58,6 +58,7 @@ export const PageBuilderContent = ({ page }) => {
 						<Button
 							type="button"
 							width="contain"
+							size="lg"
 							onClick={() => router.push(`/preview/${page.id}`)}
 						>
 							<ExternalLink />
@@ -66,6 +67,7 @@ export const PageBuilderContent = ({ page }) => {
 						<Button
 							type="button"
 							width="contain"
+							size="lg"
 							onClick={handleSave}
 							disabled={isSaving}
 						>
