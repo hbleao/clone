@@ -7,20 +7,21 @@ export const Input = ({
 	value,
 	onChange,
 	placeholder,
+	id,
 	...props
 }: InputProps) => {
 	return (
 		<>
-			<label className={s.label} htmlFor="title">
+			<label className={s.label} htmlFor={id}>
 				{label}
 			</label>
 			<input
-				id="title"
+				id={id}
 				className={s.input}
 				type="text"
 				placeholder={placeholder}
 				value={value}
-				onChange={(e) => onChange(e.target.value)}
+				onChange={onChange ? (e) => onChange(e.target.value) : undefined}
 				{...props}
 			/>
 		</>

@@ -3,6 +3,6 @@ export type InputProps = Omit<
 	"onChange"
 > & {
 	label: string;
-	onChange: (value: string) => void;
+	onChange?: (value: string) => void;
 	value?: string;
 };
