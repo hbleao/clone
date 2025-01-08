@@ -240,7 +240,9 @@ export default function ComponentPage() {
 
 		// Verifica se já atingiu o nível máximo
 		if (getNestedLevel(path) >= MAX_NESTING_LEVEL) {
-			toast.error(`Não é possível adicionar mais níveis. Máximo de ${MAX_NESTING_LEVEL} níveis permitido.`);
+			toast.error(
+				`Não é possível adicionar mais níveis. Máximo de ${MAX_NESTING_LEVEL} níveis permitido.`,
+			);
 			return;
 		}
 
@@ -258,7 +260,7 @@ export default function ComponentPage() {
 			const addFieldAtPath = (
 				fields: Field[],
 				remainingPath: number[],
-				currentLevel: number = 1
+				currentLevel = 1,
 			): Field[] => {
 				if (remainingPath.length === 0) {
 					return [...fields, newField];
@@ -278,7 +280,7 @@ export default function ComponentPage() {
 					targetField.fields = addFieldAtPath(
 						targetField.fields || [],
 						restPath,
-						currentLevel + 1
+						currentLevel + 1,
 					);
 				} else if (
 					targetField.type === "array" &&
@@ -287,7 +289,7 @@ export default function ComponentPage() {
 					targetField.arrayType.fields = addFieldAtPath(
 						targetField.arrayType.fields || [],
 						restPath,
-						currentLevel + 1
+						currentLevel + 1,
 					);
 				} else {
 					console.log("Campo não permite campos filhos:", targetField);
@@ -314,8 +316,13 @@ export default function ComponentPage() {
 		console.log("Mudando tipo:", { path, type });
 
 		// Verifica se pode adicionar mais níveis
-		if ((type === "object" || type === "array") && getNestedLevel(path) >= MAX_NESTING_LEVEL) {
-			toast.error(`Não é possível adicionar mais níveis. Máximo de ${MAX_NESTING_LEVEL} níveis permitido.`);
+		if (
+			(type === "object" || type === "array") &&
+			getNestedLevel(path) >= MAX_NESTING_LEVEL
+		) {
+			toast.error(
+				`Não é possível adicionar mais níveis. Máximo de ${MAX_NESTING_LEVEL} níveis permitido.`,
+			);
 			return;
 		}
 
@@ -325,7 +332,7 @@ export default function ComponentPage() {
 			const updateFieldAtPath = (
 				fields: Field[],
 				remainingPath: number[],
-				currentLevel: number = 1
+				currentLevel = 1,
 			): Field[] => {
 				if (remainingPath.length === 0) {
 					return fields;
@@ -362,7 +369,7 @@ export default function ComponentPage() {
 						targetField.fields = updateFieldAtPath(
 							targetField.fields,
 							restPath,
-							currentLevel + 1
+							currentLevel + 1,
 						);
 					} else if (
 						targetField.type === "array" &&
@@ -371,7 +378,7 @@ export default function ComponentPage() {
 						targetField.arrayType.fields = updateFieldAtPath(
 							targetField.arrayType.fields,
 							restPath,
-							currentLevel + 1
+							currentLevel + 1,
 						);
 					}
 				}
@@ -397,7 +404,9 @@ export default function ComponentPage() {
 
 		// Verifica se pode adicionar mais níveis
 		if (type === "object" && getNestedLevel(path) >= MAX_NESTING_LEVEL) {
-			toast.error(`Não é possível adicionar mais níveis. Máximo de ${MAX_NESTING_LEVEL} níveis permitido.`);
+			toast.error(
+				`Não é possível adicionar mais níveis. Máximo de ${MAX_NESTING_LEVEL} níveis permitido.`,
+			);
 			return;
 		}
 
@@ -407,7 +416,7 @@ export default function ComponentPage() {
 			const updateArrayTypeAtPath = (
 				fields: Field[],
 				remainingPath: number[],
-				currentLevel: number = 1
+				currentLevel = 1,
 			): Field[] => {
 				if (remainingPath.length === 0) {
 					return fields;
@@ -435,7 +444,7 @@ export default function ComponentPage() {
 						targetField.fields = updateArrayTypeAtPath(
 							targetField.fields,
 							restPath,
-							currentLevel + 1
+							currentLevel + 1,
 						);
 					} else if (
 						targetField.type === "array" &&
@@ -444,7 +453,7 @@ export default function ComponentPage() {
 						targetField.arrayType.fields = updateArrayTypeAtPath(
 							targetField.arrayType.fields,
 							restPath,
-							currentLevel + 1
+							currentLevel + 1,
 						);
 					}
 				}
@@ -595,7 +604,7 @@ export default function ComponentPage() {
 								</div>
 								<button
 									type="button"
-									className={s.addFieldButton}
+									className={s.addNestedFieldButton}
 									onClick={() => addField([...path])}
 								>
 									Adicionar Campo ao Item do Array
@@ -615,7 +624,7 @@ export default function ComponentPage() {
 						</div>
 						<button
 							type="button"
-							className={s.addFieldButton}
+							className={s.addNestedFieldButton}
 							onClick={() => addField([...path])}
 						>
 							Adicionar Campo ao Objeto
@@ -655,7 +664,11 @@ export default function ComponentPage() {
 							{formData.schema.fields.map((field, index) =>
 								renderField(field, [index]),
 							)}
-							<button type="button" onClick={() => addField()}>
+							<button
+								type="button"
+								className={s.addFieldButton}
+								onClick={() => addField()}
+							>
 								Adicionar Campo
 							</button>
 						</div>
