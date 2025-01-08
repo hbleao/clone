@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getAppBySlug } from "@/actions/app";
+import { getComponentById, updateComponent, deleteComponent } from "@/actions/component";
 import { z } from "zod";
 
 const templateSchema = z.object({
@@ -21,39 +22,23 @@ export async function GET(
 	{ params }: { params: { slug: string; id: string } },
 ) {
 	try {
-		const app = await prisma.app.findUnique({
-			where: { slug: params.slug },
-		});
-
-		if (!app) {
+		const app = await getAppBySlug(params.slug);
+		if (!app.app) {
 			return NextResponse.json(
 				{ error: "Aplicativo não encontrado" },
 				{ status: 404 },
 			);
 		}
 
-		const template = await prisma.pageTemplate.findFirst({
-			where: {
-				id: params.id,
-				appId: app.id,
-			},
-			include: {
-				components: {
-					include: {
-						component: true,
-					},
-				},
-			},
-		});
-
-		if (!template) {
+		const result = await getComponentById(params.id);
+		if (!result.success) {
 			return NextResponse.json(
-				{ error: "Template não encontrado" },
+				{ error: result.error },
 				{ status: 404 },
 			);
 		}
 
-		return NextResponse.json(template);
+		return NextResponse.json(result.data);
 	} catch (error) {
 		console.error(error);
 		return NextResponse.json(
@@ -69,27 +54,10 @@ export async function PUT(
 	{ params }: { params: { slug: string; id: string } },
 ) {
 	try {
-		const app = await prisma.app.findUnique({
-			where: { slug: params.slug },
-		});
-
-		if (!app) {
+		const app = await getAppBySlug(params.slug);
+		if (!app.app) {
 			return NextResponse.json(
 				{ error: "Aplicativo não encontrado" },
-				{ status: 404 },
-			);
-		}
-
-		const template = await prisma.pageTemplate.findFirst({
-			where: {
-				id: params.id,
-				appId: app.id,
-			},
-		});
-
-		if (!template) {
-			return NextResponse.json(
-				{ error: "Template não encontrado" },
 				{ status: 404 },
 			);
 		}
@@ -97,41 +65,20 @@ export async function PUT(
 		const body = await request.json();
 		const { name, description, components } = templateSchema.parse(body);
 
-		// Primeiro remove todos os componentes existentes
-		await prisma.pageTemplateComponent.deleteMany({
-			where: {
-				templateId: template.id,
-			},
+		const result = await updateComponent(params.id, {
+			name,
+			description,
+			components,
 		});
 
-		// Atualiza o template e cria os novos componentes
-		const updatedTemplate = await prisma.pageTemplate.update({
-			where: {
-				id: template.id,
-			},
-			data: {
-				name,
-				description,
-				components: {
-					create: components.map((component) => ({
-						componentId: component.componentId,
-						position: component.position,
-						initialData: component.initialData
-							? JSON.stringify(component.initialData)
-							: null,
-					})),
-				},
-			},
-			include: {
-				components: {
-					include: {
-						component: true,
-					},
-				},
-			},
-		});
+		if (!result.success) {
+			return NextResponse.json(
+				{ error: result.error },
+				{ status: 400 },
+			);
+		}
 
-		return NextResponse.json(updatedTemplate);
+		return NextResponse.json(result.data);
 	} catch (error) {
 		if (error instanceof z.ZodError) {
 			return NextResponse.json(
@@ -154,44 +101,21 @@ export async function DELETE(
 	{ params }: { params: { slug: string; id: string } },
 ) {
 	try {
-		const app = await prisma.app.findUnique({
-			where: { slug: params.slug },
-		});
-
-		if (!app) {
+		const app = await getAppBySlug(params.slug);
+		if (!app.app) {
 			return NextResponse.json(
 				{ error: "Aplicativo não encontrado" },
 				{ status: 404 },
 			);
 		}
 
-		const template = await prisma.pageTemplate.findFirst({
-			where: {
-				id: params.id,
-				appId: app.id,
-			},
-		});
-
-		if (!template) {
+		const result = await deleteComponent(params.id);
+		if (!result.success) {
 			return NextResponse.json(
-				{ error: "Template não encontrado" },
-				{ status: 404 },
+				{ error: result.error },
+				{ status: 400 },
 			);
 		}
-
-		// Primeiro remove todos os componentes
-		await prisma.pageTemplateComponent.deleteMany({
-			where: {
-				templateId: template.id,
-			},
-		});
-
-		// Depois remove o template
-		await prisma.pageTemplate.delete({
-			where: {
-				id: template.id,
-			},
-		});
 
 		return NextResponse.json({ success: true });
 	} catch (error) {

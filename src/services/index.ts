@@ -9,3 +9,5 @@ export * from "./createSectionTemplateService";
 // Components
 export * from "./createComponentService";
 export * from "./getComponentsBySlugService";
+export * from "./getComponentService";
+export * from "./updateComponentService";
