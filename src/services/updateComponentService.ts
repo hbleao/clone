@@ -1,4 +1,4 @@
-import { api } from "@/lib/api";
+import { updateComponent } from "@/actions/component";
 
 export type UpdateComponentResponse = {
 	success: boolean;
@@ -17,12 +17,11 @@ export type UpdateComponentResponse = {
 };
 
 export async function updateComponentService(
-	appSlug: string,
 	componentId: string,
 	data: any,
 ): Promise<UpdateComponentResponse> {
 	try {
-		const response = await api.put(`/api/apps/${appSlug}/components/${componentId}`, data);
+		const response = await updateComponent(componentId, data);
 
 		return {
 			success: true,

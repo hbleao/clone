@@ -6,246 +6,247 @@ import { prisma } from "@/lib/prisma";
 import { componentSchema } from "@/schemas/component";
 
 export async function createComponent(appSlug: string, data: any) {
-  try {
-    const appResult = await getAppBySlug(appSlug);
-    if (!appResult.success || !appResult.app) {
-      return {
-        success: false,
-        error: appResult.error || "Aplicativo não encontrado",
-      };
-    }
+	try {
+		const appResult = await getAppBySlug(appSlug);
+		if (!appResult.success || !appResult.app) {
+			return {
+				success: false,
+				error: appResult.error || "Aplicativo não encontrado",
+			};
+		}
 
-    // Validar os dados com Zod
-    const validationResult = componentSchema.safeParse(data);
-    if (!validationResult.success) {
-      return {
-        success: false,
-        error: validationResult.error.errors,
-      };
-    }
+		// Validar os dados com Zod
+		const validationResult = componentSchema.safeParse(data);
+		if (!validationResult.success) {
+			return {
+				success: false,
+				error: validationResult.error.errors,
+			};
+		}
 
-    // Converter o schema para string
-    const schemaString = data.schema ? JSON.stringify(data.schema) : "{}";
+		// Converter o schema para string
+		const schemaString = data.schema ? JSON.stringify(data.schema) : "{}";
 
-    // Criar o componente
-    const component = await prisma.component.create({
-      data: {
-        name: data.name,
-        description: data.description,
-        type: data.type,
-        schema: schemaString,
-        appId: appResult.app.id,
-      },
-    });
+		// Criar o componente
+		const component = await prisma.component.create({
+			data: {
+				name: data.name,
+				description: data.description,
+				type: data.type,
+				schema: schemaString,
+				appId: appResult.app.id,
+			},
+		});
 
-    // Revalidar o cache
-    revalidatePath(`/apps/${appSlug}/componentes`);
+		// Revalidar o cache
+		revalidatePath(`/apps/${appSlug}/componentes`);
 
-    return {
-      success: true,
-      data: component,
-    };
-  } catch (error) {
-    console.error("Erro ao criar componente:", error);
-    return {
-      success: false,
-      error: "Erro ao criar componente",
-    };
-  }
+		return {
+			success: true,
+			data: component,
+		};
+	} catch (error) {
+		console.error("Erro ao criar componente:", error);
+		return {
+			success: false,
+			error: "Erro ao criar componente",
+		};
+	}
 }
 
 export async function getComponentById(id: string) {
-  try {
-    const component = await prisma.component.findUnique({
-      where: { id },
-    });
+	try {
+		const component = await prisma.component.findUnique({
+			where: { id },
+		});
 
-    if (!component) {
-      return {
-        success: false,
-        error: "Componente não encontrado",
-      };
-    }
+		if (!component) {
+			return {
+				success: false,
+				error: "Componente não encontrado",
+			};
+		}
 
-    // Converter o schema de volta para objeto
-    const schema = component.schema ? JSON.parse(component.schema as string) : {};
+		// Converter o schema de volta para objeto
+		const schema = component.schema
+			? JSON.parse(component.schema as string)
+			: {};
 
-    return {
-      success: true,
-      data: {
-        ...component,
-        schema,
-      },
-    };
-  } catch (error) {
-    console.error("Erro ao buscar componente:", error);
-    return {
-      success: false,
-      error: "Erro ao buscar componente",
-    };
-  }
+		return {
+			success: true,
+			data: {
+				...component,
+				schema,
+			},
+		};
+	} catch (error) {
+		console.error("Erro ao buscar componente:", error);
+		return {
+			success: false,
+			error: "Erro ao buscar componente",
+		};
+	}
 }
 
 export async function getComponentsByAppId(appSlug: string) {
-  try {
-    const app = await getAppBySlug(appSlug);
-    if (!app.success || !app.app) {
-      return {
-        success: false,
-        error: "Aplicativo não encontrado",
-      };
-    }
+	try {
+		const app = await getAppBySlug(appSlug);
+		if (!app.success || !app.app) {
+			return {
+				success: false,
+				error: "Aplicativo não encontrado",
+			};
+		}
 
-    const components = await prisma.component.findMany({
-      where: { appId: app.app.id },
-    });
+		const components = await prisma.component.findMany({
+			where: { appId: app.app.id },
+		});
 
-    // Converter o schema de volta para objeto em todos os componentes
-    const componentsWithParsedSchema = components.map(component => ({
-      ...component,
-      schema: component.schema ? JSON.parse(component.schema as string) : {},
-    }));
+		// Converter o schema de volta para objeto em todos os componentes
+		const componentsWithParsedSchema = components.map((component) => ({
+			...component,
+			schema: component.schema ? JSON.parse(component.schema as string) : {},
+		}));
 
-    return {
-      success: true,
-      data: componentsWithParsedSchema,
-    };
-  } catch (error) {
-    console.error("Erro ao buscar componentes:", error);
-    return {
-      success: false,
-      error: "Erro ao buscar componentes",
-    };
-  }
+		return {
+			success: true,
+			data: componentsWithParsedSchema,
+		};
+	} catch (error) {
+		console.error("Erro ao buscar componentes:", error);
+		return {
+			success: false,
+			error: "Erro ao buscar componentes",
+		};
+	}
 }
 
 export async function updateComponent(id: string, data: any) {
-  try {
-    const component = await prisma.component.findUnique({
-      where: { id },
-    });
+	try {
+		const component = await prisma.component.findUnique({
+			where: { id },
+		});
 
-    if (!component) {
-      return {
-        success: false,
-        error: "Componente não encontrado",
-      };
-    }
+		if (!component) {
+			return {
+				success: false,
+				error: "Componente não encontrado",
+			};
+		}
 
-    // Validar os dados com Zod
-    const validationResult = componentSchema.safeParse(data);
-    if (!validationResult.success) {
-      return {
-        success: false,
-        error: validationResult.error.errors,
-      };
-    }
+		// Validar os dados com Zod
+		const validationResult = componentSchema.safeParse(data);
+		if (!validationResult.success) {
+			return {
+				success: false,
+				error: validationResult.error.errors,
+			};
+		}
 
-    // Converter o schema para string
-    const schemaString = data.schema ? JSON.stringify(data.schema) : "{}";
+		// Converter o schema para string
+		const schemaString = data.schema ? JSON.stringify(data.schema) : "{}";
 
-    // Atualizar o componente
-    const updatedComponent = await prisma.component.update({
-      where: { id },
-      data: {
-        name: data.name,
-        description: data.description,
-        type: data.type,
-        schema: schemaString,
-        defaultData: data.defaultData || {},
-      },
-    });
+		// Atualizar o componente
+		const updatedComponent = await prisma.component.update({
+			where: { id },
+			data: {
+				name: data.name,
+				description: data.description,
+				type: data.type,
+				schema: schemaString,
+			},
+		});
 
-    // Revalidar o cache
-    revalidatePath(`/apps/${component.appId}/componentes`);
+		// Revalidar o cache
+		revalidatePath(`/apps/${component.appId}/componentes`);
 
-    return {
-      success: true,
-      data: {
-        ...updatedComponent,
-        schema: data.schema,
-      },
-    };
-  } catch (error) {
-    console.error("Erro ao atualizar componente:", error);
-    return {
-      success: false,
-      error: "Erro ao atualizar componente",
-    };
-  }
+		return {
+			success: true,
+			data: {
+				...updatedComponent,
+				schema: data.schema,
+			},
+		};
+	} catch (error) {
+		console.error("Erro ao atualizar componente:", error);
+		return {
+			success: false,
+			error: "Erro ao atualizar componente",
+		};
+	}
 }
 
 export async function deleteComponent(id: string) {
-  try {
-    const component = await prisma.component.findUnique({
-      where: { id },
-    });
+	try {
+		const component = await prisma.component.findUnique({
+			where: { id },
+		});
 
-    if (!component) {
-      return {
-        success: false,
-        error: "Componente não encontrado",
-      };
-    }
+		if (!component) {
+			return {
+				success: false,
+				error: "Componente não encontrado",
+			};
+		}
 
-    await prisma.component.delete({
-      where: { id },
-    });
+		await prisma.component.delete({
+			where: { id },
+		});
 
-    // Revalidar o cache
-    revalidatePath(`/apps/${component.appId}/componentes`);
+		// Revalidar o cache
+		revalidatePath(`/apps/${component.appId}/componentes`);
 
-    return {
-      success: true,
-    };
-  } catch (error) {
-    console.error("Erro ao excluir componente:", error);
-    return {
-      success: false,
-      error: "Erro ao excluir componente",
-    };
-  }
+		return {
+			success: true,
+		};
+	} catch (error) {
+		console.error("Erro ao excluir componente:", error);
+		return {
+			success: false,
+			error: "Erro ao excluir componente",
+		};
+	}
 }
 
 export async function duplicateComponent(id: string) {
-  try {
-    const component = await prisma.component.findUnique({
-      where: { id },
-    });
+	try {
+		const component = await prisma.component.findUnique({
+			where: { id },
+		});
 
-    if (!component) {
-      return {
-        success: false,
-        error: "Componente não encontrado",
-      };
-    }
+		if (!component) {
+			return {
+				success: false,
+				error: "Componente não encontrado",
+			};
+		}
 
-    const duplicatedComponent = await prisma.component.create({
-      data: {
-        name: `${component.name} (cópia)`,
-        description: component.description,
-        type: component.type,
-        schema: component.schema,
-        appId: component.appId,
-        defaultData: component.defaultData,
-      },
-    });
+		const duplicatedComponent = await prisma.component.create({
+			data: {
+				name: `${component.name} (cópia)`,
+				description: component.description,
+				type: component.type,
+				schema: component.schema,
+				appId: component.appId,
+				defaultData: component.defaultData,
+			},
+		});
 
-    // Revalidar o cache
-    revalidatePath(`/apps/${component.appId}/componentes`);
+		// Revalidar o cache
+		revalidatePath(`/apps/${component.appId}/componentes`);
 
-    return {
-      success: true,
-      data: {
-        ...duplicatedComponent,
-        schema: component.schema ? JSON.parse(component.schema as string) : {},
-      },
-    };
-  } catch (error) {
-    console.error("Erro ao duplicar componente:", error);
-    return {
-      success: false,
-      error: "Erro ao duplicar componente",
-    };
-  }
+		return {
+			success: true,
+			data: {
+				...duplicatedComponent,
+				schema: component.schema ? JSON.parse(component.schema as string) : {},
+			},
+		};
+	} catch (error) {
+		console.error("Erro ao duplicar componente:", error);
+		return {
+			success: false,
+			error: "Erro ao duplicar componente",
+		};
+	}
 }

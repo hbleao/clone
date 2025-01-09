@@ -45,12 +45,6 @@ export default function ComponentPage() {
 
 	const isEditing = params.componentId !== "novo";
 
-	useEffect(() => {
-		if (isEditing) {
-			loadComponent();
-		}
-	}, [params.componentId]);
-
 	const loadComponent = async () => {
 		setLoading(true);
 		try {
@@ -98,51 +92,98 @@ export default function ComponentPage() {
 		return errors;
 	};
 
-	const collectFieldValues = (form: HTMLFormElement, prefix = ""): Field[] => {
-		const fields: Field[] = [];
+	const collectFieldValues = (form: HTMLFormElement): Field[] => {
 		const formData = new FormData(form);
-		const fieldEntries = Array.from(formData.entries()).filter(([key]) =>
-			key.startsWith(prefix ? `${prefix}field.` : "field."),
-		);
+		const entries = Array.from(formData.entries()) as [string, string][];
+		const fieldsByPath: Record<string, Field> = {};
 
-		const fieldMap = new Map<number, Partial<Field>>();
+		// Primeiro passo: coletar todos os campos
+		for (const [key, value] of entries) {
+			if (!key.startsWith('field.')) continue;
 
-		fieldEntries.forEach(([key, value]) => {
-			const keyParts = key.split(".");
-			const fieldIndex = Number.parseInt(
-				keyParts[keyParts[0] === "field" ? 1 : 2],
-			);
-			const property = keyParts[keyParts.length - 1];
+			const parts = key.split('.');
+			const pathParts = parts.slice(1, -1); // Remove 'field.' e a propriedade
+			const property = parts[parts.length - 1];
+			const fieldPath = pathParts.join('.');
 
-			if (!fieldMap.has(fieldIndex)) {
-				fieldMap.set(fieldIndex, {});
+			if (!fieldsByPath[fieldPath]) {
+				fieldsByPath[fieldPath] = {
+					name: '',
+					type: 'text',
+					label: '',
+					required: false
+				};
 			}
 
-			const field = fieldMap.get(fieldIndex)!;
+			const field = fieldsByPath[fieldPath];
 			switch (property) {
-				case "name":
-					field.name = value as string;
+				case 'name':
+					field.name = value;
 					break;
-				case "type":
-					field.type = value as Field["type"];
+				case 'type':
+					field.type = value as Field['type'];
+					if (value === 'object') {
+						field.fields = field.fields || [];
+						delete field.arrayType;
+					} else if (value === 'array') {
+						field.arrayType = { type: 'text' };
+						delete field.fields;
+					} else {
+						delete field.fields;
+						delete field.arrayType;
+					}
 					break;
-				case "label":
-					field.label = value as string;
+				case 'label':
+					field.label = value;
 					break;
-				case "required":
-					field.required = value === "on";
+				case 'required':
+					field.required = value === 'on';
 					break;
 			}
+		}
 
-			// Se for um campo do tipo objeto, coleta os campos filhos
-			if (field.type === "object") {
-				const nestedPrefix = `${prefix}field.${fieldIndex}.`;
-				field.fields = collectFieldValues(form, nestedPrefix);
+		// Segundo passo: organizar a estrutura hierárquica
+		const buildFieldTree = () => {
+			const rootFields: Field[] = [];
+			const paths = Object.keys(fieldsByPath).sort((a, b) => a.localeCompare(b));
+
+			for (const path of paths) {
+				const field = fieldsByPath[path];
+				const pathParts = path.split('.');
+
+				if (pathParts.length === 1) {
+					// Campo raiz
+					rootFields[parseInt(pathParts[0])] = field;
+				} else {
+					// Campo aninhado
+					let currentFields = rootFields;
+					let currentField: Field | undefined;
+
+					for (let i = 0; i < pathParts.length - 1; i++) {
+						const index = parseInt(pathParts[i]);
+						currentField = currentFields[index];
+
+						if (currentField?.type === 'object') {
+							currentFields = currentField.fields = currentField.fields || [];
+						} else if (currentField?.type === 'array' && currentField.arrayType?.type === 'object') {
+							currentFields = currentField.arrayType.fields = currentField.arrayType.fields || [];
+						}
+					}
+
+					const lastIndex = parseInt(pathParts[pathParts.length - 1]);
+					if (currentFields) {
+						currentFields[lastIndex] = field;
+					}
+				}
 			}
-		});
 
-		// Converte o Map para array e ordena pelo índice
-		return Array.from(fieldMap.values()) as Field[];
+			// Remover espaços vazios do array
+			return rootFields.filter(Boolean);
+		};
+
+		const result = buildFieldTree();
+		console.log('Estrutura final dos campos:', result);
+		return result;
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -191,8 +232,8 @@ export default function ComponentPage() {
 
 			let result;
 			if (isEditing) {
+				console.log("updatedFormData", updatedFormData);
 				result = await updateComponentService(
-					params.slug as string,
 					params.componentId as string,
 					updatedFormData,
 				);
@@ -209,7 +250,7 @@ export default function ComponentPage() {
 						? "Componente atualizado com sucesso!"
 						: "Componente criado com sucesso!",
 				);
-				router.push(`/apps/${params.slug}/componentes`);
+				// router.push(`/apps/${params.slug}/componentes`);
 			} else {
 				if (Array.isArray(result?.error)) {
 					result?.error.forEach((err) => {
@@ -473,63 +514,117 @@ export default function ComponentPage() {
 	};
 
 	const removeField = (path: FieldPath) => {
-		console.log("Removendo campo:", { path });
+		console.log("=== Iniciando remoção de campo ===");
+		console.log("Path para remoção:", path);
 
 		setFormData((prev) => {
+			// Cria uma cópia profunda dos campos
 			const newFields = JSON.parse(JSON.stringify(prev.schema.fields));
+			console.log("Estado inicial dos campos:", newFields);
 
-			// Função auxiliar para remover campo em qualquer nível
+			// Se o path for de um campo raiz, remova-o diretamente
+			if (path.length === 1) {
+				const index = path[0];
+				console.log("Removendo campo raiz no índice:", index);
+				console.log("Campo a ser removido:", newFields[index]);
+				
+				// Remove o campo usando slice para criar um novo array
+				const result = [
+					...newFields.slice(0, index),
+					...newFields.slice(index + 1)
+				];
+				
+				console.log("Campos após remoção:", result);
+				return {
+					...prev,
+					schema: {
+						...prev.schema,
+						fields: result
+					}
+				};
+			}
+
+			// Para campos aninhados
 			const removeFieldAtPath = (
 				fields: Field[],
 				remainingPath: number[],
+				level: number = 0
 			): Field[] => {
-				if (remainingPath.length === 0) {
-					return fields;
-				}
-
+				console.log(`Nível ${level} - Processando path:`, remainingPath);
+				
 				const [currentIndex, ...restPath] = remainingPath;
+				console.log(`Nível ${level} - Índice atual:`, currentIndex);
+				
 				if (currentIndex >= fields.length) {
+					console.log(`Nível ${level} - Índice inválido`);
 					return fields;
 				}
 
 				const updatedFields = [...fields];
+				const targetField = updatedFields[currentIndex];
+				console.log(`Nível ${level} - Campo alvo:`, targetField);
+
 				if (restPath.length === 0) {
-					// Remover o campo neste nível
-					updatedFields.splice(currentIndex, 1);
-				} else {
-					// Continue navegando
-					const targetField = updatedFields[currentIndex];
-					if (targetField.type === "object") {
-						targetField.fields = removeFieldAtPath(
-							targetField.fields || [],
-							restPath,
-						);
-					}
+					// Chegamos ao campo que deve ser removido
+					console.log(`Nível ${level} - Removendo campo`);
+					return [
+						...updatedFields.slice(0, currentIndex),
+						...updatedFields.slice(currentIndex + 1)
+					];
+				}
+
+				// Continua navegando na estrutura
+				if (targetField.type === "object" && targetField.fields) {
+					console.log(`Nível ${level} - Navegando em objeto`);
+					targetField.fields = removeFieldAtPath(
+						targetField.fields,
+						restPath,
+						level + 1
+					);
+				} else if (
+					targetField.type === "array" &&
+					targetField.arrayType?.type === "object" &&
+					targetField.arrayType.fields
+				) {
+					console.log(`Nível ${level} - Navegando em array de objetos`);
+					targetField.arrayType.fields = removeFieldAtPath(
+						targetField.arrayType.fields,
+						restPath,
+						level + 1
+					);
 				}
 
 				return updatedFields;
 			};
 
-			const updatedFields = removeFieldAtPath(newFields, path);
-			console.log("Campos atualizados após remoção:", updatedFields);
+			// Para campos aninhados, use a função auxiliar
+			const result = removeFieldAtPath(newFields, path);
+			console.log("Resultado final:", result);
 
 			return {
 				...prev,
 				schema: {
 					...prev.schema,
-					fields: updatedFields,
-				},
+					fields: result
+				}
 			};
 		});
 	};
 
 	const renderField = (field: Field, path: FieldPath) => {
-		console.log("Renderizando campo:", { field, path });
+		console.log("=== Renderizando campo ===");
+		console.log("Field:", field);
+		console.log("Path recebido:", path);
 
-		const fieldId = `field.${path.join(".")}`;
+		// Garante que o path seja um array de números
+		const currentPath = path.map(Number);
+		console.log("Path normalizado:", currentPath);
+
+		const fieldId = `field.${currentPath.join(".")}`;
+		console.log("Field ID:", fieldId);
 
 		return (
-			<div key={path.join(".")} className={s.fieldGroup}>
+			<div key={currentPath.join(".")} className={s.fieldGroup}>
 				<Input
 					id={`${fieldId}.name`}
 					name={`${fieldId}.name`}
@@ -549,7 +644,7 @@ export default function ComponentPage() {
 						id={`${fieldId}.type`}
 						name={`${fieldId}.type`}
 						defaultValue={field.type}
-						onChange={(e) => handleTypeChange(path, e.target.value)}
+						onChange={(e) => handleTypeChange(currentPath, e.target.value)}
 					>
 						<option value="text">Texto</option>
 						<option value="number">Número</option>
@@ -573,7 +668,12 @@ export default function ComponentPage() {
 				<button
 					type="button"
 					className={s.removeButton}
-					onClick={() => removeField(path)}
+					onClick={() => {
+						console.log("=== Removendo campo ===");
+						console.log("Path do campo a ser removido:", currentPath);
+						console.log("Campos atuais:", formData.schema.fields);
+						removeField(currentPath);
+					}}
 				>
 					Remover
 				</button>
@@ -585,7 +685,7 @@ export default function ComponentPage() {
 							<label>Tipo dos Itens</label>
 							<select
 								value={field.arrayType?.type || "text"}
-								onChange={(e) => handleArrayTypeChange(path, e.target.value)}
+								onChange={(e) => handleArrayTypeChange(currentPath, e.target.value)}
 							>
 								<option value="text">Texto</option>
 								<option value="number">Número</option>
@@ -598,14 +698,18 @@ export default function ComponentPage() {
 							<div className={s.arrayObjectFields}>
 								<h5>Campos dos Itens do Array</h5>
 								<div className={s.nestedFields}>
-									{field.arrayType.fields.map((nestedField, index) =>
-										renderField(nestedField, [...path, index]),
-									)}
+									{field.arrayType.fields.map((nestedField, index) => {
+										const nestedPath = [...currentPath, index];
+										console.log("Array - Renderizando campo filho:");
+										console.log("Index:", index);
+										console.log("Path gerado:", nestedPath);
+										return renderField(nestedField, nestedPath);
+									})}
 								</div>
 								<button
 									type="button"
 									className={s.addNestedFieldButton}
-									onClick={() => addField([...path])}
+									onClick={() => addField(currentPath)}
 								>
 									Adicionar Campo ao Item do Array
 								</button>
@@ -618,14 +722,18 @@ export default function ComponentPage() {
 					<div className={s.objectFields}>
 						<h4>Campos do Objeto</h4>
 						<div className={s.nestedFields}>
-							{field.fields?.map((nestedField, index) =>
-								renderField(nestedField, [...path, index]),
-							)}
+							{field.fields?.map((nestedField, index) => {
+								const nestedPath = [...currentPath, index];
+								console.log("Object - Renderizando campo filho:");
+								console.log("Index:", index);
+								console.log("Path gerado:", nestedPath);
+								return renderField(nestedField, nestedPath);
+							})}
 						</div>
 						<button
 							type="button"
 							className={s.addNestedFieldButton}
-							onClick={() => addField([...path])}
+							onClick={() => addField(currentPath)}
 						>
 							Adicionar Campo ao Objeto
 						</button>
@@ -634,6 +742,12 @@ export default function ComponentPage() {
 			</div>
 		);
 	};
+
+	useEffect(() => {
+		if (isEditing) {
+			loadComponent();
+		}
+	}, [params.componentId]);
 
 	return (
 		<DashboardLayout slug={params.slug}>
