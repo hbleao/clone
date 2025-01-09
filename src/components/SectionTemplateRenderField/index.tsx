@@ -12,6 +12,8 @@ export const SectionTemplateRenderField = ({
 	field,
 	formData,
 	setFormData,
+	schema,
+	parentPath,
 }: SectionTemplateRenderFieldProps) => {
 	const getNestedValue = (obj: any, path: string) => {
 		// Se não houver pontos no caminho, é um campo simples
@@ -21,14 +23,14 @@ export const SectionTemplateRenderField = ({
 
 		const parts = path.split(".");
 		let current = obj;
-		
+
 		for (const part of parts) {
 			if (current === undefined || current === null) {
 				return undefined;
 			}
 			current = current[part];
 		}
-		
+
 		return current;
 	};
 
@@ -42,7 +44,7 @@ export const SectionTemplateRenderField = ({
 		const parts = path.split(".");
 		const lastPart = parts.pop()!;
 		let current = obj;
-		
+
 		for (const part of parts) {
 			if (!(part in current)) {
 				// Se o próximo nível é um número, inicializa como array
@@ -51,7 +53,7 @@ export const SectionTemplateRenderField = ({
 			}
 			current = current[part];
 		}
-		
+
 		current[lastPart] = value;
 		return obj;
 	};
@@ -67,22 +69,61 @@ export const SectionTemplateRenderField = ({
 		});
 	};
 
-	const handleArrayChange = (index: number, fieldName: string, value: string) => {
+	const handleArrayChange = (
+		path: string,
+		index: number,
+		fieldName: string,
+		value: string,
+	) => {
 		setFormData((prev) => {
 			const newFormData = { ...prev };
-			const array = getNestedValue(newFormData, field.name) || [];
-			
+			const array = getNestedValue(newFormData, path) || [];
+
 			// Garante que o array tem o tamanho adequado
 			while (array.length <= index) {
 				array.push({});
 			}
-			
+
 			array[index] = {
 				...array[index],
 				[fieldName]: value,
 			};
-			
-			setNestedValue(newFormData, field.name, array);
+
+			setNestedValue(newFormData, path, array);
+			return newFormData;
+		});
+	};
+
+	const handleAddArrayItem = (path: string) => {
+		setFormData((prev) => {
+			const newFormData = { ...prev };
+			const array = getNestedValue(newFormData, path) || [];
+
+			// Cria um novo item com campos vazios baseado no schema
+			const newItem = {};
+			const arrayField = findFieldByPath(schema, path);
+
+			if (
+				arrayField?.arrayType?.type === "object" &&
+				arrayField.arrayType.fields
+			) {
+				arrayField.arrayType.fields.forEach((subField: any) => {
+					newItem[subField.name] = "";
+				});
+			}
+
+			array.push(newItem);
+			setNestedValue(newFormData, path, array);
+			return newFormData;
+		});
+	};
+
+	const handleRemoveArrayItem = (path: string, index: number) => {
+		setFormData((prev) => {
+			const newFormData = { ...prev };
+			const array = getNestedValue(newFormData, path) || [];
+			array.splice(index, 1);
+			setNestedValue(newFormData, path, array);
 			return newFormData;
 		});
 	};
@@ -92,160 +133,240 @@ export const SectionTemplateRenderField = ({
 			const newFormData = { ...prev };
 			const objectPath = field.name;
 			const object = getNestedValue(newFormData, objectPath) || {};
-			
+
 			const newObject = {
 				...object,
 				[fieldName]: value,
 			};
-			
+
 			setNestedValue(newFormData, objectPath, newObject);
 			return newFormData;
 		});
 	};
 
-	const handleAddArrayItem = () => {
-		setFormData((prev) => {
-			const newFormData = { ...prev };
-			const array = getNestedValue(newFormData, field.name) || [];
-			
-			// Adiciona um novo item com os campos padrão
-			const newItem = field.arrayType?.type === "object" && field.arrayType.fields
-				? field.arrayType.fields.reduce((acc, subField) => {
-					acc[subField.name] = "";
-					return acc;
-				}, {} as Record<string, any>)
-				: {};
-			
-			array.push(newItem);
-			
-			setNestedValue(newFormData, field.name, array);
-			return newFormData;
-		});
-	};
-
-	const handleRemoveArrayItem = (index: number) => {
-		setFormData((prev) => {
-			const newFormData = { ...prev };
-			const array = getNestedValue(newFormData, field.name) || [];
-			
-			array.splice(index, 1);
-			
-			setNestedValue(newFormData, field.name, array);
-			return newFormData;
-		});
-	};
-
-	const renderObjectFields = (objectField: any, parentPath: string = "") => {
-		const objectValue = getNestedValue(formData, parentPath) || {};
-		
+	const renderObjectFields = (objectField: any, parentPath = "") => {
 		return (
 			<div className={s.objectField}>
-				{objectField.fields?.map((subField: any) => {
-					const fieldPath = parentPath ? `${parentPath}.${subField.name}` : subField.name;
-					
-					if (subField.type === "object") {
-						return (
-							<div key={subField.name} className={s.nestedObject}>
-								<label className={s.nestedLabel}>
-									{subField.label}
-									{subField.required && <span className={s.required}>*</span>}
-								</label>
-								{renderObjectFields(subField, fieldPath)}
-							</div>
-						);
-					}
-					
+				{objectField.fields?.map((field: any) => {
+					const fieldPath = parentPath
+						? `${parentPath}.${field.name}`
+						: field.name;
 					return (
-						<div key={subField.name} className={s.field}>
-							<label htmlFor={fieldPath}>
-								{subField.label}
-								{subField.required && <span className={s.required}>*</span>}
-							</label>
-							<input
-								type="text"
-								id={fieldPath}
-								name={fieldPath}
-								value={objectValue[subField.name] || ""}
-								onChange={(e) => handleObjectChange(subField.name, e.target.value)}
-								required={subField.required}
-								className={s.input}
-							/>
-						</div>
+						<SectionTemplateRenderField
+							key={field.name}
+							field={field}
+							formData={formData}
+							setFormData={setFormData}
+							schema={schema}
+							parentPath={fieldPath}
+						/>
 					);
 				})}
 			</div>
 		);
 	};
 
-	const renderArrayFields = (arrayField: any, parentPath: string = "") => {
+	const renderArrayFields = (arrayField: any, parentPath: string) => {
 		const arrayValue = getNestedValue(formData, parentPath) || [];
-		
+
 		return (
 			<div className={s.arrayField}>
-				{arrayValue.map((item: any, index: number) => (
-					<div key={index} className={s.arrayItem}>
-						<div className={s.arrayItemHeader}>
-							<span>Item {index + 1}</span>
-							<Button
-								type="button"
-								variant="ghost"
-								onClick={() => handleRemoveArrayItem(index)}
-							>
-								<Trash2 className="h-4 w-4" />
-							</Button>
-						</div>
-						<div className={s.arrayItemFields}>
-							{arrayField.arrayType?.type === "object" &&
-								arrayField.arrayType.fields?.map((subField: any) => {
-									const fieldPath = `${parentPath}.${index}.${subField.name}`;
-									
-									if (subField.type === "object") {
-										return (
-											<div key={subField.name} className={s.nestedObject}>
-												<label className={s.nestedLabel}>
-													{subField.label}
-													{subField.required && <span className={s.required}>*</span>}
-												</label>
-												{renderObjectFields(subField, fieldPath)}
-											</div>
-										);
-									}
-									
-									return (
-										<div key={subField.name} className={s.field}>
-											<label htmlFor={fieldPath}>
-												{subField.label}
-												{subField.required && <span className={s.required}>*</span>}
-											</label>
-											<input
-												type="text"
-												id={fieldPath}
-												name={fieldPath}
-												value={item[subField.name] || ""}
-												onChange={(e) =>
-													handleArrayChange(index, subField.name, e.target.value)
-												}
-												required={subField.required}
-												className={s.input}
-											/>
-										</div>
-									);
-								})}
-						</div>
+				<div className={s.arrayHeader}>
+					<label>
+						{arrayField.label}
+						{arrayField.required && <span className={s.required}>*</span>}
+					</label>
+					<Button
+						type="button"
+						variant="outline"
+						onClick={() => handleAddArrayItem(parentPath)}
+						className={s.addArrayButton}
+					>
+						<Plus className="h-4 w-4 mr-2" />
+						Adicionar Item
+					</Button>
+				</div>
+
+				{arrayValue.length > 0 ? (
+					<div className={s.arrayItems}>
+						{arrayValue.map((item: any, index: number) => (
+							<div key={index} className={s.arrayItem}>
+								<div className={s.arrayItemHeader}>
+									<span>Item {index + 1}</span>
+									<Button
+										type="button"
+										variant="ghost"
+										className={s.removeButton}
+										onClick={() => handleRemoveArrayItem(parentPath, index)}
+									>
+										<Trash2 className="h-4 w-4" />
+									</Button>
+								</div>
+								<div className={s.arrayItemFields}>
+									{arrayField.arrayType?.type === "object" &&
+										arrayField.arrayType.fields?.map((subField: any) => {
+											const fieldPath = `${parentPath}.${index}.${subField.name}`;
+											return (
+												<div key={subField.name} className={s.field}>
+													<label htmlFor={fieldPath}>
+														{subField.label}
+														{subField.required && (
+															<span className={s.required}>*</span>
+														)}
+													</label>
+													<input
+														type="text"
+														id={fieldPath}
+														name={fieldPath}
+														value={item[subField.name] || ""}
+														onChange={(e) =>
+															handleArrayChange(
+																parentPath,
+																index,
+																subField.name,
+																e.target.value,
+															)
+														}
+														required={subField.required}
+														className={s.input}
+													/>
+												</div>
+											);
+										})}
+								</div>
+							</div>
+						))}
 					</div>
-				))}
-				<Button type="button" variant="ghost" onClick={handleAddArrayItem}>
-					<Plus className="h-4 w-4 mr-2" />
-					Adicionar Item
-				</Button>
+				) : (
+					<div className={s.emptyArray}>
+						<p>Nenhum item adicionado</p>
+					</div>
+				)}
+			</div>
+		);
+	};
+
+	const findFieldByPath = (schema: any, path: string): any => {
+		if (!path) return null;
+
+		const parts = path.split(".");
+		let currentField = null;
+		let currentSchema = schema;
+
+		for (const part of parts) {
+			if (!currentSchema?.fields) {
+				return null;
+			}
+
+			currentField = currentSchema.fields.find((f: any) => f.name === part);
+			if (currentField) {
+				if (currentField.type === "object") {
+					currentSchema = currentField;
+				} else if (currentField.type === "array") {
+					return currentField;
+				}
+			} else {
+				return null;
+			}
+		}
+
+		return currentField;
+	};
+
+	const renderWysiwygField = () => {
+		return (
+			<div className={s.wysiwygField}>
+				<WysiwygEditor value={value || ""} onChange={handleChange} />
 			</div>
 		);
 	};
 
 	switch (field.type) {
+		case "array":
+			const arrayValue = getNestedValue(formData, field.name) || [];
+			return (
+				<div className={s.arrayField}>
+					<div className={s.arrayHeader}>
+						<label>
+							{field.label}
+							{field.required && <span className={s.required}>*</span>}
+						</label>
+						<Button
+							type="button"
+							variant="outline"
+							onClick={() => handleAddArrayItem(field.name)}
+							className={s.addArrayButton}
+						>
+							<Plus className="h-4 w-4 mr-2" />
+							Adicionar Item
+						</Button>
+					</div>
+
+					{arrayValue.length > 0 ? (
+						<div className={s.arrayItems}>
+							{arrayValue.map((item: any, index: number) => (
+								<div key={index} className={s.arrayItem}>
+									<div className={s.arrayItemHeader}>
+										<span>Item {index + 1}</span>
+										<Button
+											type="button"
+											variant="ghost"
+											className={s.removeButton}
+											onClick={() => handleRemoveArrayItem(field.name, index)}
+										>
+											<Trash2 className="h-4 w-4" />
+										</Button>
+									</div>
+									<div className={s.arrayItemFields}>
+										{field.arrayType?.type === "object" &&
+											field.arrayType.fields?.map((subField: any) => {
+												const fieldPath = `${field.name}.${index}.${subField.name}`;
+												return (
+													<div key={subField.name} className={s.field}>
+														<label htmlFor={fieldPath}>
+															{subField.label}
+															{subField.required && (
+																<span className={s.required}>*</span>
+															)}
+														</label>
+														<input
+															type="text"
+															id={fieldPath}
+															name={fieldPath}
+															value={item[subField.name] || ""}
+															onChange={(e) =>
+																handleArrayChange(
+																	field.name,
+																	index,
+																	subField.name,
+																	e.target.value,
+																)
+															}
+															required={subField.required}
+															className={s.input}
+														/>
+													</div>
+												);
+											})}
+									</div>
+								</div>
+							))}
+						</div>
+					) : (
+						<div className={s.emptyArray}>
+							<p>Nenhum item adicionado</p>
+						</div>
+					)}
+				</div>
+			);
+
 		case "text":
 			return (
-				<div className={s.inputContainer}>
+				<div className={s.field}>
+					<label htmlFor={field.name}>
+						{field.label}
+						{field.required && <span className={s.required}>*</span>}
+					</label>
 					<input
 						type="text"
 						id={field.name}
@@ -260,7 +381,11 @@ export const SectionTemplateRenderField = ({
 
 		case "textarea":
 			return (
-				<div className={s.inputContainer}>
+				<div className={s.field}>
+					<label htmlFor={field.name}>
+						{field.label}
+						{field.required && <span className={s.required}>*</span>}
+					</label>
 					<textarea
 						id={field.name}
 						name={field.name}
@@ -275,7 +400,11 @@ export const SectionTemplateRenderField = ({
 
 		case "number":
 			return (
-				<div className={s.inputContainer}>
+				<div className={s.field}>
+					<label htmlFor={field.name}>
+						{field.label}
+						{field.required && <span className={s.required}>*</span>}
+					</label>
 					<input
 						type="number"
 						id={field.name}
@@ -290,7 +419,11 @@ export const SectionTemplateRenderField = ({
 
 		case "select":
 			return (
-				<div className={s.inputContainer}>
+				<div className={s.field}>
+					<label htmlFor={field.name}>
+						{field.label}
+						{field.required && <span className={s.required}>*</span>}
+					</label>
 					<select
 						id={field.name}
 						name={field.name}
@@ -309,43 +442,46 @@ export const SectionTemplateRenderField = ({
 				</div>
 			);
 
-		case "array":
-			return renderArrayFields(field, field.name);
-
 		case "object":
 			return renderObjectFields(field, field.name);
 
 		case "wysiwyg":
-			return (
-				<div className={s.wysiwygField}>
-					<WysiwygEditor value={value || ""} onChange={handleChange} />
-				</div>
-			);
+			return renderWysiwygField();
 
 		case "image":
 			return (
-				<div className={s.imageField}>
-					{value && (
-						<div className={s.preview}>
-							<img src={value} alt={field.label} />
-						</div>
-					)}
-					<input
-						type="text"
-						id={field.name}
-						name={field.name}
-						value={value || ""}
-						onChange={(e) => handleChange(e.target.value)}
-						required={field.required}
-						className={s.input}
-						placeholder="URL da imagem"
-					/>
+				<div className={s.field}>
+					<label htmlFor={field.name}>
+						{field.label}
+						{field.required && <span className={s.required}>*</span>}
+					</label>
+					<div className={s.imageField}>
+						{value && (
+							<div className={s.preview}>
+								<img src={value} alt={field.label} />
+							</div>
+						)}
+						<input
+							type="text"
+							id={field.name}
+							name={field.name}
+							value={value || ""}
+							onChange={(e) => handleChange(e.target.value)}
+							required={field.required}
+							className={s.input}
+							placeholder="URL da imagem"
+						/>
+					</div>
 				</div>
 			);
 
 		default:
 			return (
-				<div className={s.inputContainer}>
+				<div className={s.field}>
+					<label htmlFor={field.name}>
+						{field.label}
+						{field.required && <span className={s.required}>*</span>}
+					</label>
 					<input
 						type="text"
 						id={field.name}
