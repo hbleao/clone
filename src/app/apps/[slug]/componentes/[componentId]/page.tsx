@@ -385,66 +385,44 @@ export default function ComponentPage() {
 
 			const addFieldAtPath = (
 				fields: Field[],
-				remainingPath: number[],
-				currentPath: number[] = [],
-				isArrayObject = false,
+				path: number[],
 			): Field[] => {
-				// Se não há mais path para navegar, adiciona o campo no nível atual
-				if (remainingPath.length === 0) {
-					const newField = {
-						name: "",
-						type: "text",
-						label: "",
-						required: false,
-					};
-
-					fields.push(newField);
-					return fields;
+				if (path.length === 0) {
+					return [
+						...fields,
+						{
+							name: "",
+							type: "text",
+							label: "",
+							required: false,
+						},
+					];
 				}
 
-				const [currentIndex, ...restPath] = remainingPath;
-				const newCurrentPath = [...currentPath, currentIndex];
+				const [currentIndex, ...restPath] = path;
+				if (currentIndex > fields.length) return fields;
 
-				// Se o índice é maior que o tamanho do array, não podemos adicionar
-				if (currentIndex > fields.length) {
-					console.log("Índice inválido:", currentIndex);
-					return fields;
+				const updatedFields = [...fields];
+				const targetField = updatedFields[currentIndex];
+				let lastArrayParent: Field | null = null;
+
+				if (targetField) {
+					if (targetField.type === "object" && targetField.fields) {
+						targetField.fields = addFieldAtPath(targetField.fields, restPath);
+					} else if (
+						targetField.type === "array" &&
+						targetField.arrayType?.type === "object" &&
+						targetField.arrayType?.fields
+					) {
+						lastArrayParent = targetField;
+						targetField.arrayType.fields = addFieldAtPath(
+							targetField.arrayType.fields,
+							restPath,
+						);
+					}
 				}
 
-				// Se o índice é igual ao tamanho do array, estamos adicionando um novo campo
-				if (currentIndex === fields.length) {
-					const newField = {
-						name: "",
-						type: "text",
-						label: "",
-						required: false,
-					};
-					fields.push(newField);
-				}
-
-				const targetField = fields[currentIndex];
-
-				if (targetField.type === "object" && targetField.fields) {
-					targetField.fields = addFieldAtPath(
-						targetField.fields,
-						restPath,
-						newCurrentPath,
-						false,
-					);
-				} else if (
-					targetField.type === "array" &&
-					targetField.arrayType?.fields
-				) {
-					lastArrayParent = targetField;
-					targetField.arrayType.fields = addFieldAtPath(
-						targetField.arrayType.fields,
-						restPath,
-						newCurrentPath,
-						true,
-					);
-				}
-
-				return fields;
+				return updatedFields;
 			};
 
 			const updatedFields = addFieldAtPath(newFields, path);
