@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -15,16 +15,77 @@ export function SectionTemplateDialog({
 	defaultValues,
 	onSave,
 }: SectionTemplateDialogProps) {
+	const parsedSchema = useMemo(() => {
+		try {
+			return typeof template.schema === 'string' ? JSON.parse(template.schema) : template.schema;
+		} catch (error) {
+			console.error('Erro ao fazer parse do schema:', error);
+			return { fields: [] };
+		}
+	}, [template.schema]);
+
+	const parsedDefaultValues = useMemo(() => {
+		try {
+			if (!template.defaultData) return {};
+			return typeof template.defaultData === 'string' 
+				? JSON.parse(template.defaultData) 
+				: template.defaultData;
+		} catch (error) {
+			console.error('Erro ao fazer parse dos valores padrão:', error);
+			return {};
+		}
+	}, [template.defaultData]);
+
+	const initializeNestedFields = (fields: any[], parentPath = "") => {
+		let initialValues: Record<string, any> = {};
+
+		fields.forEach((field) => {
+			const fieldPath = parentPath ? `${parentPath}.${field.name}` : field.name;
+			const defaultValue = defaultValues[field.name] || parsedDefaultValues[field.name];
+
+			if (field.type === "array") {
+				initialValues[field.name] = defaultValue || [];
+			} else if (field.type === "object" && field.fields) {
+				if (defaultValue) {
+					initialValues[field.name] = defaultValue;
+				} else {
+					initialValues[field.name] = initializeNestedFields(field.fields, field.name);
+				}
+			} else {
+				initialValues[field.name] = defaultValue || "";
+			}
+		});
+
+		return initialValues;
+	};
+
 	const [isLoading, setIsLoading] = useState(false);
-	const [formData, setFormData] = useState(defaultValues || {});
+	const [formData, setFormData] = useState(() => {
+		return initializeNestedFields(parsedSchema.fields || []);
+	});
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
 			// Valida os campos obrigatórios
-			const missingFields = template.schema.fields
-				?.filter((field) => field.required && !formData[field.name])
+			const validateField = (field: any, value: any): boolean => {
+				if (field.required) {
+					if (field.type === "array") {
+						return Array.isArray(value) && value.length > 0;
+					} else if (field.type === "object" && field.fields) {
+						return field.fields.every((subField: any) =>
+							validateField(subField, value?.[subField.name])
+						);
+					} else {
+						return value !== undefined && value !== null && value !== "";
+					}
+				}
+				return true;
+			};
+
+			const missingFields = parsedSchema.fields
+				?.filter((field) => !validateField(field, formData[field.name]))
 				.map((field) => field.label);
 
 			if (missingFields?.length) {
@@ -51,7 +112,7 @@ export function SectionTemplateDialog({
 			</p>
 
 			<form onSubmit={handleSubmit} className={s.form}>
-				{template.schema.fields?.map((field) => (
+				{parsedSchema.fields?.map((field) => (
 					<div key={field.name} className={s.field}>
 						<label htmlFor={field.name}>
 							{field.label}
@@ -66,7 +127,11 @@ export function SectionTemplateDialog({
 				))}
 
 				<div className={s.actions}>
-					<Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
+					<Button
+						type="button"
+						variant="ghost"
+						onClick={() => onOpenChange(false)}
+					>
 						Cancelar
 					</Button>
 					<Button type="submit" disabled={isLoading}>
