@@ -26,7 +26,18 @@ export type FormData = {
 
 type FieldPath = number[];
 
-const MAX_NESTING_LEVEL = 5;
+const createField = (initialProps: Partial<Field> = {}): Field => {
+	const defaultField: Field = {
+		name: "",
+		type: "text",
+		label: "",
+		required: false,
+	};
+
+	return { ...defaultField, ...initialProps };
+};
+
+const MAX_NESTING_LEVEL = 4;
 
 const getNestedLevel = (path: FieldPath): number => path.length;
 
@@ -94,28 +105,35 @@ export default function ComponentPage() {
 			if (!field.fields) {
 				field.fields = []; // Inicializa array vazio se não existir
 			}
-			// Só valida se tiver campos filhos
-			if (field.fields.length > 0) {
-				field.fields.forEach((childField, index) => {
-					errors.push(...validateField(childField, `${fieldIdentifier}`));
-				});
-			}
+			// Valida campos filhos
+			field.fields.forEach((childField, index) => {
+				errors.push(
+					...validateField(
+						childField,
+						`${fieldIdentifier} > campo ${index + 1}`,
+					),
+				);
+			});
 		}
 
 		// Validação de campos array
 		if (field.type === "array") {
 			if (!field.arrayType) {
-				field.arrayType = { type: "text" }; // Tipo padrão se não especificado
+				field.arrayType = createField({ type: "text" }); // Tipo padrão se não especificado
 			}
 
 			// Se for um array de objetos com campos
 			if (
 				field.arrayType.type === "object" &&
+				"fields" in field.arrayType &&
 				field.arrayType.fields?.length > 0
 			) {
 				field.arrayType.fields.forEach((templateField, index) => {
 					errors.push(
-						...validateField(templateField, `${fieldIdentifier} (template)`),
+						...validateField(
+							templateField,
+							`${fieldIdentifier} (template) > campo ${index + 1}`,
+						),
 					);
 				});
 			}
@@ -140,12 +158,15 @@ export default function ComponentPage() {
 			const pathKey = fieldPath.join(".");
 
 			if (!fieldsMap.has(pathKey)) {
-				fieldsMap.set(pathKey, {
-					name: "",
-					type: "text",
-					label: "",
-					required: false,
-				});
+				fieldsMap.set(
+					pathKey,
+					createField({
+						name: "",
+						type: "text",
+						label: "",
+						required: false,
+					}),
+				);
 			}
 
 			const field = fieldsMap.get(pathKey)!;
@@ -155,19 +176,22 @@ export default function ComponentPage() {
 					field.name = value;
 					break;
 				case "type":
-					field.type = value as Field["type"];
-					if (value === "object") {
-						field.fields = field.fields || [];
-						delete field.arrayType;
-					} else if (value === "array") {
-						field.arrayType = {
+					const newType = value as FieldType;
+					field.type = newType;
+
+					// Reiniciar estrutura baseado no tipo
+					if (newType === "object") {
+						(field as ObjectField).fields = [];
+						delete (field as any).arrayType;
+					} else if (newType === "array") {
+						(field as ArrayField).arrayType = createField({
 							type: "text",
-							fields: [],
-						};
-						delete field.fields;
+							name: "arrayItem",
+						});
+						delete (field as any).fields;
 					} else {
-						delete field.fields;
-						delete field.arrayType;
+						delete (field as any).fields;
+						delete (field as any).arrayType;
 					}
 					break;
 				case "label":
@@ -188,10 +212,10 @@ export default function ComponentPage() {
 				const field = fieldsMap.get(path)!;
 				const pathParts = path.split(".");
 
-				let current = rootFields;
+				const current = rootFields;
 				let parent: Field | undefined;
 				let lastArrayParent: Field | undefined;
-				let inArrayObject = false;
+				const inArrayObject = false;
 
 				for (let i = 0; i < pathParts.length; i++) {
 					const index = Number.parseInt(pathParts[i]);
@@ -200,53 +224,28 @@ export default function ComponentPage() {
 					// Se estamos no último índice, coloque o campo atual
 					if (isLast) {
 						if (inArrayObject) {
-							if (
-								lastArrayParent &&
-								lastArrayParent.arrayType?.type === "object"
-							) {
-								lastArrayParent.arrayType.fields =
-									lastArrayParent.arrayType.fields || [];
-								lastArrayParent.arrayType.fields[index] = field;
+							// Lógica para adicionar em array de objetos
+							if (lastArrayParent && lastArrayParent.type === "array") {
+								const arrayType = lastArrayParent.arrayType;
+								if (arrayType.type === "object") {
+									(arrayType as ObjectField).fields.push(field);
+								}
 							}
+						} else if (parent && parent.type === "object") {
+							// Adicionar em objeto
+							parent.fields.push(field);
 						} else {
-							current[index] = field;
+							// Adicionar na raiz
+							current.push(field);
 						}
-						continue;
-					}
-
-					// Se não é o último índice, navegue na estrutura
-					if (!current[index]) {
-						console.warn(`Campo pai não encontrado para o path ${path}`);
-						break;
-					}
-
-					parent = current[index];
-
-					if (parent.type === "object") {
-						current = parent.fields = parent.fields || [];
-						inArrayObject = false;
-					} else if (
-						parent.type === "array" &&
-						parent.arrayType?.type === "object"
-					) {
-						lastArrayParent = parent;
-						current = parent.arrayType.fields = parent.arrayType.fields || [];
-						inArrayObject = true;
-					} else {
-						console.warn(
-							`Tipo de campo inválido para aninhamento: ${parent.type}`,
-						);
-						break;
 					}
 				}
 			}
 
-			// Remove espaços vazios e undefined
-			return rootFields.filter(Boolean);
+			return rootFields;
 		};
 
-		const result = buildHierarchy();
-		return result;
+		return buildHierarchy();
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -256,18 +255,18 @@ export default function ComponentPage() {
 		try {
 			// Usar o estado formData ao invés de pegar do form
 			if (!formData.name?.trim()) {
-				toast.error('O nome do componente é obrigatório');
+				toast.error("O nome do componente é obrigatório");
 				setLoading(false);
 				return;
 			}
 
 			const payload = {
 				name: formData.name,
-				description: formData.description || '',
-				type: 'custom',
+				description: formData.description || "",
+				type: "custom",
 				schema: {
-					fields: formData.schema.fields
-				}
+					fields: formData.schema.fields,
+				},
 			};
 
 			let result;
@@ -277,25 +276,23 @@ export default function ComponentPage() {
 					payload,
 				);
 			} else {
-				result = await createComponentService(
-					params.slug as string,
-					payload,
-				);
+				result = await createComponentService(params.slug as string, payload);
 			}
 
 			if (result.success) {
 				toast.success(
 					isEditing
-						? 'Componente atualizado com sucesso!'
-						: 'Componente criado com sucesso!',
+						? "Componente atualizado com sucesso!"
+						: "Componente criado com sucesso!",
 				);
 				router.push(`/apps/${params.slug}/componentes`);
 			} else {
 				// Função auxiliar para extrair mensagem de erro
 				const getErrorMessage = (error: any): string => {
-					if (typeof error === 'string') return error;
-					if (error?.message && typeof error.message === 'string') return error.message;
-					return 'Erro desconhecido';
+					if (typeof error === "string") return error;
+					if (error?.message && typeof error.message === "string")
+						return error.message;
+					return "Erro desconhecido";
 				};
 
 				if (Array.isArray(result?.error)) {
@@ -305,22 +302,23 @@ export default function ComponentPage() {
 				} else {
 					toast.error(
 						getErrorMessage(result.error) ||
-						`Erro ao ${isEditing ? 'atualizar' : 'criar'} componente`
+							`Erro ao ${isEditing ? "atualizar" : "criar"} componente`,
 					);
 				}
 			}
 		} catch (error: any) {
 			console.error(
-				`Erro ao ${isEditing ? 'atualizar' : 'criar'} componente:`,
+				`Erro ao ${isEditing ? "atualizar" : "criar"} componente:`,
 				error,
 			);
-			
-			const errorMessage = typeof error === 'string' 
-				? error 
-				: error?.message && typeof error.message === 'string'
-					? error.message
-					: `Erro ao ${isEditing ? 'atualizar' : 'criar'} componente. Tente novamente.`;
-			
+
+			const errorMessage =
+				typeof error === "string"
+					? error
+					: error?.message && typeof error.message === "string"
+						? error.message
+						: `Erro ao ${isEditing ? "atualizar" : "criar"} componente. Tente novamente.`;
+
 			toast.error(errorMessage);
 		} finally {
 			setLoading(false);
@@ -328,9 +326,9 @@ export default function ComponentPage() {
 	};
 
 	const handleInputChange = (field: keyof FormData) => (value: string) => {
-		setFormData(prev => ({
+		setFormData((prev) => ({
 			...prev,
-			[field]: value
+			[field]: value,
 		}));
 	};
 
@@ -390,54 +388,84 @@ export default function ComponentPage() {
 			const newFields = JSON.parse(JSON.stringify(prev.schema.fields));
 
 			const addFieldAtPath = (fields: Field[], path: number[]): Field[] => {
-				if (path.length === 0) {
-					return [
-						...fields,
-						{
-							name: "",
-							type: "text",
-							label: "",
-							required: false,
-						},
-					];
-				}
+				const updatedFields = JSON.parse(JSON.stringify(fields));
 
-				const [currentIndex, ...restPath] = path;
-				if (currentIndex > fields.length) return fields;
+				// Função para navegar e modificar campos aninhados
+				const navigateAndModify = (
+					currentFields: Field[], 
+					remainingPath: number[], 
+					depth: number = 0
+				): Field[] => {
+					// Condição de parada para evitar recursão infinita
+					if (depth > 10) return currentFields;
 
-				const updatedFields = [...fields];
-				const targetField = updatedFields[currentIndex];
+					// Se não há mais caminho para navegar, adiciona um novo campo
+					if (remainingPath.length === 0) {
+						return [
+							...currentFields,
+							{
+								name: "",
+								type: "text",
+								label: "",
+								required: false,
+							},
+						];
+					}
 
-				// Se o campo alvo é um array com tipo objeto
-				if (targetField?.type === "array" && targetField.arrayType?.type === "object") {
-					// Inicializa os campos do array se não existirem
-					targetField.arrayType.fields = targetField.arrayType.fields || [];
-					
-					// Adiciona o novo campo aos campos do template do array
-					targetField.arrayType.fields = [
-						...targetField.arrayType.fields,
-						{
-							name: "",
-							type: "text",
-							label: "",
-							required: false,
-						},
-					];
-				} else if (targetField?.type === "object") {
-					// Se é um objeto normal, adiciona aos campos dele
-					targetField.fields = targetField.fields || [];
-					targetField.fields = [
-						...targetField.fields,
-						{
-							name: "",
-							type: "text",
-							label: "",
-							required: false,
-						},
-					];
-				}
+					const [currentIndex, ...restPath] = remainingPath;
 
-				return updatedFields;
+					// Verifica se o índice atual é válido
+					if (currentIndex >= currentFields.length) return currentFields;
+
+					const targetField = currentFields[currentIndex];
+
+					// Lógica para campos de objeto
+					if (targetField.type === "object") {
+						targetField.fields = targetField.fields || [];
+						
+						// Se não há mais caminho, adiciona um novo campo
+						if (restPath.length === 0) {
+							targetField.fields.push({
+								name: "",
+								type: "text",
+								label: "",
+								required: false,
+							});
+						} else {
+							// Continua navegando nos campos aninhados
+							targetField.fields = navigateAndModify(
+								targetField.fields, 
+								restPath, 
+								depth + 1
+							);
+						}
+					} 
+					// Lógica para campos de array com tipo objeto
+					else if (targetField.type === "array" && targetField.arrayType?.type === "object") {
+						targetField.arrayType.fields = targetField.arrayType.fields || [];
+						
+						// Se não há mais caminho, adiciona um novo campo ao template do array
+						if (restPath.length === 0) {
+							targetField.arrayType.fields.push({
+								name: "",
+								type: "text",
+								label: "",
+								required: false,
+							});
+						} else {
+							// Continua navegando nos campos aninhados do array
+							targetField.arrayType.fields = navigateAndModify(
+								targetField.arrayType.fields, 
+								restPath, 
+								depth + 1
+							);
+						}
+					}
+
+					return currentFields;
+				};
+
+				return navigateAndModify(updatedFields, path);
 			};
 
 			const updatedFields = addFieldAtPath(newFields, path);
@@ -1026,7 +1054,7 @@ export default function ComponentPage() {
 							name="name"
 							label="Nome do Componente"
 							defaultValue={formData.name}
-							onChange={(e) => handleInputChange('name')(e.target.value)}
+							onChange={(e) => handleInputChange("name")(e.target.value)}
 							required
 						/>
 					</div>
@@ -1036,7 +1064,7 @@ export default function ComponentPage() {
 							name="description"
 							label="Descrição"
 							defaultValue={formData.description}
-							onChange={(e) => handleInputChange('description')(e.target.value)}
+							onChange={(e) => handleInputChange("description")(e.target.value)}
 						/>
 					</div>
 
