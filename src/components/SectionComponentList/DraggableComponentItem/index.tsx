@@ -25,16 +25,6 @@ export function DraggableComponentItem({
 	onSelectComponent,
 }: DraggableComponentItemProps) {
 	const handleClick = () => {
-		console.log("Componente completo selecionado:", {
-			id: component.id,
-			name: component.name,
-			type: component.type,
-			defaultData: component.defaultData,
-			defaultDataType: typeof component.defaultData,
-			schema: component.schema,
-			schemaType: typeof component.schema,
-		});
-
 		onSelectComponent(component);
 	};
 

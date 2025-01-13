@@ -34,8 +34,6 @@ export const PageBuilderSidebar = () => {
 			content: component.defaultData || {},
 		};
 
-		console.log("COMPONENT SELECIONADO", elements);
-
 		addElement(elements?.length || 0, element);
 		toast.success("Seção adicionada com sucesso");
 	};
@@ -43,6 +41,8 @@ export const PageBuilderSidebar = () => {
 	return (
 		<div className={s.pageBuilderSidebar}>
 			<div className={s.header}>
+				<h2>Seções</h2>
+
 				<Button
 					type="button"
 					variant="disabled"
@@ -55,8 +55,6 @@ export const PageBuilderSidebar = () => {
 			</div>
 
 			<div className={s.content}>
-				<h2>Seções</h2>
-
 				<SectionComponentList
 					slug={slug}
 					onSelectComponent={handleAddSection}

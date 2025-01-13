@@ -10,10 +10,7 @@ import { Button, SectionTemplateDialog } from "@/components";
 import { usePageBuilder } from "@/hooks";
 import type { PageBuilderElementProps } from "@/types/pageBuilder";
 
-export function SectionElement({
-	element,
-	onRemove,
-}: PageBuilderElementProps) {
+export function SectionElement({ element, onRemove }: PageBuilderElementProps) {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const { template, content } = element;
 	const { updateElement } = usePageBuilder();
@@ -40,7 +37,11 @@ export function SectionElement({
 						<span>{template.type}</span>
 					</div>
 					<div className={s.actions}>
-						<Button type="button" variant="ghost" onClick={() => setDialogOpen(true)}>
+						<Button
+							type="button"
+							variant="ghost"
+							onClick={() => setDialogOpen(true)}
+						>
 							<Pencil className="h-4 w-4" />
 						</Button>
 						<Button type="button" variant="ghost" onClick={onRemove}>
@@ -62,8 +63,7 @@ export function SectionElement({
 				<SectionTemplateDialog
 					onOpenChange={setDialogOpen}
 					template={template}
-					defaultValues={content || {}}
-					onSave={handleSave}
+					handleSave={handleSave}
 				/>
 			)}
 		</>

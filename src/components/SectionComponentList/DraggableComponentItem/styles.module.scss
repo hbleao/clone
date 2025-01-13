@@ -1,19 +1,72 @@
 .draggableItem {
+  position: relative;
   width: 185px;
   height: 100px;
-  background-color: $gray2;
-  border-radius: $radii-sm;
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
+  border: 2px solid #e2e8f0;
+  border-radius: 1rem;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
 
   &:hover {
-    background-color: $gray4;
+    transform: translateY(-2px);
+    border-color: #3b82f6;
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06),
+      0 0 0 3px rgba(59, 130, 246, 0.1);
+
+    &::before {
+      transform: translateX(100%);
+    }
+
+    .title {
+      color: #3b82f6;
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
   }
 }
 
 .title {
   font-size: 1.4rem;
-  color: $gray7;
+  font-weight: 600;
+  color: #1f2937;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: #3b82f6;
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+}
+
+.draggableItem:hover .title::before {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px #3b82f6;
 }

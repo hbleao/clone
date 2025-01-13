@@ -1,8 +1,6 @@
 "use server";
 
 import { prisma } from "../lib/prisma";
-import type { ElementsType, FormElementInstance } from "../components";
-
 import { logger } from "@/utils";
 
 interface CreatePageData {
@@ -12,11 +10,7 @@ interface CreatePageData {
 	content?: string;
 	appId: string;
 	author: string;
-	seo?: {
-		title: string;
-		description: string;
-		image?: string;
-	};
+	seo?: Seo;
 }
 
 interface UpdatePageData {
@@ -34,11 +28,7 @@ interface UpdatePageParams {
 	type: string;
 	content: string;
 	status: "draft" | "live";
-	seo: {
-		title: string;
-		description: string;
-		image?: string;
-	};
+	seo?: Seo;
 }
 
 export async function createPage(data: CreatePageData) {
@@ -56,10 +46,7 @@ export async function createPage(data: CreatePageData) {
 		// Verificar se já existe uma página com o mesmo slug no app
 		const existingPage = await prisma.page.findFirst({
 			where: {
-				AND: [
-					{ appId: data.appId },
-					{ slug: data.slug }
-				]
+				AND: [{ appId: data.appId }, { slug: data.slug }],
 			},
 		});
 
@@ -82,17 +69,21 @@ export async function createPage(data: CreatePageData) {
 				status: "draft",
 				appId: data.appId,
 				author: data.author,
-				seo: data.seo ? {
-					create: {
-						title: data.seo.title,
-						description: data.seo.description,
-						image: data.seo.image
-					}
-				} : undefined
+				seo: data.seo
+					? {
+							create: {
+								title: data.seo.title,
+								description: data.seo.description,
+								keywords: data.seo.keywords,
+								canonical: data.seo.canonical,
+								robots: data.seo.robots,
+							},
+						}
+					: undefined,
 			},
 			include: {
-				seo: true
-			}
+				seo: true,
+			},
 		});
 
 		logger.info(`Página criada com sucesso: ${page.id}`);
@@ -115,6 +106,9 @@ export async function getPagesByAppId(appId: string) {
 			orderBy: {
 				createdAt: "desc",
 			},
+			include: {
+				seo: true,
+			},
 		});
 
 		logger.info(`Páginas buscadas para o aplicativo: ${appId}`);
@@ -133,10 +127,7 @@ export async function getPageBySlug(appId: string, slug: string) {
 	try {
 		const page = await prisma.page.findFirst({
 			where: {
-				appId_slug: {
-					appId,
-					slug,
-				},
+				AND: [{ appId }, { slug }],
 			},
 			include: {
 				seo: true,
@@ -160,7 +151,6 @@ export async function getPageBySlug(appId: string, slug: string) {
 }
 
 export async function getPageById(id: string) {
-	logger.info("Fetching page by ID:", id);
 	try {
 		const page = await prisma.page.findFirst({
 			where: {
@@ -221,22 +211,14 @@ export async function getPageById(id: string) {
 }
 
 export async function updatePage(pageId: string, data: UpdatePageData) {
-	logger.info("Updating page:", { pageId, data });
 	try {
 		// Se o conteúdo for objeto, converte para string
 		const processedData = {
 			...data,
-			content: data.content
-				? typeof data.content === "string"
-					? data.content
-					: JSON.stringify(data.content)
-				: undefined,
+			content: JSON.stringify(data.content),
 		};
 
-		logger.info("Processed data for update:", {
-			original: data.content,
-			processed: processedData.content,
-		});
+		logger.info("Updating page:", { pageId, data });
 
 		const page = await prisma.page.update({
 			where: { id: pageId },
@@ -255,28 +237,42 @@ export async function updatePage(pageId: string, data: UpdatePageData) {
 	}
 }
 
-export async function updatePageFull(params: UpdatePageParams) {
-	logger.info("Updating page fully:", { id: params.id });
+export async function updatePageFull(currentPage: UpdatePageParams) {
 	try {
-		const content =
-			typeof params.content === "string"
-				? params.content
-				: JSON.stringify(params.content);
+		const content = JSON.stringify(currentPage.content);
+		logger.info("currentPage", currentPage);
 
 		const page = await prisma.page.update({
-			where: { id: params.id },
+			where: { id: currentPage.id },
 			data: {
-				title: params.title,
-				slug: params.slug,
-				type: params.type,
+				title: currentPage.title,
+				slug: currentPage.slug,
+				type: currentPage.type,
 				content,
-				status: params.status,
-				seo: {
-					upsert: {
-						create: params.seo,
-						update: params.seo,
-					},
-				},
+				status: currentPage.status,
+				seo: currentPage.seo
+					? {
+							upsert: {
+								create: {
+									title: currentPage.seo.title,
+									description: currentPage.seo.description,
+									keywords: currentPage.seo.keywords,
+									canonical: currentPage.seo.canonical,
+									robots: currentPage.seo.robots,
+								},
+								update: {
+									title: currentPage.seo.title,
+									description: currentPage.seo.description,
+									keywords: currentPage.seo.keywords,
+									canonical: currentPage.seo.canonical,
+									robots: currentPage.seo.robots,
+								},
+							},
+						}
+					: undefined,
+			},
+			include: {
+				seo: true,
 			},
 		});
 

@@ -254,78 +254,84 @@ export default function ComponentPage() {
 		setLoading(true);
 
 		try {
-			const { name, description, schema } = formData;
-
-			// Validação básica
-			const basicErrors = validateBasicFields(formData);
-			if (basicErrors.length > 0) {
-				basicErrors.forEach((error) => toast.error(error));
+			// Usar o estado formData ao invés de pegar do form
+			if (!formData.name?.trim()) {
+				toast.error('O nome do componente é obrigatório');
 				setLoading(false);
 				return;
 			}
 
-			// Valida todos os campos
-			const errors: string[] = [];
-			schema.fields.forEach((field) => {
-				errors.push(...validateField(field));
-			});
-
-			if (errors.length > 0) {
-				errors.forEach((error) => toast.error(error));
-				setLoading(false);
-				return;
-			}
-
-			// Usa os dados do estado diretamente
-			const updatedFormData = {
-				...formData,
-				name,
-				description: description || "",
+			const payload = {
+				name: formData.name,
+				description: formData.description || '',
+				type: 'custom',
+				schema: {
+					fields: formData.schema.fields
+				}
 			};
 
 			let result;
 			if (isEditing) {
 				result = await updateComponentService(
 					params.componentId as string,
-					updatedFormData,
+					payload,
 				);
 			} else {
 				result = await createComponentService(
 					params.slug as string,
-					updatedFormData,
+					payload,
 				);
 			}
 
 			if (result.success) {
 				toast.success(
 					isEditing
-						? "Componente atualizado com sucesso!"
-						: "Componente criado com sucesso!",
+						? 'Componente atualizado com sucesso!'
+						: 'Componente criado com sucesso!',
 				);
 				router.push(`/apps/${params.slug}/componentes`);
 			} else {
+				// Função auxiliar para extrair mensagem de erro
+				const getErrorMessage = (error: any): string => {
+					if (typeof error === 'string') return error;
+					if (error?.message && typeof error.message === 'string') return error.message;
+					return 'Erro desconhecido';
+				};
+
 				if (Array.isArray(result?.error)) {
-					result?.error.forEach((err) => {
-						toast.error(err.message);
+					result.error.forEach((err) => {
+						toast.error(getErrorMessage(err));
 					});
 				} else {
 					toast.error(
-						result.error?.message ||
-							`Erro ao ${isEditing ? "atualizar" : "criar"} componente`,
+						getErrorMessage(result.error) ||
+						`Erro ao ${isEditing ? 'atualizar' : 'criar'} componente`
 					);
 				}
 			}
-		} catch (error) {
+		} catch (error: any) {
 			console.error(
-				`Erro ao ${isEditing ? "atualizar" : "criar"} componente:`,
+				`Erro ao ${isEditing ? 'atualizar' : 'criar'} componente:`,
 				error,
 			);
-			toast.error(
-				`Erro ao ${isEditing ? "atualizar" : "criar"} componente. Tente novamente.`,
-			);
+			
+			const errorMessage = typeof error === 'string' 
+				? error 
+				: error?.message && typeof error.message === 'string'
+					? error.message
+					: `Erro ao ${isEditing ? 'atualizar' : 'criar'} componente. Tente novamente.`;
+			
+			toast.error(errorMessage);
 		} finally {
 			setLoading(false);
 		}
+	};
+
+	const handleInputChange = (field: keyof FormData) => (value: string) => {
+		setFormData(prev => ({
+			...prev,
+			[field]: value
+		}));
 	};
 
 	const validateBasicFields = (data: FormData): string[] => {
@@ -383,10 +389,7 @@ export default function ComponentPage() {
 		setFormData((prev) => {
 			const newFields = JSON.parse(JSON.stringify(prev.schema.fields));
 
-			const addFieldAtPath = (
-				fields: Field[],
-				path: number[],
-			): Field[] => {
+			const addFieldAtPath = (fields: Field[], path: number[]): Field[] => {
 				if (path.length === 0) {
 					return [
 						...fields,
@@ -404,22 +407,34 @@ export default function ComponentPage() {
 
 				const updatedFields = [...fields];
 				const targetField = updatedFields[currentIndex];
-				let lastArrayParent: Field | null = null;
 
-				if (targetField) {
-					if (targetField.type === "object" && targetField.fields) {
-						targetField.fields = addFieldAtPath(targetField.fields, restPath);
-					} else if (
-						targetField.type === "array" &&
-						targetField.arrayType?.type === "object" &&
-						targetField.arrayType?.fields
-					) {
-						lastArrayParent = targetField;
-						targetField.arrayType.fields = addFieldAtPath(
-							targetField.arrayType.fields,
-							restPath,
-						);
-					}
+				// Se o campo alvo é um array com tipo objeto
+				if (targetField?.type === "array" && targetField.arrayType?.type === "object") {
+					// Inicializa os campos do array se não existirem
+					targetField.arrayType.fields = targetField.arrayType.fields || [];
+					
+					// Adiciona o novo campo aos campos do template do array
+					targetField.arrayType.fields = [
+						...targetField.arrayType.fields,
+						{
+							name: "",
+							type: "text",
+							label: "",
+							required: false,
+						},
+					];
+				} else if (targetField?.type === "object") {
+					// Se é um objeto normal, adiciona aos campos dele
+					targetField.fields = targetField.fields || [];
+					targetField.fields = [
+						...targetField.fields,
+						{
+							name: "",
+							type: "text",
+							label: "",
+							required: false,
+						},
+					];
 				}
 
 				return updatedFields;
@@ -537,7 +552,7 @@ export default function ComponentPage() {
 				const updatedFields = [...fields];
 				const targetField = updatedFields[currentIndex];
 
-				if (restPath.length === 0 && targetField.type === "array") {
+				if (restPath.length === 0) {
 					// Preserva os campos existentes se estiver mudando para objeto
 					const existingFields =
 						targetField.arrayType?.type === "object"
@@ -1011,15 +1026,17 @@ export default function ComponentPage() {
 							name="name"
 							label="Nome do Componente"
 							defaultValue={formData.name}
+							onChange={(e) => handleInputChange('name')(e.target.value)}
 							required
 						/>
 					</div>
 
 					<div className={s.field}>
-						<Textarea
+						<Input
 							name="description"
 							label="Descrição"
 							defaultValue={formData.description}
+							onChange={(e) => handleInputChange('description')(e.target.value)}
 						/>
 					</div>
 

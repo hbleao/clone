@@ -26,14 +26,15 @@ const initialFormState: PageForm = {
 	content: "",
 	status: "draft",
 	seo: {
+		id: "",
 		title: "",
 		description: "",
 		keywords: "",
-		ogTitle: "",
-		ogDescription: "",
-		ogImage: "",
 		canonical: "",
 		robots: "index, follow",
+		pageId: "",
+		createdAt: new Date(),
+		updatedAt: new Date(),
 	},
 };
 
@@ -56,7 +57,6 @@ export default function AppDetailsPage({ params }) {
 			if (!app?.id) return;
 			setApp(app!);
 			const pagesResult = await getPagesByAppId(app.id);
-			console.log("pagesResult:", pagesResult);
 			setPages(pagesResult.pages);
 		} catch (error) {
 			console.error("Falha ao carregar as paginas", error);
@@ -85,6 +85,8 @@ export default function AppDetailsPage({ params }) {
 		}
 	};
 
+	console.log(formData.seo);
+
 	const handleSeoChange = (field: keyof PageForm["seo"], value: string) => {
 		setFormData((prev) => ({
 			...prev,
@@ -96,28 +98,47 @@ export default function AppDetailsPage({ params }) {
 	};
 
 	const handleEditPage = (page: Page) => {
+		console.log("PAGE:", page);
 		setEditingPageId(page.id);
 		setFormData({
 			title: page.title,
 			slug: page.slug,
 			type: page.type,
-			content: page.content || "",
+			content: page.content ?? "",
 			status: page.status,
-			seo: page.seo || {
-				title: "",
-				description: "",
-				keywords: "",
-				ogTitle: "",
-				ogDescription: "",
-				ogImage: "",
-				canonical: "",
-				robots: "index, follow",
-			},
+			seo: page.seo
+				? {
+						id: page.seo.id,
+						title: page.seo.title,
+						description: page.seo.description,
+						keywords: page.seo.keywords,
+						canonical: page.seo.canonical,
+						robots: page.seo.robots,
+						pageId: page.seo.pageId,
+						createdAt: new Date(page.seo.createdAt),
+						updatedAt: new Date(page.seo.updatedAt),
+					}
+				: {
+						id: "",
+						title: "",
+						description: "",
+						keywords: "",
+						canonical: "",
+						robots: "index, follow",
+						pageId: "",
+						createdAt: new Date(),
+						updatedAt: new Date(),
+					},
 		});
 		setIsCreateModalOpen(true);
 	};
 
-	const handleDeletePage = async () => {
+	const handleDeletePage = async (event?: React.MouseEvent) => {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+
 		if (!pageToDelete) return;
 
 		try {
@@ -184,7 +205,6 @@ export default function AppDetailsPage({ params }) {
 					slug: formData.slug,
 					type: formData.type,
 					content: formData.content,
-					status: formData.status,
 					appId: app.id,
 					author: app.owner,
 					seo: formData.seo,
@@ -269,26 +289,34 @@ export default function AppDetailsPage({ params }) {
 									<Input
 										label="Título"
 										value={formData.title}
-										onChange={(value) => handleChange("title", value)}
+										onChange={(value) =>
+											handleChange("title", value.target.value)
+										}
 										required
 									/>
 									<Input
 										label="Slug"
 										value={formData.slug}
-										onChange={(value) => handleChange("slug", value)}
+										onChange={(value) =>
+											handleChange("slug", value.target.value)
+										}
 										required
 									/>
 									<Input
 										label="Tipo"
 										value={formData.type}
-										onChange={(value) => handleChange("type", value)}
+										onChange={(value) =>
+											handleChange("type", value.target.value)
+										}
 										required
 									/>
 									<Textarea
 										label="Conteúdo"
 										value={formData.content}
 										placeholder="Digite uma descrição para a página"
-										onChange={(value) => handleChange("content", value)}
+										onChange={(value) =>
+											handleChange("content", value.target.value)
+										}
 									/>
 									<div className="status-select">
 										<label>Status</label>
@@ -305,52 +333,42 @@ export default function AppDetailsPage({ params }) {
 								<div className="tab-content">
 									<Input
 										label="Meta Title"
-										value={formData.seo.title}
-										onChange={(value) => handleSeoChange("title", value)}
+										value={formData.seo?.title || ""}
+										onChange={(value) =>
+											handleSeoChange("title", value.target.value)
+										}
 										placeholder="Título otimizado para SEO"
 									/>
 									<Textarea
 										label="Meta Description"
 										value={formData.seo.description}
-										onChange={(value) => handleSeoChange("description", value)}
+										onChange={(value) =>
+											handleSeoChange("description", value.target.value)
+										}
 										placeholder="Descrição curta para resultados de busca"
 									/>
 									<Input
 										label="Keywords"
 										value={formData.seo.keywords}
-										onChange={(value) => handleSeoChange("keywords", value)}
-										placeholder="Palavras-chave separadas por vírgula"
-									/>
-									<Input
-										label="OG Title"
-										value={formData.seo.ogTitle}
-										onChange={(value) => handleSeoChange("ogTitle", value)}
-										placeholder="Título para compartilhamento em redes sociais"
-									/>
-									<Textarea
-										label="OG Description"
-										value={formData.seo.ogDescription}
 										onChange={(value) =>
-											handleSeoChange("ogDescription", value)
+											handleSeoChange("keywords", value.target.value)
 										}
-										placeholder="Descrição para compartilhamento em redes sociais"
-									/>
-									<Input
-										label="OG Image URL"
-										value={formData.seo.ogImage}
-										onChange={(value) => handleSeoChange("ogImage", value)}
-										placeholder="URL da imagem para compartilhamento"
+										placeholder="Palavras-chave separadas por vírgula"
 									/>
 									<Input
 										label="Canonical URL"
 										value={formData.seo.canonical}
-										onChange={(value) => handleSeoChange("canonical", value)}
+										onChange={(value) =>
+											handleSeoChange("canonical", value.target.value)
+										}
 										placeholder="URL canônica da página"
 									/>
 									<Input
 										label="Meta Robots"
 										value={formData.seo.robots}
-										onChange={(value) => handleSeoChange("robots", value)}
+										onChange={(value) =>
+											handleSeoChange("robots", value.target.value)
+										}
 										placeholder="Ex: index, follow"
 									/>
 								</div>
@@ -399,7 +417,10 @@ export default function AppDetailsPage({ params }) {
 								<Button
 									type="button"
 									variant="danger"
-									onClick={handleDeletePage}
+									onClick={(event) => {
+										event.stopPropagation();
+										handleDeletePage(event);
+									}}
 								>
 									Excluir
 								</Button>
@@ -461,7 +482,8 @@ export default function AppDetailsPage({ params }) {
 								<button
 									type="button"
 									className="action-button delete"
-									onClick={() => {
+									onClick={(e) => {
+										e.stopPropagation();
 										setPageToDelete(page);
 										setIsDeleteModalOpen(true);
 									}}

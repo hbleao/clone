@@ -1,10 +1,22 @@
 .pageBuilderSidebar {
-  width: 400px;
+  width: 600px;
   height: calc(100vh - 60px);
   border-left: 1px solid #e5e7eb;
   background-color: white;
   display: flex;
   flex-direction: column;
+}
+
+.header {
+  padding: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    font-size: 2rem;
+  }
+  margin-bottom: 2.4rem;
 }
 
 .designerSidebarForm {

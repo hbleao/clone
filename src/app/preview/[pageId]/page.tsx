@@ -42,16 +42,22 @@ export default function PreviewPage() {
 			const pageName =
 				pageContent.content.sections[index].template.name.toLowerCase();
 			return {
-				seo: {
-					title: pageContent.seo.title || "",
-					description: pageContent.seo?.description || "",
-					canonical: pageContent.seo?.canonical || "",
-				},
 				name: pageName,
 				component: { ...item.content },
 			};
 		}) || [];
-	const jsonContent = JSON.stringify(formattedContent, null, 2);
+	const jsonContent = JSON.stringify(
+		{
+			seo: {
+				title: pageContent?.seo?.title || "",
+				description: pageContent?.seo?.description || "",
+				canonical: pageContent?.seo?.canonical || "",
+			},
+			data: formattedContent,
+		},
+		null,
+		2,
+	);
 
 	const handleCopyContent = () => {
 		navigator.clipboard

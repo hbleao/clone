@@ -5,29 +5,12 @@
   gap: 0.5rem;
 }
 
-.template {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.list {
+  height: 100%;
   padding: 1rem;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  text-align: left;
-  cursor: grab;
-  transition: all 0.2s;
-  touch-action: none;
-
-  &:hover {
-    border-color: #d1d5db;
-    background: #f9fafb;
-  }
-
-  p {
-    margin: 0;
-    font-size: 0.875rem;
-    color: #6b7280;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .isDragging {

@@ -9,6 +9,7 @@ import { Button, Dialog } from "@/components";
 
 interface SectionTemplateDialogProps {
 	onOpenChange: (open: boolean) => void;
+	handleSave: (formatData: any) => void;
 	template: any;
 }
 
@@ -94,6 +95,7 @@ const schema = {
 export function SectionTemplateDialog({
 	onOpenChange,
 	template,
+	handleSave,
 }: SectionTemplateDialogProps) {
 	const [formData, setFormData] = useState<any>({});
 	const parsedSchema = useMemo(() => {
@@ -107,12 +109,9 @@ export function SectionTemplateDialog({
 		}
 	}, [template.schema]);
 
-	const handleSave = async () => {
+	const onHandleSave = async () => {
 		try {
-			await saveTemplate({
-				...template,
-				data: formData,
-			});
+			await handleSave(formData);
 
 			toast.success("Template salvo com sucesso!");
 			onOpenChange(false);
@@ -148,7 +147,7 @@ export function SectionTemplateDialog({
 				>
 					Cancelar
 				</Button>
-				<Button type="button" onClick={handleSave}>
+				<Button type="button" onClick={onHandleSave}>
 					Salvar
 				</Button>
 			</div>

@@ -52,7 +52,7 @@ export default function LoginPage() {
 							label="Matrícula"
 							value={formData.registration}
 							placeholder="Digite sua matrícula"
-							onChange={(value) => handleChange("registration", value)}
+							onChange={(e) => handleChange("registration", e.target.value)}
 							required
 						/>
 					</div>
@@ -63,7 +63,7 @@ export default function LoginPage() {
 							label="Senha"
 							value={formData.password}
 							placeholder="Digite sua senha"
-							onChange={(value) => handleChange("password", value)}
+							onChange={(e) => handleChange("password", e.target.value)}
 							required
 						/>
 					</div>
@@ -79,8 +79,8 @@ export default function LoginPage() {
 				<Image
 					src="https://www.portoseguro.com.br/content/dam/home/logo.portosegurowhite.webp"
 					alt="logo da porto"
-					width={240}
-					height={40}
+					width={340}
+					height={60}
 				/>
 				<h1>Bem vindo de volta</h1>
 				<p>Acesse sua conta agora mesmo</p>
