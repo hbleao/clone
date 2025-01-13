@@ -139,7 +139,7 @@ export default function ComponentsPage() {
 									<p>{component.description || "Sem descrição"}</p>
 								</div>
 								<span
-									className={`${s.component_card__type} ${s[component.type.toLocaleLowerCase()]}`}
+									className={`${s.component_card__type} ${component.type.toLocaleLowerCase()}`}
 								>
 									{component.type}
 								</span>

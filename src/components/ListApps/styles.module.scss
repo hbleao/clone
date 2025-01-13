@@ -1,164 +1,202 @@
-.apps-grid {
+// Geometric Minimalist Design Tokens
+$color-background: #ffffff;
+$color-text-primary: #1a202c;
+$color-text-secondary: #4a5568;
+$color-accent-blue: #3182ce;
+$color-accent-green: #38a169;
+$color-accent-red: #e53e3e;
+
+$color-gray-50: #f7fafc;
+$color-gray-100: #edf2f7;
+$color-gray-200: #e2e8f0;
+
+$spacing-unit: 0.5rem;
+$border-radius: 0.625rem;
+
+$transition-speed: 0.25s;
+$transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+// Mixins
+@mixin flex-center {
   display: flex;
-  flex-wrap: wrap;
-  padding: 0 2.4rem;
-  gap: 2.4rem;
-  margin-top: 3.2rem;
+  align-items: center;
+  justify-content: center;
+}
 
-  .app-card {
-    width: 40rem;
-    position: relative;
-    background: $white;
-    border-radius: 2rem;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    padding: 2.4rem;
-    border: 0.1rem solid $gray2;
-    box-shadow: $shadow-sm;
+@mixin geometric-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
+    0 2px 4px -1px rgba(0, 0, 0, 0.02);
+}
+
+@mixin hover-transform {
+  transition: all $transition-speed $transition-easing;
+
+  &:hover {
+    transform: scale(1.02) translateY(-0.5rem);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.06),
+      0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  }
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: $spacing-unit * 4;
+}
+
+.app-card {
+  width: 380px;
+  min-height: 200px;
+  background-color: $color-background;
+  border-radius: $border-radius * 2;
+  border: 1px solid $color-gray-100;
+  padding: $spacing-unit * 4;
+  position: relative;
+  cursor: pointer;
+  @include geometric-shadow;
+  @include hover-transform;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-unit * 3;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
+      to right,
+      $color-accent-blue,
+      $color-accent-green
+    );
+    border-top-left-radius: $border-radius * 2;
+    border-top-right-radius: $border-radius * 2;
+  }
+
+  .platform-tag {
+    position: absolute;
+    top: $spacing-unit * 3;
+    right: $spacing-unit * 3;
+    padding: $spacing-unit $spacing-unit * 2;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $color-accent-blue;
+    background-color: rgba($color-accent-blue, 0.08);
+    border-radius: $border-radius;
+  }
+
+  .app-header {
     display: flex;
-    flex-direction: column;
-    gap: 1.6rem;
+    justify-content: space-between;
+    align-items: flex-start;
 
-    &:hover {
-      transform: translateY(-0.4rem);
-      box-shadow: $shadow-lg;
-      border-color: $gray3;
+    .app-info {
+      h3 {
+        font-size: 2rem;
+        color: $color-text-primary;
+        margin-bottom: $spacing-unit;
+        font-weight: 700;
+        line-height: 1.2;
+      }
 
-      .actions {
-        opacity: 1;
+      .description {
+        font-size: 1.4rem;
+        color: $color-text-secondary;
+        line-height: 1.5;
+        opacity: 0.9;
       }
     }
+  }
 
-    &::before {
-      content: "";
-      width: 100%;
-      height: 2px;
-      position: absolute;
-      top: 30px;
-      left: 0px;
-      margin-right: 0.4rem;
-      background: $gray3;
-      vertical-align: middle;
+  .actions {
+    position: absolute;
+    top: 46px;
+    right: 16px;
+    display: flex;
+    gap: $spacing-unit * 2;
+
+    .button {
+      @include flex-center;
+      width: $spacing-unit * 6;
+      height: $spacing-unit * 6;
+      border-radius: 50%;
+      border: none;
+      background-color: $color-gray-100;
+      color: $color-text-secondary;
+      transition: all $transition-speed $transition-easing;
+      cursor: pointer;
+
+      svg {
+        width: $spacing-unit * 3;
+        height: $spacing-unit * 3;
+      }
+
+      &:hover {
+        background-color: $color-gray-200;
+        color: $color-text-primary;
+      }
+
+      &.delete-btn:hover {
+        background-color: rgba($color-accent-red, 0.1);
+        color: $color-accent-red;
+      }
+
+      &.edit-btn:hover {
+        background-color: rgba($color-accent-green, 0.1);
+        color: $color-accent-green;
+      }
     }
+  }
 
-    .platform-tag {
-      position: relative;
-      width: max-content;
-      padding: 0rem 0.8rem;
-      font-size: $spacing-3;
-      display: block;
-      font-weight: 500;
-      color: $gray6;
-      background: $white;
-      z-index: 10;
-      text-transform: uppercase;
-      letter-spacing: 0.1rem;
-      margin-bottom: $spacing-2;
-    }
+  .app-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-unit * 2;
+    margin-top: auto;
+    padding-top: $spacing-unit * 3;
+    border-top: 1px solid $color-gray-100;
 
-    .app-header {
-      padding: 0;
-      background: none;
-      margin-bottom: $spacing-4;
+    .stat-item {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
 
-      .app-info {
-        h3 {
-          font-size: 2.4rem;
-          font-weight: 600;
-          color: $gray9;
-          margin-bottom: 0.8rem;
-        }
-
-        .owner {
-          font-size: 1.4rem;
-          color: $gray7;
-        }
+      .label {
+        font-size: 1rem;
+        color: $color-text-secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 500;
       }
-    }
 
-    .description {
-      padding: 0;
-      font-size: 1.4rem;
-      color: $gray7;
-      line-height: 1.6;
-      border: none;
-    }
-
-    .actions {
-      position: absolute;
-      top: 5rem;
-      right: 2rem;
-      display: flex;
-      gap: 0.8rem;
-      opacity: 0;
-      transition: opacity 0.2s;
-
-      .button {
+      .value {
+        font-size: 1.2rem;
+        color: $color-text-primary;
+        font-weight: 600;
         display: flex;
         align-items: center;
-        justify-content: center;
-        width: 3.2rem;
-        height: 3.2rem;
-        border: none;
-        border-radius: 0.8rem;
-        background: $gray1;
-        color: $gray7;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &:hover {
-          background: $gray2;
-          color: $gray9;
-        }
-
-        &.delete-btn:hover {
-          background: $red1;
-          color: $red7;
-        }
-
-        &.edit-btn:hover {
-          background: $blue1;
-          color: $blue7;
-        }
+        gap: $spacing-unit;
 
         svg {
-          width: 1.8rem;
-          height: 1.8rem;
+          color: $color-text-secondary;
+          opacity: 0.7;
         }
       }
     }
+  }
+}
 
-    .app-stats {
-      padding: 0;
-      display: grid;
-      gap: 1.2rem;
-      margin-top: auto;
+@media (max-width: 768px) {
+  .apps-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-unit * 2;
+  }
 
-      .stat-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 1.4rem;
-
-        .label {
-          color: $gray6;
-        }
-
-        .value {
-          font-size: 1.4rem;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          gap: 0.4rem;
-
-          svg {
-            color: $gray9;
-          }
-        }
-      }
-    }
+  .app-card {
+    width: 100%;
   }
 }

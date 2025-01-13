@@ -28,3 +28,28 @@ a {
 button {
 	cursor: pointer;
 }
+
+.system {
+	color: #ce21a5;
+	background-color: rgba(206, 33, 165, 0.2);
+}
+
+.custom {
+	color: #2da037;
+	background-color: rgba(45, 160, 55, 0.3);
+}
+
+.card {
+	color: rgb(118, 48, 210);
+	background-color: rgba(118, 48, 210, 0.2);
+}
+
+.data {
+	color: #848b21;
+	background-color: rgba(199, 210, 48, 0.3);
+}
+
+.hero {
+	color: #3b82f6;
+	background-color: rgba(59, 130, 246, 0.2);
+}

@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { ChevronRight, Users } from "lucide-react";
+import { ChevronRight, FileStack, Users } from "lucide-react";
 import { getPagesByAppId } from "@/actions/page";
 
 import type { App } from "@/app/apps/types";
@@ -50,7 +50,12 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 	return (
 		<div className={s["apps-grid"]}>
 			{apps.map((app: App) => (
-				<div key={app.id} className={s["app-card"]}>
+				<div
+					key={app.id}
+					className={s["app-card"]}
+					onClick={() => router.push(`/apps/${app.slug}`)}
+					onKeyDown={() => router.push(`/apps/${app.slug}`)}
+				>
 					<span className={s["platform-tag"]}>{app.title}</span>
 					<div className={s["app-header"]}>
 						<div className={s["app-info"]}>
@@ -121,19 +126,11 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 						<div className={s["stat-item"]}>
 							<span className={s.label}>Páginas cadastradas</span>
 							<span className={s.value}>
+								<FileStack size={14} />
 								{pageCountMap[app.id] ?? 0} páginas
 							</span>
 						</div>
 					</div>
-					<Button
-						type="button"
-						width="contain"
-						size="md"
-						onClick={() => router.push(`/apps/${app.slug}`)}
-					>
-						Acessar páginas
-						<ChevronRight />
-					</Button>
 				</div>
 			))}
 		</div>

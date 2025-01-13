@@ -31,11 +31,16 @@ export function DraggableComponentItem({
 	return (
 		<>
 			<div
-				className={s.draggableItem}
+				className={`${s.draggableItem}`}
 				onClick={handleClick}
 				onKeyDown={handleClick}
 			>
-				<h3 className={s.title}>{component.name}</h3>
+				<h3 className={`${s.title}`}>
+					<span className={`${s.badge} ${component.type}`}>
+						{component.type}
+					</span>
+					{component.name}
+				</h3>
 			</div>
 		</>
 	);
