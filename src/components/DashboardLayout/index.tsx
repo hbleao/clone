@@ -88,7 +88,6 @@ export function DashboardLayout({ children, slug }: any) {
 				</nav>
 			</aside>
 			<div className={s.contentContainer}>
-				<Header />
 				<div className={s.content}>{children}</div>
 			</div>
 		</main>

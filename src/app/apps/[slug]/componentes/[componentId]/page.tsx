@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import s from "./styles.module.scss";
 
-import { Input, Textarea, DashboardLayout } from "@/components";
+import { Input, DashboardLayout } from "@/components";
 import {
 	createComponentService,
 	getComponentService,
@@ -263,7 +263,7 @@ export default function ComponentPage() {
 			const payload = {
 				name: formData.name,
 				description: formData.description || "",
-				type: "custom",
+				type: formData.type,
 				schema: {
 					fields: formData.schema.fields,
 				},
@@ -392,9 +392,9 @@ export default function ComponentPage() {
 
 				// Função para navegar e modificar campos aninhados
 				const navigateAndModify = (
-					currentFields: Field[], 
-					remainingPath: number[], 
-					depth: number = 0
+					currentFields: Field[],
+					remainingPath: number[],
+					depth = 0,
 				): Field[] => {
 					// Condição de parada para evitar recursão infinita
 					if (depth > 10) return currentFields;
@@ -422,7 +422,7 @@ export default function ComponentPage() {
 					// Lógica para campos de objeto
 					if (targetField.type === "object") {
 						targetField.fields = targetField.fields || [];
-						
+
 						// Se não há mais caminho, adiciona um novo campo
 						if (restPath.length === 0) {
 							targetField.fields.push({
@@ -434,16 +434,19 @@ export default function ComponentPage() {
 						} else {
 							// Continua navegando nos campos aninhados
 							targetField.fields = navigateAndModify(
-								targetField.fields, 
-								restPath, 
-								depth + 1
+								targetField.fields,
+								restPath,
+								depth + 1,
 							);
 						}
-					} 
+					}
 					// Lógica para campos de array com tipo objeto
-					else if (targetField.type === "array" && targetField.arrayType?.type === "object") {
+					else if (
+						targetField.type === "array" &&
+						targetField.arrayType?.type === "object"
+					) {
 						targetField.arrayType.fields = targetField.arrayType.fields || [];
-						
+
 						// Se não há mais caminho, adiciona um novo campo ao template do array
 						if (restPath.length === 0) {
 							targetField.arrayType.fields.push({
@@ -455,9 +458,9 @@ export default function ComponentPage() {
 						} else {
 							// Continua navegando nos campos aninhados do array
 							targetField.arrayType.fields = navigateAndModify(
-								targetField.arrayType.fields, 
-								restPath, 
-								depth + 1
+								targetField.arrayType.fields,
+								restPath,
+								depth + 1,
 							);
 						}
 					}
@@ -1066,6 +1069,26 @@ export default function ComponentPage() {
 							defaultValue={formData.description}
 							onChange={(e) => handleInputChange("description")(e.target.value)}
 						/>
+					</div>
+
+					<div className={s.formGroup}>
+						<label>Tipo do Componente</label>
+						<select
+							value={formData.type}
+							onChange={(e) => {
+								setFormData((prev) => ({
+									...prev,
+									type: e.target.value,
+								}));
+							}}
+							className={s.input}
+						>
+							<option value="system">Sistema</option>
+							<option value="custom">Custom</option>
+							<option value="hero">Hero</option>
+							<option value="card">Card</option>
+							<option value="data">Dados</option>
+						</select>
 					</div>
 
 					<div className={s.field}>
