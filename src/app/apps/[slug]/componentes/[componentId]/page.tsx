@@ -253,20 +253,21 @@ export default function ComponentPage() {
 		setLoading(true);
 
 		try {
-			// Usar o estado formData ao invés de pegar do form
-			if (!formData.name?.trim()) {
-				toast.error("O nome do componente é obrigatório");
-				setLoading(false);
-				return;
-			}
+			console.log("🚀 Iniciando submissão do formulário de componente", { 
+				componentId: params.componentId, 
+				formData: {
+					name: formData.name,
+					type: formData.type,
+					description: formData.description,
+					schema: formData.schema.fields
+				} 
+			});
 
 			const payload = {
 				name: formData.name,
-				description: formData.description || "",
 				type: formData.type,
-				schema: {
-					fields: formData.schema.fields,
-				},
+				description: formData.description || "",
+				schema: formData.schema.fields.length > 0 ? formData.schema.fields : null,
 			};
 
 			let result;
@@ -280,6 +281,9 @@ export default function ComponentPage() {
 			}
 
 			if (result.success) {
+				console.log("✅ Componente salvo com sucesso", { 
+					componentId: result.data?.id 
+				});
 				toast.success(
 					isEditing
 						? "Componente atualizado com sucesso!"
@@ -287,39 +291,21 @@ export default function ComponentPage() {
 				);
 				router.push(`/apps/${params.slug}/componentes`);
 			} else {
-				// Função auxiliar para extrair mensagem de erro
-				const getErrorMessage = (error: any): string => {
-					if (typeof error === "string") return error;
-					if (error?.message && typeof error.message === "string")
-						return error.message;
-					return "Erro desconhecido";
-				};
-
-				if (Array.isArray(result?.error)) {
-					result.error.forEach((err) => {
-						toast.error(getErrorMessage(err));
-					});
-				} else {
-					toast.error(
-						getErrorMessage(result.error) ||
-							`Erro ao ${isEditing ? "atualizar" : "criar"} componente`,
-					);
-				}
+				console.error("❌ Erro na submissão do componente", { result });
+				toast.error(
+					result.error?.message || 
+					`Erro ao ${isEditing ? "atualizar" : "criar"} componente`,
+				);
 			}
 		} catch (error: any) {
-			console.error(
-				`Erro ao ${isEditing ? "atualizar" : "criar"} componente:`,
-				error,
-			);
-
-			const errorMessage =
+			console.error("❌ Erro crítico na submissão", { error });
+			toast.error(
 				typeof error === "string"
 					? error
 					: error?.message && typeof error.message === "string"
 						? error.message
-						: `Erro ao ${isEditing ? "atualizar" : "criar"} componente. Tente novamente.`;
-
-			toast.error(errorMessage);
+						: `Erro ao ${isEditing ? "atualizar" : "criar"} componente. Tente novamente.`,
+			);
 		} finally {
 			setLoading(false);
 		}

@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+const componentTypeSchema = z.enum([
+  "hero", 
+  "features", 
+  "testimonials", 
+  "custom", 
+  "card"  
+]);
+
 const fieldOptionSchema = z.object({
   label: z.string(),
   value: z.string(),
@@ -31,8 +39,8 @@ const schemaSchema = z.object({
 });
 
 export const componentSchema = z.object({
-  name: z.string().min(1, "Nome é obrigatório"),
-  type: z.enum(["hero", "features", "testimonials", "custom"]),
+  name: z.string().min(2, "Nome do componente deve ter pelo menos 2 caracteres"),
+  type: componentTypeSchema,
   description: z.string().min(1, "Descrição é obrigatória"),
   schema: schemaSchema.optional(),
   defaultData: z.record(z.any()).optional(),
