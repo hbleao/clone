@@ -1,8 +1,8 @@
-export interface User {
+export interface Permission {
 	id: string;
 	name: string;
-	email: string;
-	role: string;
+	slug: string;
+	description?: string;
 	createdAt: string;
 	updatedAt: string;
 	metadata?: Record<string, unknown>;

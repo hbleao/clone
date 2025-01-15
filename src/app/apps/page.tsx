@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FolderPlus, Plus } from "lucide-react";
+import { toast } from "sonner";
 
 import "./styles.scss";
 
@@ -46,13 +47,19 @@ export default function AppsPage() {
 		name: string;
 		description?: string;
 	}) => {
-		if (!selectedApp) return;
+		try {
+			if (!selectedApp) return;
 
-		const result = await updateApp(selectedApp.id, data);
-		if (result.app) {
+			const result = await updateApp(selectedApp.id, data);
+
+			if (!result.app) return;
+			toast.success("Aplicativo atualizado com sucesso.");
 			loadApps();
 			setIsEditModalOpen(false);
 			setSelectedApp(null);
+		} catch (error) {
+			console.error(error);
+			toast.error("Não foi possível atualizar o aplicativo.");
 		}
 	};
 
@@ -132,12 +139,12 @@ export default function AppsPage() {
 								<Input
 									label="Organização"
 									value={selectedApp.title}
-									onChange={(value: string) => {
+									onChange={(e) => {
 										setSelectedApp((prev) => {
 											if (!prev) return null;
 											return {
 												...prev,
-												title: value,
+												title: e.target.value,
 											};
 										});
 									}}
@@ -147,12 +154,12 @@ export default function AppsPage() {
 								<Input
 									label="Nome"
 									value={selectedApp.name}
-									onChange={(value: string) => {
+									onChange={(e) => {
 										setSelectedApp((prev) => {
 											if (!prev) return null;
 											return {
 												...prev,
-												name: value,
+												name: e.target.value,
 											};
 										});
 									}}
@@ -162,12 +169,12 @@ export default function AppsPage() {
 								<Textarea
 									label="Descrição"
 									value={selectedApp?.description ?? ""}
-									onChange={(value: string) => {
+									onChange={(e) => {
 										setSelectedApp((prev) => {
 											if (!prev) return null;
 											return {
 												...prev,
-												description: value,
+												description: e.target.value,
 											};
 										});
 									}}

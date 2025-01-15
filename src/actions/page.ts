@@ -3,6 +3,34 @@
 import { prisma } from "../lib/prisma";
 import { logger } from "@/utils";
 
+export interface Seo {
+	id?: string;
+	title?: string | null;
+	description?: string | null;
+	keywords?: string | null;
+	canonical?: string | null;
+	robots?: string | null;
+	createdAt?: Date;
+	updatedAt?: Date;
+	pageId?: string;
+}
+
+export interface Page {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	content: string | null;
+	appId: string;
+	type: string;
+	slug: string;
+	title: string;
+	status: string;
+	author: string;
+	publishedAt: Date | null;
+	templateId: string | null;
+	seo?: Seo;
+}
+
 interface CreatePageData {
 	title: string;
 	slug: string;
@@ -43,7 +71,6 @@ export async function createPage(data: CreatePageData) {
 			return { success: false, error: "Aplicativo não encontrado" };
 		}
 
-		// Verificar se já existe uma página com o mesmo slug no app
 		const existingPage = await prisma.page.findFirst({
 			where: {
 				AND: [{ appId: data.appId }, { slug: data.slug }],
@@ -173,7 +200,6 @@ export async function getPageById(id: string) {
 
 		let parsedContent = [];
 		try {
-			// Se o conteúdo for string, tenta fazer parse
 			if (typeof page.content === "string") {
 				parsedContent = JSON.parse(page.content);
 			} else if (page.content) {
@@ -212,7 +238,6 @@ export async function getPageById(id: string) {
 
 export async function updatePage(pageId: string, data: UpdatePageData) {
 	try {
-		// Se o conteúdo for objeto, converte para string
 		const processedData = {
 			...data,
 			content: JSON.stringify(data.content),
@@ -319,12 +344,10 @@ export async function deletePageById(id: string) {
 
 export async function duplicatePage(pageId: string) {
 	try {
-		// Buscar página completa com todas as relações
 		const page = await prisma.page.findUnique({
 			where: { id: pageId },
 			include: {
 				seo: true,
-				// Adicionar outras relações se necessário
 			},
 		});
 
@@ -332,14 +355,11 @@ export async function duplicatePage(pageId: string) {
 			return { success: false, error: "Página não encontrada" };
 		}
 
-		// Gerar slug único
 		const baseSlug = `${page.slug}-copia`;
 		let uniqueSlug = baseSlug;
 		let counter = 1;
 
-		// Verificar se já existe um slug igual
-		// biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-		let existingPage;
+		let existingPage: { id: string } | null;
 		do {
 			existingPage = await prisma.page.findUnique({
 				where: {
@@ -362,7 +382,6 @@ export async function duplicatePage(pageId: string) {
 				type: page.type,
 				status: "draft",
 				appId: page.appId,
-				userId: page.userId,
 				content: page.content,
 				author: page.author,
 			},
