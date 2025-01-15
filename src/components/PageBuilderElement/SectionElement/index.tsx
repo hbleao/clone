@@ -8,9 +8,8 @@ import s from "./styles.module.scss";
 
 import { Button, SectionTemplateDialog } from "@/components";
 import { usePageBuilder } from "@/hooks";
-import type { PageBuilderElementProps } from "@/types/pageBuilder";
 
-export function SectionElement({ element, onRemove }: PageBuilderElementProps) {
+export function SectionElement({ element, onRemove }: any) {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const { template, content } = element;
 	const { updateElement } = usePageBuilder();
@@ -42,10 +41,10 @@ export function SectionElement({ element, onRemove }: PageBuilderElementProps) {
 							variant="ghost"
 							onClick={() => setDialogOpen(true)}
 						>
-							<Pencil className="h-4 w-4" />
+							<Pencil />
 						</Button>
 						<Button type="button" variant="ghost" onClick={onRemove}>
-							<Trash2 className="h-4 w-4" />
+							<Trash2 />
 						</Button>
 					</div>
 				</div>
@@ -64,6 +63,7 @@ export function SectionElement({ element, onRemove }: PageBuilderElementProps) {
 					onOpenChange={setDialogOpen}
 					template={template}
 					handleSave={handleSave}
+					content={content}
 				/>
 			)}
 		</>

@@ -11,8 +11,6 @@ export const SectionTemplateRenderField = ({
 	field,
 	formData,
 	setFormData,
-	schema,
-	parentPath,
 }: SectionTemplateRenderFieldProps) => {
 	const getNestedValue = (obj: any, path: string) => {
 		// Se não houver pontos no caminho, é um campo simples
@@ -127,22 +125,6 @@ export const SectionTemplateRenderField = ({
 		});
 	};
 
-	const handleObjectChange = (fieldName: string, value: string) => {
-		setFormData((prev) => {
-			const newFormData = { ...prev };
-			const objectPath = field.name;
-			const object = getNestedValue(newFormData, objectPath) || {};
-
-			const newObject = {
-				...object,
-				[fieldName]: value,
-			};
-
-			setNestedValue(newFormData, objectPath, newObject);
-			return newFormData;
-		});
-	};
-
 	const renderObjectFields = (objectField: any, parentPath = "") => {
 		return (
 			<div className={s.objectField}>
@@ -156,91 +138,9 @@ export const SectionTemplateRenderField = ({
 							field={field}
 							formData={formData}
 							setFormData={setFormData}
-							schema={schema}
-							parentPath={fieldPath}
 						/>
 					);
 				})}
-			</div>
-		);
-	};
-
-	const renderArrayFields = (arrayField: any, parentPath: string) => {
-		const arrayValue = getNestedValue(formData, parentPath) || [];
-
-		return (
-			<div className={s.arrayField}>
-				<div className={s.arrayHeader}>
-					<label>
-						{arrayField.label}
-						{arrayField.required && <span className={s.required}>*</span>}
-					</label>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={() => handleAddArrayItem(parentPath)}
-						className={s.addArrayButton}
-					>
-						<Plus className="h-4 w-4 mr-2" />
-						Adicionar Item
-					</Button>
-				</div>
-
-				{arrayValue.length > 0 ? (
-					<div className={s.arrayItems}>
-						{arrayValue.map((item: any, index: number) => (
-							<div key={index} className={s.arrayItem}>
-								<div className={s.arrayItemHeader}>
-									<span>Item {index + 1}</span>
-									<Button
-										type="button"
-										variant="ghost"
-										className={s.removeButton}
-										onClick={() => handleRemoveArrayItem(parentPath, index)}
-									>
-										<Trash2 className="h-4 w-4" />
-									</Button>
-								</div>
-								<div className={s.arrayItemFields}>
-									{arrayField.arrayType?.type === "object" &&
-										arrayField.arrayType.fields?.map((subField: any) => {
-											const fieldPath = `${parentPath}.${index}.${subField.name}`;
-											return (
-												<div key={subField.name} className={s.field}>
-													<label htmlFor={fieldPath}>
-														{subField.label}
-														{subField.required && (
-															<span className={s.required}>*</span>
-														)}
-													</label>
-													<input
-														type="text"
-														id={fieldPath}
-														name={fieldPath}
-														value={item[subField.name] || ""}
-														onChange={(e) =>
-															handleArrayChange(
-																parentPath,
-																index,
-																subField.name,
-																e.target.value,
-															)
-														}
-														required={subField.required}
-														className={s.input}
-													/>
-												</div>
-											);
-										})}
-								</div>
-							</div>
-						))}
-					</div>
-				) : (
-					<div className={s.emptyArray}>
-						<p>Nenhum item adicionado</p>
-					</div>
-				)}
 			</div>
 		);
 	};
@@ -313,7 +213,7 @@ export const SectionTemplateRenderField = ({
 											className={s.removeButton}
 											onClick={() => handleRemoveArrayItem(field.name, index)}
 										>
-											<Trash2 className="h-4 w-4" />
+											<Trash2 />
 										</Button>
 									</div>
 									<div className={s.arrayItemFields}>

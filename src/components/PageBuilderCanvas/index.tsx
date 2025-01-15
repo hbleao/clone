@@ -18,7 +18,7 @@ import {
 import { nanoid } from "nanoid";
 
 import { usePageBuilder } from "@/hooks";
-import { PageBuilderElement } from "@/components";
+import { PageBuilderElement, type ElementType } from "@/components";
 
 import s from "./styles.module.scss";
 
@@ -62,10 +62,14 @@ export const PageBuilderCanvas = () => {
 				return;
 			}
 
-			const element = {
+			const element: ElementType = {
 				id: nanoid(),
 				type: "section",
-				template,
+				template: {
+					id: template.id,
+					name: template.name,
+					defaultData: template.defaultData || {},
+				},
 				content: template.defaultData || {},
 			};
 
@@ -110,8 +114,15 @@ export const PageBuilderCanvas = () => {
 						<PageBuilderElement
 							key={element.id}
 							element={element}
-							onEdit={() => {
-								// Implementar atualização do elemento
+							onEdit={(updatedElement) => {
+								const index = elements.findIndex(
+									(e) => e.id === updatedElement.id,
+								);
+								if (index !== -1) {
+									const newElements = [...elements];
+									newElements[index] = updatedElement;
+									setElements(newElements);
+								}
 							}}
 							onRemove={() => removeElement(element.id)}
 						/>

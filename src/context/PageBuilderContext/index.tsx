@@ -5,13 +5,9 @@ import {
 	createContext,
 	useState,
 } from "react";
+import type { ElementType } from "@/components";
 
-type PageBuilderElement = {
-	id: string;
-	type: string;
-	content?: string | Record<string, any>;
-	styles?: Record<string, string>;
-};
+type PageBuilderElement = ElementType;
 
 type PageBuilderContextType = {
 	elements: PageBuilderElement[];
@@ -40,7 +36,7 @@ export const PageBuilderContextProvider = ({
 		useState<PageBuilderElement[]>(initialElements);
 	const [selectedElement, setSelectedElement] =
 		useState<PageBuilderElement | null>(null);
-
+	console.log(elements);
 	const addElement = (index: number, element: PageBuilderElement) => {
 		setElements((oldState) => {
 			const newElements = [...oldState];
