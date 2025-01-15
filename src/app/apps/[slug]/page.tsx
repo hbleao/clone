@@ -1,21 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Copy, Edit, PlusIcon, Trash } from "lucide-react";
-import { toast } from "sonner";
 import { getAppBySlug } from "@/actions/app";
+import { Copy, Edit, PlusIcon, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import "./styles.scss";
 
 import {
-	getPagesByAppId,
 	createPage,
-	updatePageFull,
 	deletePageById,
 	duplicatePage,
+	getPagesByAppId,
+	updatePageFull,
 } from "@/actions/page";
-import { Button, Dialog, Input, Textarea, DashboardLayout } from "@/components";
+import { Button, DashboardLayout, Dialog, Input, Textarea } from "@/components";
 
 import type { App, Page, PageForm } from "./types";
 
@@ -108,27 +108,27 @@ export default function AppDetailsPage({ params }) {
 			status: page.status,
 			seo: page.seo
 				? {
-						id: page.seo.id,
-						title: page.seo.title,
-						description: page.seo.description,
-						keywords: page.seo.keywords,
-						canonical: page.seo.canonical,
-						robots: page.seo.robots,
-						pageId: page.seo.pageId,
-						createdAt: new Date(page.seo.createdAt),
-						updatedAt: new Date(page.seo.updatedAt),
-					}
+					id: page.seo.id,
+					title: page.seo.title,
+					description: page.seo.description,
+					keywords: page.seo.keywords,
+					canonical: page.seo.canonical,
+					robots: page.seo.robots,
+					pageId: page.seo.pageId,
+					createdAt: new Date(page.seo.createdAt),
+					updatedAt: new Date(page.seo.updatedAt),
+				}
 				: {
-						id: "",
-						title: "",
-						description: "",
-						keywords: "",
-						canonical: "",
-						robots: "index, follow",
-						pageId: "",
-						createdAt: new Date(),
-						updatedAt: new Date(),
-					},
+					id: "",
+					title: "",
+					description: "",
+					keywords: "",
+					canonical: "",
+					robots: "index, follow",
+					pageId: "",
+					createdAt: new Date(),
+					updatedAt: new Date(),
+				},
 		});
 		setIsCreateModalOpen(true);
 	};
@@ -139,7 +139,7 @@ export default function AppDetailsPage({ params }) {
 			event.stopPropagation();
 		}
 
-		if (!pageToDelete) return;
+		if (!pageToDelete?.id) return;
 
 		try {
 			const result = await deletePageById(pageToDelete.id);
@@ -407,6 +407,8 @@ export default function AppDetailsPage({ params }) {
 								<Button
 									type="button"
 									variant="disabled"
+									size="lg"
+									width="contain"
 									onClick={() => {
 										setIsDeleteModalOpen(false);
 										setPageToDelete(null);
@@ -417,6 +419,8 @@ export default function AppDetailsPage({ params }) {
 								<Button
 									type="button"
 									variant="danger"
+									size="lg"
+									width="contain"
 									onClick={(event) => {
 										event.stopPropagation();
 										handleDeletePage(event);

@@ -66,22 +66,20 @@ $transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
     left: 0;
     width: 100%;
     height: 4px;
-    background: linear-gradient(
-      to right,
-      $color-accent-blue,
-      $color-accent-green
-    );
+    background: linear-gradient(to right,
+        $color-accent-blue,
+        $color-accent-green );
     border-top-left-radius: $border-radius * 2;
     border-top-right-radius: $border-radius * 2;
   }
 
   .platform-tag {
-    position: absolute;
-    top: $spacing-unit * 3;
-    right: $spacing-unit * 3;
+    width: max-content;
+    display: block;
     padding: $spacing-unit $spacing-unit * 2;
     font-size: 0.8rem;
     font-weight: 600;
+    margin-bottom: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: $color-accent-blue;
@@ -114,7 +112,7 @@ $transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
 
   .actions {
     position: absolute;
-    top: 46px;
+    top: 24px;
     right: 16px;
     display: flex;
     gap: $spacing-unit * 2;

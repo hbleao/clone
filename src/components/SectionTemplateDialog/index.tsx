@@ -4,8 +4,8 @@ import { toast } from "sonner";
 
 import s from "./styles.module.scss";
 
-import { SectionTemplateRenderField } from "../SectionTemplateRenderField";
 import { Button, Dialog } from "@/components";
+import { SectionTemplateRenderField } from "../SectionTemplateRenderField";
 
 interface SectionTemplateDialogProps {
 	onOpenChange: (open: boolean) => void;
@@ -139,16 +139,18 @@ export function SectionTemplateDialog({
 				))}
 			</div>
 
-			<div className={s.actions}>
+			<div className={s.footer}>
 				<Button
 					type="button"
+					width="contain"
+					size="lg"
 					variant="disabled"
 					onClick={() => onOpenChange(false)}
 				>
 					Cancelar
 				</Button>
-				<Button type="button" onClick={onHandleSave}>
-					Salvar
+				<Button type="button" width="contain" size="lg" onClick={onHandleSave}>
+					Salvar edição
 				</Button>
 			</div>
 		</Dialog>

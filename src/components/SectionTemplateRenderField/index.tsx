@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import { Trash2, Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 import s from "./styles.module.scss";
 
@@ -293,7 +292,7 @@ export const SectionTemplateRenderField = ({
 						</label>
 						<Button
 							type="button"
-							variant="outline"
+							variant="insurance"
 							onClick={() => handleAddArrayItem(field.name)}
 							className={s.addArrayButton}
 						>

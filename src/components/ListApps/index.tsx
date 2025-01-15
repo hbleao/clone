@@ -1,15 +1,14 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { ChevronRight, FileStack, Users } from "lucide-react";
 import { getPagesByAppId } from "@/actions/page";
+import { FileStack, Users } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import type { App } from "@/app/apps/types";
 import type { ListAppsProps } from "./types";
 
 import s from "./styles.module.scss";
 
-import { Button } from "../Button";
 
 export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 	const router = useRouter();
@@ -56,9 +55,9 @@ export const ListApps = ({ apps, handleDelete, handleEdit }: ListAppsProps) => {
 					onClick={() => router.push(`/apps/${app.slug}`)}
 					onKeyDown={() => router.push(`/apps/${app.slug}`)}
 				>
-					<span className={s["platform-tag"]}>{app.title}</span>
 					<div className={s["app-header"]}>
 						<div className={s["app-info"]}>
+							<span className={s["platform-tag"]}>{app.title}</span>
 							<h3>{app.name}</h3>
 							<p className={s.description}>
 								{app.description || "Nenhuma descrição fornecida"}
