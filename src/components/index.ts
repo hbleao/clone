@@ -9,6 +9,7 @@ export * from "./Spinner";
 export * from "./Switch";
 export * from "./Textarea";
 export * from "./Table";
+export * from "./Select";
 
 // Layout
 export * from "./DashboardLayout";

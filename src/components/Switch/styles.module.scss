@@ -4,15 +4,26 @@
   position: relative;
   cursor: pointer;
   border-radius: 48px;
-  border: 1px solid $gray4;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    border-color: #9ca3af;
+  }
 }
 
 .switchChecked {
-  background: $blue5;
+  background: #3b82f6;
+  border-color: #3b82f6;
+
+  &:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+  }
 }
 
 .switchNoChecked {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #f3f4f6;
 }
 
 .circle {
@@ -21,15 +32,19 @@
   border-radius: 99px;
   position: absolute;
   top: 2px;
+  transition: all 0.2s ease-in-out;
 }
 
 .checked {
-  background-color: $blue9;
-  left: 4px;
+  background-color: white;
+  right: 4px;
+  left: auto;
 }
+
 .noChecked {
-  background-color: $blue9;
-  left: 21px;
+  background-color: #9ca3af;
+  left: 4px;
+  right: auto;
 }
 
 .fluid {
@@ -37,6 +52,7 @@
 }
 
 .contain {
+  height: 20px;
   width: 40px;
   max-width: 40px;
   min-width: 40px;

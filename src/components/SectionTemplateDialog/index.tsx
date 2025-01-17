@@ -34,12 +34,11 @@ export function SectionTemplateDialog({
 	};
 
 	return (
-		<Dialog title="Editar seção" handleCloseModal={() => onOpenChange(false)}>
-			<p className={s.subtitle}>
-				{template.name} - {template.type}
-			</p>
-
-			<div className={s.fields}>
+		<Dialog
+			title={` Editar seção ${template.name}`}
+			handleCloseModal={() => onOpenChange(false)}
+		>
+			<div className={s.dialogContent}>
 				{template.schema.fields?.map((field: any) => (
 					<SectionTemplateRenderField
 						key={field.name}
@@ -49,21 +48,26 @@ export function SectionTemplateDialog({
 						schema={template.schema}
 					/>
 				))}
-			</div>
 
-			<div className={s.footer}>
-				<Button
-					type="button"
-					width="contain"
-					size="lg"
-					variant="disabled"
-					onClick={() => onOpenChange(false)}
-				>
-					Cancelar
-				</Button>
-				<Button type="button" width="contain" size="lg" onClick={onHandleSave}>
-					Salvar edição
-				</Button>
+				<div className={s.footer}>
+					<Button
+						type="button"
+						width="contain"
+						size="lg"
+						variant="disabled"
+						onClick={() => onOpenChange(false)}
+					>
+						Cancelar
+					</Button>
+					<Button
+						type="button"
+						width="contain"
+						size="lg"
+						onClick={onHandleSave}
+					>
+						Salvar edição
+					</Button>
+				</div>
 			</div>
 		</Dialog>
 	);

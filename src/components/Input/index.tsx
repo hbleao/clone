@@ -1,17 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import s from './styles.module.scss';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  value?: string | number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function Input({ label, error, required, ...props }: InputProps) {
+export function Input({ 
+  label, 
+  error, 
+  required, 
+  value,
+  onChange,
+  ...props 
+}: InputProps) {
   const [touched, setTouched] = useState(false);
-  const [value, setValue] = useState(props.defaultValue || '');
-  const showError = touched && required && !value;
+  const [internalValue, setInternalValue] = useState(value || '');
+  const showError = touched && required && !internalValue;
+
+  useEffect(() => {
+    setInternalValue(value || '');
+  }, [value]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInternalValue(e.target.value);
+    onChange?.(e);
+  };
 
   return (
     <div className={s.inputContainer}>
@@ -23,15 +41,13 @@ export function Input({ label, error, required, ...props }: InputProps) {
       )}
       <input
         {...props}
+        value={internalValue}
         className={`${s.input} ${showError ? s.error : ''}`}
         onBlur={(e) => {
           setTouched(true);
           props.onBlur?.(e);
         }}
-        onChange={(e) => {
-          setValue(e.target.value);
-          props.onChange?.(e);
-        }}
+        onChange={handleChange}
       />
       {showError && (
         <span className={s.errorMessage}>

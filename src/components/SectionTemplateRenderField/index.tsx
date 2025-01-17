@@ -1,9 +1,7 @@
 "use client";
 import { Plus, Trash2 } from "lucide-react";
-
 import s from "./styles.module.scss";
-
-import { Button } from "@/components";
+import { Button, Select, Switch } from "@/components";
 import { WysiwygEditor } from "../WysiwygEditor";
 import type { SectionTemplateRenderFieldProps } from "./types";
 
@@ -181,217 +179,135 @@ export const SectionTemplateRenderField = ({
 		);
 	};
 
-	switch (field.type) {
-		case "array":
-			const arrayValue = getNestedValue(formData, field.name) || [];
-			return (
-				<div className={s.arrayField}>
-					<div className={s.arrayHeader}>
-						<label>
-							{field.label}
-							{field.required && <span className={s.required}>*</span>}
-						</label>
+	const renderField = () => {
+		switch (field.type) {
+			case "text":
+				return (
+					<input
+						type="text"
+						value={value || ""}
+						onChange={(e) => handleChange(e.target.value)}
+						className={s.input}
+					/>
+				);
+
+			case "textarea":
+				return (
+					<textarea
+						value={value || ""}
+						onChange={(e) => handleChange(e.target.value)}
+						className={s.textarea}
+					/>
+				);
+
+			case "wysiwyg":
+				return (
+					<WysiwygEditor
+						value={value || ""}
+						onChange={(content) => handleChange(content)}
+					/>
+				);
+
+			case "number":
+				return (
+					<input
+						type="number"
+						value={value || ""}
+						onChange={(e) => handleChange(e.target.value)}
+						className={s.input}
+					/>
+				);
+
+			case "select":
+				return (
+					<Select
+						options={
+							field.selectOptions?.map((opt: any) => ({
+								value: opt.value,
+								label: opt.label,
+							})) || []
+						}
+						value={value || ""}
+						onChange={(value) => handleChange(value)}
+					/>
+				);
+
+			case "boolean":
+				return (
+					<div className={s.switchContainer}>
+						<Switch
+							checked={value || false}
+							onCheckedChange={(checked) => handleChange(checked)}
+						/>
+						<label className={s.switchLabel}>{field.label}</label>
+					</div>
+				);
+
+			case "array":
+				const arrayValue = value || [];
+				return (
+					<div className={s.arrayContainer}>
+						{arrayValue.map((item: any, index: number) => (
+							<div key={index} className={s.arrayItem}>
+								{field.arrayType?.type === "object" ? (
+									<div className={s.objectFields}>
+										{field.arrayType.fields?.map((nestedField: any) => (
+											<div key={nestedField.name} className={s.field}>
+												<label>{nestedField.label}</label>
+												{renderNestedField(
+													nestedField,
+													`${field.name}.${index}`,
+													item[nestedField.name],
+													(value) =>
+														handleArrayChange(
+															field.name,
+															index,
+															nestedField.name,
+															value,
+														),
+												)}
+											</div>
+										))}
+									</div>
+								) : (
+									renderNestedField(
+										{ ...field.arrayType, name: field.name },
+										`${field.name}.${index}`,
+										item,
+										(value) =>
+											handleArrayChange(field.name, index, "value", value),
+									)
+								)}
+								<Button
+									type="button"
+									variant="danger"
+									onClick={() => handleRemoveArrayItem(field.name, index)}
+								>
+									<Trash2 size={16} />
+									Remover
+								</Button>
+							</div>
+						))}
 						<Button
 							type="button"
-							variant="insurance"
 							onClick={() => handleAddArrayItem(field.name)}
-							className={s.addArrayButton}
+							className={s.addButton}
 						>
-							<Plus className="h-4 w-4 mr-2" />
+							<Plus size={16} />
 							Adicionar Item
 						</Button>
 					</div>
+				);
 
-					{arrayValue.length > 0 ? (
-						<div className={s.arrayItems}>
-							{arrayValue.map((item: any, index: number) => (
-								<div key={index} className={s.arrayItem}>
-									<div className={s.arrayItemHeader}>
-										<span>Item {index + 1}</span>
-										<Button
-											type="button"
-											variant="ghost"
-											className={s.removeButton}
-											onClick={() => handleRemoveArrayItem(field.name, index)}
-										>
-											<Trash2 />
-										</Button>
-									</div>
-									<div className={s.arrayItemFields}>
-										{field.arrayType?.type === "object" &&
-											field.arrayType.fields?.map((subField: any) => {
-												const fieldPath = `${field.name}.${index}.${subField.name}`;
-												return (
-													<div key={subField.name} className={s.field}>
-														<label htmlFor={fieldPath}>
-															{subField.label}
-															{subField.required && (
-																<span className={s.required}>*</span>
-															)}
-														</label>
-														<input
-															type="text"
-															id={fieldPath}
-															name={fieldPath}
-															value={item[subField.name] || ""}
-															onChange={(e) =>
-																handleArrayChange(
-																	field.name,
-																	index,
-																	subField.name,
-																	e.target.value,
-																)
-															}
-															required={subField.required}
-															className={s.input}
-														/>
-													</div>
-												);
-											})}
-									</div>
-								</div>
-							))}
-						</div>
-					) : (
-						<div className={s.emptyArray}>
-							<p>Nenhum item adicionado</p>
-						</div>
-					)}
-				</div>
-			);
+			default:
+				return null;
+		}
+	};
 
-		case "text":
-			return (
-				<div className={s.field}>
-					<label htmlFor={field.name}>
-						{field.label}
-						{field.required && <span className={s.required}>*</span>}
-					</label>
-					<input
-						type="text"
-						id={field.name}
-						name={field.name}
-						value={value || ""}
-						onChange={(e) => handleChange(e.target.value)}
-						required={field.required}
-						className={s.input}
-					/>
-				</div>
-			);
-
-		case "textarea":
-			return (
-				<div className={s.field}>
-					<label htmlFor={field.name}>
-						{field.label}
-						{field.required && <span className={s.required}>*</span>}
-					</label>
-					<textarea
-						id={field.name}
-						name={field.name}
-						value={value || ""}
-						onChange={(e) => handleChange(e.target.value)}
-						required={field.required}
-						rows={4}
-						className={s.input}
-					/>
-				</div>
-			);
-
-		case "number":
-			return (
-				<div className={s.field}>
-					<label htmlFor={field.name}>
-						{field.label}
-						{field.required && <span className={s.required}>*</span>}
-					</label>
-					<input
-						type="number"
-						id={field.name}
-						name={field.name}
-						value={value || ""}
-						onChange={(e) => handleChange(Number(e.target.value))}
-						required={field.required}
-						className={s.input}
-					/>
-				</div>
-			);
-
-		case "select":
-			return (
-				<div className={s.field}>
-					<label htmlFor={field.name}>
-						{field.label}
-						{field.required && <span className={s.required}>*</span>}
-					</label>
-					<select
-						id={field.name}
-						name={field.name}
-						value={value || ""}
-						onChange={(e) => handleChange(e.target.value)}
-						required={field.required}
-						className={s.input}
-					>
-						<option value="">Selecione uma opção</option>
-						{field.options?.map((option) => (
-							<option key={option.value} value={option.value}>
-								{option.label}
-							</option>
-						))}
-					</select>
-				</div>
-			);
-
-		case "object":
-			return renderObjectFields(field, field.name);
-
-		case "wysiwyg":
-			return renderWysiwygField();
-
-		case "image":
-			return (
-				<div className={s.field}>
-					<label htmlFor={field.name}>
-						{field.label}
-						{field.required && <span className={s.required}>*</span>}
-					</label>
-					<div className={s.imageField}>
-						{value && (
-							<div className={s.preview}>
-								<img src={value} alt={field.label} />
-							</div>
-						)}
-						<input
-							type="text"
-							id={field.name}
-							name={field.name}
-							value={value || ""}
-							onChange={(e) => handleChange(e.target.value)}
-							required={field.required}
-							className={s.input}
-							placeholder="URL da imagem"
-						/>
-					</div>
-				</div>
-			);
-
-		default:
-			return (
-				<div className={s.field}>
-					<label htmlFor={field.name}>
-						{field.label}
-						{field.required && <span className={s.required}>*</span>}
-					</label>
-					<input
-						type="text"
-						id={field.name}
-						name={field.name}
-						value={value || ""}
-						onChange={(e) => handleChange(e.target.value)}
-						required={field.required}
-						className={s.input}
-					/>
-				</div>
-			);
-	}
+	return (
+		<div className={s.fieldContainer}>
+			{field.type !== "boolean" && <label>{field.label}</label>}
+			{renderField()}
+		</div>
+	);
 };

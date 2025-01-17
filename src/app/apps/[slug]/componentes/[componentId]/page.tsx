@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import s from "./styles.module.scss";
 
-import { Input, DashboardLayout } from "@/components";
+import { Input, Select, DashboardLayout } from "@/components";
 import {
 	createComponentService,
 	getComponentService,
@@ -253,21 +253,18 @@ export default function ComponentPage() {
 		setLoading(true);
 
 		try {
-			console.log("🚀 Iniciando submissão do formulário de componente", { 
-				componentId: params.componentId, 
-				formData: {
-					name: formData.name,
-					type: formData.type,
-					description: formData.description,
-					schema: formData.schema.fields
-				} 
+			console.log("🚀 Iniciando submissão do formulário de componente", {
+				componentId: params.componentId,
+				formData,
 			});
 
 			const payload = {
 				name: formData.name,
 				type: formData.type,
 				description: formData.description || "",
-				schema: formData.schema.fields.length > 0 ? formData.schema.fields : null,
+				schema: {
+					fields: formData.schema.fields.length > 0 ? formData.schema.fields : [],
+				},
 			};
 
 			let result;
@@ -281,8 +278,8 @@ export default function ComponentPage() {
 			}
 
 			if (result.success) {
-				console.log("✅ Componente salvo com sucesso", { 
-					componentId: result.data?.id 
+				console.log("✅ Componente salvo com sucesso", {
+					componentId: result.data?.id,
 				});
 				toast.success(
 					isEditing
@@ -293,8 +290,8 @@ export default function ComponentPage() {
 			} else {
 				console.error("❌ Erro na submissão do componente", { result });
 				toast.error(
-					result.error?.message || 
-					`Erro ao ${isEditing ? "atualizar" : "criar"} componente`,
+					result.error?.message ||
+						`Erro ao ${isEditing ? "atualizar" : "criar"} componente`,
 				);
 			}
 		} catch (error: any) {
@@ -806,51 +803,51 @@ export default function ComponentPage() {
 		// Verifica se já atingimos o limite máximo de aninhamento
 		const canNest = nestingLevel < MAX_NESTING_LEVEL;
 
+		const fieldTypeOptions = [
+			{ value: "text", label: "Texto (text)" },
+			{ value: "textarea", label: "Área de Texto (textarea)" },
+			{ value: "wysiwyg", label: "Editor de Texto Rico (wysiwyg)" },
+			{ value: "number", label: "Número (number)" },
+			{ value: "select", label: "Lista de Seleção (select)" },
+			{ value: "boolean", label: "Sim/Não (boolean)" },
+			{ value: "date", label: "Data (date)" },
+			...(canNest
+				? [
+						{ value: "object", label: "Objeto (object)" },
+						{ value: "array", label: "Lista (array)" },
+					]
+				: []),
+		];
+
 		return (
 			<div key={currentPath.join(".")} className={s.fieldGroup}>
 				<div className={s.fieldContent}>
 					<div className={s.fieldInput}>
-						<label>Nome do Campo</label>
-						<input
-							type="text"
+						<Input
+							label="Nome do Campo"
 							value={field.name || ""}
 							onChange={(e) =>
 								handleFieldNameChange(currentPath, e.target.value)
 							}
-							className={s.input}
 						/>
 					</div>
 					<div className={s.fieldInput}>
-						<label>Label</label>
-						<input
-							type="text"
+						<Input
+							label="Label"
 							value={field.label || ""}
 							onChange={(e) =>
 								handleFieldLabelChange(currentPath, e.target.value)
 							}
-							className={s.input}
 						/>
 					</div>
 				</div>
 				<div className={s.fieldType}>
-					<label>Tipo do Campo</label>
-					<select
-						id={`${fieldId}.type`}
-						name={`${fieldId}.type`}
-						defaultValue={field.type}
-						onChange={(e) => handleTypeChange(currentPath, e.target.value)}
-					>
-						<option value="text">Texto</option>
-						<option value="number">Número</option>
-						<option value="boolean">Booleano</option>
-						<option value="date">Data</option>
-						{canNest && (
-							<>
-								<option value="object">Objeto</option>
-								<option value="array">Array</option>
-							</>
-						)}
-					</select>
+					<Select
+						label="Tipo do Campo"
+						options={fieldTypeOptions}
+						value={field.type}
+						onChange={(value) => handleTypeChange(currentPath, value)}
+					/>
 				</div>
 				<div className={s.fieldRequired}>
 					<label>
@@ -875,20 +872,25 @@ export default function ComponentPage() {
 					<div className={s.arrayFields}>
 						<h4>Configuração do Array</h4>
 						<div className={s.arrayType}>
-							<label>Tipo dos Itens</label>
-							<select
+							<Select
+								label="Tipo dos Itens"
+								options={[
+									{ value: "text", label: "Texto (text)" },
+									{ value: "textarea", label: "Área de Texto (textarea)" },
+									{ value: "wysiwyg", label: "Editor de Texto Rico (wysiwyg)" },
+									{ value: "number", label: "Número (number)" },
+									{ value: "select", label: "Lista de Seleção (select)" },
+									{ value: "boolean", label: "Sim/Não (boolean)" },
+									{ value: "date", label: "Data (date)" },
+									...(canNest
+										? [
+												{ value: "object", label: "Objeto (object)" },
+										  ]
+										: []),
+								]}
 								value={field.arrayType?.type || "text"}
-								onChange={(e) =>
-									handleArrayTypeChange(currentPath, e.target.value)
-								}
-							>
-								<option value="text">Texto</option>
-								<option value="number">Número</option>
-								<option value="boolean">Booleano</option>
-								<option value="date">Data</option>
-								{canNest && <option value="object">Objeto</option>}
-								{canNest && <option value="array">Array</option>}
-							</select>
+								onChange={(value) => handleArrayTypeChange(currentPath, value)}
+							/>
 						</div>
 						{field.arrayType?.type === "object" && (
 							<div className={s.arrayObjectFields}>
@@ -914,11 +916,29 @@ export default function ComponentPage() {
 								<div className={s.nestedFields}>
 									{/* Renderiza a configuração do array interno */}
 									<div className={s.arrayType}>
-										<label>Tipo dos Itens do Array Interno</label>
-										<select
+										<Select
+											label="Tipo dos Itens do Array Interno"
+											options={[
+												{ value: "text", label: "Texto (text)" },
+												{
+													value: "textarea",
+													label: "Área de Texto (textarea)",
+												},
+												{
+													value: "wysiwyg",
+													label: "Editor de Texto Rico (wysiwyg)",
+												},
+												{ value: "number", label: "Número (number)" },
+												{ value: "select", label: "Lista de Seleção (select)" },
+												{ value: "boolean", label: "Sim/Não (boolean)" },
+												{ value: "date", label: "Data (date)" },
+												...(canNest
+													? [{ value: "object", label: "Objeto (object)" }]
+													: []),
+											]}
 											value={field.arrayType.arrayType?.type || "text"}
-											onChange={(e) => {
-												const newType = e.target.value;
+											onChange={(value) => {
+												const newType = value;
 												setFormData((prev) => {
 													const newFields = JSON.parse(
 														JSON.stringify(prev.schema.fields),
@@ -945,13 +965,7 @@ export default function ComponentPage() {
 													};
 												});
 											}}
-										>
-											<option value="text">Texto</option>
-											<option value="number">Número</option>
-											<option value="boolean">Booleano</option>
-											<option value="date">Data</option>
-											{canNest && <option value="object">Objeto</option>}
-										</select>
+										/>
 									</div>
 									{field.arrayType.arrayType?.type === "object" && (
 										<div className={s.nestedObjectFields}>
@@ -997,6 +1011,62 @@ export default function ComponentPage() {
 						</button>
 					</div>
 				)}
+
+				{field.type === "select" && (
+					<div className={s.selectOptions}>
+						<h4>Opções da Lista de Seleção</h4>
+						{field.selectOptions?.map((option, index) => (
+							<div key={index} className={s.selectOptionItem}>
+								<Input
+									label="Valor"
+									value={option.value}
+									onChange={(e) => {
+										const newOptions = [...(field.selectOptions || [])];
+										newOptions[index] = {
+											...newOptions[index],
+											value: e.target.value,
+										};
+										handleSelectOptionsChange(currentPath, newOptions);
+									}}
+								/>
+								<Input
+									label="Label"
+									value={option.label}
+									onChange={(e) => {
+										const newOptions = [...(field.selectOptions || [])];
+										newOptions[index] = {
+											...newOptions[index],
+											label: e.target.value,
+										};
+										handleSelectOptionsChange(currentPath, newOptions);
+									}}
+								/>
+								<button
+									type="button"
+									onClick={() => {
+										const newOptions = [...(field.selectOptions || [])];
+										newOptions.splice(index, 1);
+										handleSelectOptionsChange(currentPath, newOptions);
+									}}
+								>
+									Remover
+								</button>
+							</div>
+						))}
+						<button
+							type="button"
+							onClick={() => {
+								const newOptions = [
+									...(field.selectOptions || []),
+									{ value: "", label: "" },
+								];
+								handleSelectOptionsChange(currentPath, newOptions);
+							}}
+						>
+							Adicionar Opção
+						</button>
+					</div>
+				)}
 			</div>
 		);
 	};
@@ -1026,6 +1096,57 @@ export default function ComponentPage() {
 		return currentField;
 	};
 
+	const handleSelectOptionsChange = (path: FieldPath, options: any[]) => {
+		setFormData((prev) => {
+			const newFields = JSON.parse(JSON.stringify(prev.schema.fields));
+
+			const updateSelectOptionsAtPath = (
+				fields: Field[],
+				remainingPath: number[],
+			): Field[] => {
+				if (remainingPath.length === 0) return fields;
+
+				const [currentIndex, ...restPath] = remainingPath;
+				if (currentIndex >= fields.length) return fields;
+
+				const updatedFields = [...fields];
+				const targetField = updatedFields[currentIndex];
+
+				if (restPath.length === 0) {
+					targetField.selectOptions = options;
+				} else {
+					if (targetField.type === "object" && targetField.fields) {
+						targetField.fields = updateSelectOptionsAtPath(
+							targetField.fields,
+							restPath,
+						);
+					} else if (
+						targetField.type === "array" &&
+						targetField.arrayType?.type === "object" &&
+						targetField.arrayType.fields
+					) {
+						targetField.arrayType.fields = updateSelectOptionsAtPath(
+							targetField.arrayType.fields,
+							restPath,
+						);
+					}
+				}
+
+				return updatedFields;
+			};
+
+			const updatedFields = updateSelectOptionsAtPath(newFields, path);
+
+			return {
+				...prev,
+				schema: {
+					...prev.schema,
+					fields: updatedFields,
+				},
+			};
+		});
+	};
+
 	useEffect(() => {
 		if (isEditing) {
 			loadComponent();
@@ -1038,13 +1159,31 @@ export default function ComponentPage() {
 				<h1>{isEditing ? "Editar Componente" : "Novo Componente"}</h1>
 
 				<form onSubmit={handleSubmit} className={s.form}>
-					<div className={s.field}>
+					<div className={`${s.field} ${s.filedSideBySide}`}>
 						<Input
 							name="name"
 							label="Nome do Componente"
-							defaultValue={formData.name}
+							value={formData.name}
 							onChange={(e) => handleInputChange("name")(e.target.value)}
 							required
+						/>
+
+						<Select
+							label="Tipo do Componente"
+							options={[
+								{ value: "system", label: "Sistema" },
+								{ value: "custom", label: "Custom" },
+								{ value: "hero", label: "Hero" },
+								{ value: "card", label: "Card" },
+								{ value: "data", label: "Dados" },
+							]}
+							value={formData.type}
+							onChange={(value) => {
+								setFormData((prev) => ({
+									...prev,
+									type: value,
+								}));
+							}}
 						/>
 					</div>
 
@@ -1052,29 +1191,9 @@ export default function ComponentPage() {
 						<Input
 							name="description"
 							label="Descrição"
-							defaultValue={formData.description}
+							value={formData.description}
 							onChange={(e) => handleInputChange("description")(e.target.value)}
 						/>
-					</div>
-
-					<div className={s.formGroup}>
-						<label>Tipo do Componente</label>
-						<select
-							value={formData.type}
-							onChange={(e) => {
-								setFormData((prev) => ({
-									...prev,
-									type: e.target.value,
-								}));
-							}}
-							className={s.input}
-						>
-							<option value="system">Sistema</option>
-							<option value="custom">Custom</option>
-							<option value="hero">Hero</option>
-							<option value="card">Card</option>
-							<option value="data">Dados</option>
-						</select>
 					</div>
 
 					<div className={s.field}>
