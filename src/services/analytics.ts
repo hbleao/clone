@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import type { PageChange, PageAnalytics } from "../types/analytics";
+import type { PageAnalytics, PageChange } from "../types/analytics";
 
 export const savePageChange = async (change: Omit<PageChange, "id">) => {
 	try {
@@ -44,7 +44,6 @@ export const getPageAnalytics = async (
 		filters.users.forEach((user) => params.append("users", user));
 	}
 
-	console.log("Calling analytics API with params:", params.toString());
 	const response = await fetch(`/api/analytics/changes?${params}`);
 
 	if (!response.ok) {
@@ -54,7 +53,6 @@ export const getPageAnalytics = async (
 	}
 
 	const data = await response.json();
-	console.log("Analytics API response:", data);
 	return data;
 };
 

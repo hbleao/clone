@@ -11,6 +11,7 @@ export const SectionTemplateRenderField = ({
 	field,
 	formData,
 	setFormData,
+	schema,
 }: SectionTemplateRenderFieldProps) => {
 	const getNestedValue = (obj: any, path: string) => {
 		// Se não houver pontos no caminho, é um campo simples

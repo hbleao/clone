@@ -18,7 +18,6 @@ interface GetTemplatesResponse {
 export async function getAllSectionTemplateService(
 	slug: string,
 ): Promise<GetTemplatesResponse> {
-	console.log("Fetching templates for slug:", slug);
 
 	if (!slug) {
 		console.error("No slug provided");

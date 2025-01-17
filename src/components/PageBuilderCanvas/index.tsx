@@ -1,14 +1,14 @@
 "use client";
 
 import {
-	type DragEndEvent,
-	useDroppable,
-	DndContext,
 	closestCenter,
+	DndContext,
 	KeyboardSensor,
 	PointerSensor,
+	useDroppable,
 	useSensor,
 	useSensors,
+	type DragEndEvent,
 } from "@dnd-kit/core";
 import {
 	SortableContext,
@@ -17,8 +17,8 @@ import {
 } from "@dnd-kit/sortable";
 import { nanoid } from "nanoid";
 
-import { usePageBuilder } from "@/hooks";
 import { PageBuilderElement, type ElementType } from "@/components";
+import { usePageBuilder } from "@/hooks";
 
 import s from "./styles.module.scss";
 
@@ -44,7 +44,6 @@ export const PageBuilderCanvas = () => {
 
 	const handleDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event;
-		console.log("DragEnd:", { active, over });
 
 		if (!active || !over) return;
 
@@ -55,7 +54,6 @@ export const PageBuilderCanvas = () => {
 
 		if (isDesignerBtnElement && isDroppingOverDesignerDropArea) {
 			const template = active?.data?.current?.template;
-			console.log("Template:", template);
 
 			if (!template) {
 				console.error("Template not found");
@@ -73,14 +71,12 @@ export const PageBuilderCanvas = () => {
 				content: template.defaultData || {},
 			};
 
-			console.log("Adding element:", element);
 			addElement(elements.length, element);
 			return;
 		}
 
 		// Se estamos reordenando elementos existentes
 		if (active.id !== over.id) {
-			console.log("Reordering elements:", { active, over });
 			const oldIndex = elements.findIndex((item) => item.id === active.id);
 			const newIndex = elements.findIndex((item) => item.id === over.id);
 
@@ -88,7 +84,6 @@ export const PageBuilderCanvas = () => {
 				const newElements = [...elements];
 				const [movedItem] = newElements.splice(oldIndex, 1);
 				newElements.splice(newIndex, 0, movedItem);
-				console.log("New elements order:", newElements);
 				setElements(newElements);
 			}
 		}

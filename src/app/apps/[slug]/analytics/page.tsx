@@ -1,27 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { format, subDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
-	LineChart,
-	BarChart,
-	Line,
 	Bar,
+	BarChart,
+	CartesianGrid,
+	Legend,
+	Line,
+	LineChart,
+	ResponsiveContainer,
+	Tooltip,
 	XAxis,
 	YAxis,
-	CartesianGrid,
-	Tooltip,
-	Legend,
-	ResponsiveContainer,
 } from "recharts";
-import { useParams } from "next/navigation";
 
 import styles from "./styles.module.scss";
 
+import { DashboardLayout, Spinner } from "@/components";
 import { getPageAnalytics } from "@/services/analytics";
 import type { PageAnalytics } from "@/types/analytics";
-import { DashboardLayout, Spinner } from "@/components";
 
 export default function AnalyticsPage() {
 	const params = useParams();
@@ -40,12 +40,10 @@ export default function AnalyticsPage() {
 				setIsLoading(true);
 				setError(null);
 
-				console.log("Fetching analytics for app:", params.slug);
 				const data = await getPageAnalytics(params.slug as string, {
 					startDate: dateRange.startDate,
 					endDate: dateRange.endDate,
 				});
-				console.log("Analytics data received:", data);
 
 				setAnalytics(data);
 			} catch (error) {
@@ -83,7 +81,6 @@ export default function AnalyticsPage() {
 		);
 	}
 
-	console.log("Rendering analytics with data:", analytics);
 
 	return (
 		<DashboardLayout slug={params.slug}>

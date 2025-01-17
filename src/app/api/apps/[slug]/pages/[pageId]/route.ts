@@ -1,5 +1,5 @@
-import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(
 	request: NextRequest,
@@ -14,8 +14,6 @@ export async function GET(
 				},
 			},
 		});
-
-		console.log("FIND FIRST: ", page);
 
 		if (!page) {
 			return NextResponse.json(

@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import type { PageChange, PageAnalytics } from "@/types/analytics";
+import type { PageAnalytics, PageChange } from "@/types/analytics";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
 	try {
@@ -77,8 +77,6 @@ export async function GET(request: Request) {
 			};
 		}
 
-		console.log("Prisma where clause:", where);
-
 		const changes = await prisma.pageChange.findMany({
 			where,
 			orderBy: {
@@ -86,7 +84,6 @@ export async function GET(request: Request) {
 			},
 		});
 
-		console.log(`Found ${changes.length} changes`);
 
 		// Se não houver mudanças, retornar dados vazios mas válidos
 		if (changes.length === 0) {

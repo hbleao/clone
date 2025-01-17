@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
 import { Copy } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import s from "../styles.module.scss";
@@ -23,7 +23,6 @@ export default function PreviewPage() {
 				}
 
 				const data = await response.json();
-				console.log("data", data);
 				setPageContent(data);
 			} catch (err) {
 				setError(err instanceof Error ? err.message : "Erro desconhecido");

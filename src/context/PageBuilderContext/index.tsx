@@ -1,11 +1,11 @@
 "use client";
+import type { ElementType } from "@/components";
 import {
 	type Dispatch,
 	type SetStateAction,
 	createContext,
 	useState,
 } from "react";
-import type { ElementType } from "@/components";
 
 type PageBuilderElement = ElementType;
 
@@ -36,7 +36,6 @@ export const PageBuilderContextProvider = ({
 		useState<PageBuilderElement[]>(initialElements);
 	const [selectedElement, setSelectedElement] =
 		useState<PageBuilderElement | null>(null);
-	console.log(elements);
 	const addElement = (index: number, element: PageBuilderElement) => {
 		setElements((oldState) => {
 			const newElements = [...oldState];

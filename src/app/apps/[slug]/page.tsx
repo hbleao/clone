@@ -85,7 +85,6 @@ export default function AppDetailsPage({ params }) {
 		}
 	};
 
-	console.log(formData.seo);
 
 	const handleSeoChange = (field: keyof PageForm["seo"], value: string) => {
 		setFormData((prev) => ({
@@ -98,7 +97,6 @@ export default function AppDetailsPage({ params }) {
 	};
 
 	const handleEditPage = (page: Page) => {
-		console.log("PAGE:", page);
 		setEditingPageId(page.id);
 		setFormData({
 			title: page.title,

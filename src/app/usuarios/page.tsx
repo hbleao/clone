@@ -1,18 +1,18 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import { Button, Header, Dialog, Input, DashboardLayout } from "@/components";
 import { Plus } from "lucide-react";
-
-import {
-	getAllUsers,
-	createUser,
-	updateUser,
-	deleteUser,
-} from "@/actions/user";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import "./styles.scss";
-import { useParams } from "next/navigation";
+
+import {
+	createUser,
+	deleteUser,
+	getAllUsers,
+	updateUser,
+} from "@/actions/user";
+import { Button, DashboardLayout, Dialog, Input } from "@/components";
+
 
 interface User {
 	id: string;
@@ -31,7 +31,7 @@ export default function UsersPage() {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [errors, setErrors] = useState<Record<string, string>>({});
-	const [formData, setFormData] = useState<UserFormData>({
+	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
 		registration: "",
@@ -97,9 +97,9 @@ export default function UsersPage() {
 				role: formData.role,
 				...(formData.password
 					? {
-							password: formData.password,
-							confirmPassword: formData.confirmPassword,
-						}
+						password: formData.password,
+						confirmPassword: formData.confirmPassword,
+					}
 					: {}),
 			};
 
@@ -277,7 +277,7 @@ export default function UsersPage() {
 								label="Nome"
 								name="name"
 								value={formData.name}
-								onChange={(value) => handleInputChange("name", value)}
+								onChange={(e) => handleInputChange("name", e.target.value)}
 								required
 							/>
 							<Input
@@ -285,14 +285,14 @@ export default function UsersPage() {
 								type="email"
 								name="email"
 								value={formData.email}
-								onChange={(value) => handleInputChange("email", value)}
+								onChange={(e) => handleInputChange("email", e.target.value)}
 								required
 							/>
 							<Input
 								label="Matrícula"
 								name="registration"
 								value={formData.registration}
-								onChange={(value) => handleInputChange("registration", value)}
+								onChange={(e) => handleInputChange("registration", e.target.value)}
 								required
 							/>
 							<Input
@@ -300,7 +300,7 @@ export default function UsersPage() {
 								type="password"
 								name="password"
 								value={formData.password}
-								onChange={(value) => handleInputChange("password", value)}
+								onChange={(e) => handleInputChange("password", e.target.value)}
 								required
 							/>
 							<Input
@@ -308,8 +308,8 @@ export default function UsersPage() {
 								type="password"
 								name="confirmPassword"
 								value={formData.confirmPassword}
-								onChange={(value) =>
-									handleInputChange("confirmPassword", value)
+								onChange={(e) =>
+									handleInputChange("confirmPassword", e.target.value)
 								}
 								required
 							/>
@@ -350,7 +350,7 @@ export default function UsersPage() {
 								label="Nome"
 								name="name"
 								value={formData.name}
-								onChange={(value) => handleInputChange("name", value)}
+								onChange={(value) => handleInputChange("name", e.target.value)}
 								required
 							/>
 							<Input
@@ -358,14 +358,14 @@ export default function UsersPage() {
 								type="email"
 								name="email"
 								value={formData.email}
-								onChange={(value) => handleInputChange("email", value)}
+								onChange={(value) => handleInputChange("email", e.target.value)}
 								required
 							/>
 							<Input
 								label="Matrícula"
 								name="registration"
 								value={formData.registration}
-								onChange={(value) => handleInputChange("registration", value)}
+								onChange={(value) => handleInputChange("registration", e.target.value)}
 								required
 							/>
 
@@ -374,7 +374,7 @@ export default function UsersPage() {
 								type="password"
 								name="password"
 								value={formData.password}
-								onChange={(value) => handleInputChange("password", value)}
+								onChange={(value) => handleInputChange("password", e.target.value)}
 							/>
 							<Input
 								label="Confirmar Nova Senha"

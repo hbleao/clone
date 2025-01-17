@@ -42,8 +42,6 @@ export function PageBuilderElement({
 		},
 	});
 
-	console.log("ELEMENT:", element);
-
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,

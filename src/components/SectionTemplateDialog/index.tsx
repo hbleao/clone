@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import s from "./styles.module.scss";
@@ -46,6 +46,7 @@ export function SectionTemplateDialog({
 						field={field}
 						formData={formData}
 						setFormData={setFormData}
+						schema={template.schema}
 					/>
 				))}
 			</div>
