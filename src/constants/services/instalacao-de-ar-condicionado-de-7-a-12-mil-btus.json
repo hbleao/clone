@@ -1,0 +1,357 @@
+{
+  "config": [
+    {
+      "breadcrumb": "Instalação de ar-condicionado de 7 a 12 mil BTUs"
+    }
+  ],
+  "components": [
+    {
+      "name": "section_custom_data",
+      "component": {
+        "pageName": "porto-servicos",
+        "product": "servicos-para-casa-e-auto",
+        "subproduct": "Instalacao-de-ar-condicionado-de-7-a-12-mil-BTUs",
+        "category": "produto",
+        "vertical": "servicos"
+      }
+    },
+    {
+      "name": "section_breadcrumb",
+      "component": {
+        "marginBottom": "",
+        "theme": "light",
+        "links": [
+          {
+            "url": "https://www.portoseguro.com.br",
+            "name": "Home"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/porto-servico",
+            "name": "Porto Serviço"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/servicos",
+            "name": "Serviços para Casa e Auto"
+          },
+          {
+            "name": "Instalação de ar-condicionado de 7 a 12 mil BTUs"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_reminder_list",
+      "component": {
+        "steps": [
+          {
+            "stepNumber": 0,
+            "routeParam": "agendamento",
+            "label": "Agendamento",
+            "nextLink": "/loja/servicos/endereco",
+            "backLink": "/servicos/desentupimento"
+          },
+          {
+            "stepNumber": 1,
+            "routeParam": "endereco",
+            "label": "Local do serviço",
+            "nextLink": "/loja/servicos/dados-cadastrais",
+            "backLink": "/loja/servicos/agendamento"
+          },
+          {
+            "stepNumber": 2,
+            "routeParam": "dados-cadastrais",
+            "label": "Dados cadastrais",
+            "nextLink": "/loja/carrinho",
+            "backLink": "/loja/servicos/endereco",
+            "modal": {
+              "title": "Lembretes para o dia do serviço",
+              "subtitle": "Precaução é tudo! Por isso, confirme se está tudo ok para o prestador Porto realizar seu trabalho.",
+              "reminderList": [
+                {
+                  "iconName": "icon-Upload",
+                  "title": "Altura do equipamento",
+                  "description": "O ar-condicionado deve estar em uma <strong>altura de até 3 m em ambientes internos e externos</strong>.\n\nA instalação do aparelho será realizada exclusivamente em locais que atendam às condições elétricas e estruturais necessárias para suportá-lo, conforme avaliação do prestador de serviço.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Alert",
+                  "title": "Capacidade de resfriamento",
+                  "description": "O serviço será realizado apenas em aparelhos do modelo Split Hi-wall, com capacidade de resfriamento entre 7 e 12 mil BTUs.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-user",
+                  "title": "Maior responsável",
+                  "description": "É necessária a presença de um responsável maior de 18 anos no local para acompanhar o serviço.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Residence",
+                  "title": "Condomínio",
+                  "description": "Os serviços serão realizados <strong>somente no imóvel</strong> do(a) cliente que os contratou, respeitando as<strong> leis de silêncio</strong> e as <strong>regras e horários</strong> do condomínio.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Circle-dollar-sign",
+                  "title": "Evite a taxa de visita",
+                  "description": "Será cobrada um taxa de R$ 120 se houver algum impedimento para realizar o serviço no dia agendado.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": "Não concordo"
+                }
+              ],
+              "alert": {
+                "icon": "icon-Alert",
+                "title": "Não podemos prosseguir",
+                "description": "O aceite em todos os itens é fundamental para o agendamento do serviço. Se tiver alguma dúvida, converse com a gente.",
+                "textLink": "Ir para o chat",
+                "link": "https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_carousel",
+      "component": {
+        "theme": "light",
+        "banners": [
+          {
+            "title": "Instalação de ar-condicionado de 7 a 12 mil BTUs",
+            "subtitle": "<p>Com a Instalação de ar-condicionado da Porto Serviço você garante um ambiente mais fresco e confortável para a sua casa. Agende agora o melhor dia e horário!</p>",
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/hero/bh-servico-instalacao-ar-condicionado-split-hi-wall.webp",
+              "srcMobile": "",
+              "alt": "Instalação de ar-condicionado de 7 a 12 mil BTUs"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cep_with_card_price",
+      "component": {
+        "sectionTitle": "Onde o serviço será realizado?",
+        "buttonLabel": "Contrate agora",
+        "price": 0,
+        "priceLabel": "",
+        "benefits": [
+          {
+            "icon": "icon-Card-credit",
+            "text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+          },
+          {
+            "icon": "icon-Discount",
+            "text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_body",
+      "component": {
+        "sectionTitle": "",
+        "marginBottom": "margin-default",
+        "bannerBody": {
+          "theme": "light",
+          "image": {
+            "src": "/content/dam/vertical-servicos/conteudo/bb-servico-instalacao-ar-condicionado-split-hi-wall.webp"
+          },
+          "pretitle": "",
+          "title": "Sobre o serviço",
+          "description": "<p>O serviço contempla a instalação de aparelhos de ar-condicionado, incluindo as unidades condensadora e evaporadora dos modelos Split Hi-Wall, com capacidade de resfriamento entre 7 e 12 mil BTUs.</p>\n<p>Nosso técnico realizará uma análise das medidas e dimensões do produto, orientando sobre o local mais adequado para a instalação. Além disso, será feita uma avaliação das condições elétricas do ambiente. Após a instalação, todos os testes de funcionamento serão executados, incluindo a demonstração de uso e orientações sobre as principais funcionalidades do aparelho.</p>\n<p>Seu aparelho possui capacidade de resfriamento acima de 12 mil BTUs? Acesse a página dedicada a aparelhos com potências mais altas.</p>\n<p>Importante: A altura entre o piso e o aparelho não deve exceder 3 metros.</p>\n",
+          "bgColor": "white",
+          "textColor": "black75",
+          "benefits": []
+        }
+      }
+    },
+    {},
+    {
+      "name": "section_how_it_works",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "Como funciona?",
+        "cardIcons": [
+          {
+            "title": "Agendamento",
+            "description": "Escolha a data e horário desejado.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info1"
+          },
+          {
+            "title": "Aprovação",
+            "description": "Visita do prestador até sua casa para avaliar o problema.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info2"
+          },
+          {
+            "title": "Execução do serviço",
+            "description": "Realização do serviço com a qualidade Porto.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info3"
+          },
+          {
+            "title": "Aprovação do pagamento",
+            "description": "Após a realização do serviço, é efetivada a cobraça do valor reservado no cartão de crédito.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info4"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_card_content_side_by_side",
+      "component": {
+        "sectionTitle": "Por que contratar?",
+        "cardsContent": [
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-porto-servico-profissionais-qualificados.webp?appId=aemshell",
+              "alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+            },
+            "title": "Profissionais qualificados",
+            "description": "Conte com a segurança e competência de um profissional Porto treinado e uniformizado."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-garantia-porto-servico.webp",
+              "alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+            },
+            "title": "Garantia Porto",
+            "description": "Garantia de até 90 dias após a realização do serviço."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-flexibilidade-porto-servico.webp",
+              "alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+            },
+            "title": "Flexibilidade",
+            "description": "Cancelamento e reagendamento grátis até 2 horas antes do horário agendado."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_service_requirements",
+      "component": {
+        "title": "Requisitos para este serviço",
+        "requirements": [
+          {
+            "icon": "icon-Air-conditioner",
+            "title": "Produto",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>O ar-condicionado deve estar em uma <strong>altura de até 3 m em ambientes internos e externos</strong>.</p>\n<p>A instalação do aparelho será realizada exclusivamente em locais que atendam às condições elétricas e estruturais necessárias para suportá-lo, conforme avaliação do prestador de serviço.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Alert",
+            "title": "Capacidade de resfriamento ",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>O serviço será realizado apenas em aparelhos do modelo Split Hi-wall, com capacidade de resfriamento entre 7 e 12 mil BTUs.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Residence",
+            "title": "Espaço de trabalho",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>Cabe ao cliente ter um espaço mínimo necessário para movimentação do equipamento na execução do serviço.</p>\n<p>Se houver móveis ou objetos abaixo do ar-condicionado, deverão ser retirados do local. É necessário que haja espaço livre embaixo do equipamento, para que nosso prestador possa realizar o serviço.</p>\n",
+              "notification": {
+                "icon": "icon-Residence-alert",
+                "description": "Os serviços serão realizados somente no imóvel do cliente que contratou, respeitando as leis de silêncio e as regras de acesso aos prestadores."
+              }
+            }
+          },
+          {
+            "icon": "icon-user",
+            "title": "Maior responsável",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>É necessário um responsável <strong>maior de 18 anos no local para acompanhamento</strong>. Caso contrário, o serviço não será realizado e haverá taxa de visita do prestador, no valor de R$ 120.</p>\n"
+            }
+          }
+        ]
+      }
+    },
+    {},
+    {
+      "name": "section_faq",
+      "component": {
+        "sectionTitle": "Informações importantes",
+        "questionsAndAnswers": [
+          {
+            "title": "Preparação",
+            "description": "<ul>\n<li>A altura máxima para instalação do aparelho interno e externo é de 3m em relação ao piso de apoio;</li>\n<li>O serviço será realizado apenas em equipamentos do modelo Split Hi-wall, com capacidade de resfriamento entre 7 e 12 mil BTUs;</li>\n<li>O aparelho será instalado exclusivamente em locais que estiverem de acordo com as condições elétricas e estruturais para suportá-lo, o que será avaliado pelo prestador de serviço.</li>\n<li>Se houver móveis ou objetos abaixo do local de instalação, deverão ser retirados. É necessário que haja espaço livre embaixo do equipamento, para que nosso prestador possa realizar o serviço;</li>\n<li>É necessária a presença de um responsável maior de 18 anos no local para acompanhamento do serviço, caso contrário o serviço não será realizado e será cobrado uma taxa de R$ 120,00;</li>\n</ul>\n<p><strong>Importante</strong>: em condomínios, a realização dos serviços será prestada exclusivamente no imóvel do cliente contratante, desde que não acarretem no descumprimento das legislações de controle do silêncio e/ou regras dos condomínios.</p>\n"
+          },
+          {
+            "title": "O que está incluso",
+            "description": "<ul>\n<li>Verificação das medidas do produto e dimensões do local, orientando o melhor lugar para instalação;</li>\n<li>Verificação das condições elétricas para a instalação e orientação para que o cliente providencie a infraestrutura elétrica que permita a instalação;</li>\n<li>Instalação da unidade condensadora e evaporadora do aparelho;</li>\n<li>Demonstração de uso e orientações sobre funcionalidades básicas do produto.</li>\n</ul>\n"
+          },
+          {
+            "title": "Restrições",
+            "description": "<ul>\n<li>O produto deve estar no domicílio, o aparelho deverá estar próximo ao local de instalação;</li>\n<li>Instalação de equipamentos de ar-condicionado de janela, cassete e piso teto e modelo multi split.</li>\n<li>Serviços de reparo ou instalação elétrica, instalação de tomadas e disjuntores, puxar ponto de energia 220V, transformação de ponto 110V em 220V);</li>\n<li>Não realizamos serviços hidráulicos e infraestrutura de dreno;</li>\n<li>Troca de peças e manutenção do equipamento;</li>\n<li>Instalação de equipamentos auxiliares (Automação);</li>\n<li>Logística de entrega do equipamento;</li>\n<li>Carga de gás em caso de vazamento do produto (Ex: Serpertina);</li>\n<li>É de responsabilidade do Cliente obter as autorizações necessárias para a instalação, permissão do síndico ou administradora, ART, autorizações CREA, (quando necessárias), da prefeitura (Alvará de reforma);</li>\n<li>Serviços em locais altos ou de difícil acesso (Acima de 3 metros que exigem andaimes, cordas e alpinistas industriais ou que exijam NR35);</li>\n<li>Fornecimento de acessórios, pés, abraçadeiras, troca de peças e manutenção do equipamento;</li>\n<li>Serviços de alvenaria, pintura, marcenaria (furação em móveis), cortes em pedras, gesso forros e lajes;</li>\n<li>Aplicação de gesso, massa corrida, pintura, serralheria ou qualquer tipo de acabamento;</li>\n<li>Não realizamos serviços hidráulicos, instalação de drenos e bombas de dreno.</li>\n<li>Não fornecemos suportes de condensadora especiais ou em aço inox, desinstalações de equipamentos pré-existentes e não fazemos serviços de recomposição de tetos, forros, paredes, gessos, lajes e serviços de pedreiro.</li>\n<li>Não fazemos a desinstalação e transporte ou descarte de produtos antigos do Cliente;</li>\n<li>Instalações fora das recomendações do fabricante (fora de eixo, altura recomendada, próximo a locais perigosos, dentre outros) e uso de acessórios que não sejam originais ou aceitos pelo fabricante;</li>\n<li>Fornecimento de qualquer material que não esteja descrito neste documento.</li>\n</ul>\n<p><strong>Se no momento da visita houver impeditivo para realização do serviço, será cobrada uma taxa de R$ 120.</p>\n<p>Importante:</strong> o prestador está autorizado a realizar locomoções apenas no mesmo ambiente (cômodo) onde a instalação ou conserto foi solicitado.</p>\n"
+          },
+          {
+            "title": "Tempo de execução",
+            "description": "<p>Aproximadamente 2h.</p>\n"
+          },
+          {
+            "title": "Garantia",
+            "description": "<p>Garantia de até 90 dias da mão de obra do serviço.</p>\n"
+          },
+          {
+            "title": "Pós-atendimento",
+            "description": "<ul>\n<li>O serviço poderá ser cancelado ou reagendado sem cobrança se a solicitação for realizada até 02 (duas) horas antes do horário agendado. Fora deste prazo, será cobrada uma taxa no valor de R$ 120;</li>\n<li><a href=\"https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html\">Central de Atendimento Online</a>, de Segunda a Sexta, das 8h às 20h.</li>\n</ul>\n"
+          }
+        ],
+        "allBorder": "any",
+        "allNegative": "boolean"
+      }
+    },
+    {
+      "name": "section_terms_of_use",
+      "component": {
+        "title": "Termos de uso e condições",
+        "text": "Consulte os termos de uso e condições deste serviço.",
+        "button": {
+          "label": "Consultar"
+        },
+        "modal": {
+          "title": "Termos de uso e condições",
+          "content": [
+            {
+              "title": "Condições",
+              "description": "\n\t\t\t\t\t\t\t<strong>Instalação de ar-condicionado\n</strong><strong>Vigência: a partir de 23/12/2024\n<a href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2024/2024-ce-instalacao-ar-condicionado-23-12-2024.pdf\">DOWNLOAD</a></strong>\n\n\t\t\t\t\t"
+            },
+            {
+              "title": "Termos de uso",
+              "description": "<a class=\"section-terms-of-use__anchor-pdf\" href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2024/2024_termos_de_uso_porto_servico.pdf\" download=\"termos-de-uso.pdf\" target=\"blank\">DOWNLOAD</a>"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

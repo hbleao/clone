@@ -1,0 +1,391 @@
+{
+  "config": [
+    {
+      "breadcrumb": "Limpeza de ar-condicionado"
+    }
+  ],
+  "components": [
+    {
+      "name": "section_custom_data",
+      "component": {
+        "pageName": "porto-servicos",
+        "product": "servicos-para-casa-e-auto",
+        "subproduct": "Limpeza-de-ar-condicionado",
+        "category": "produto",
+        "vertical": "servicos"
+      }
+    },
+    {
+      "name": "section_breadcrumb",
+      "component": {
+        "marginBottom": "",
+        "theme": "light",
+        "links": [
+          {
+            "url": "https://www.portoseguro.com.br",
+            "name": "Home"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/porto-servico",
+            "name": "Porto Serviço"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/servicos",
+            "name": "Serviços para Casa e Auto"
+          },
+          {
+            "name": "Limpeza de ar-condicionado"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_reminder_list",
+      "component": {
+        "steps": [
+          {
+            "stepNumber": 0,
+            "routeParam": "agendamento",
+            "label": "Agendamento",
+            "nextLink": "/loja/servicos/endereco",
+            "backLink": "/servicos/desentupimento"
+          },
+          {
+            "stepNumber": 1,
+            "routeParam": "endereco",
+            "label": "Local do serviço",
+            "nextLink": "/loja/servicos/dados-cadastrais",
+            "backLink": "/loja/servicos/agendamento"
+          },
+          {
+            "stepNumber": 2,
+            "routeParam": "dados-cadastrais",
+            "label": "Dados cadastrais",
+            "nextLink": "/loja/carrinho",
+            "backLink": "/loja/servicos/endereco",
+            "modal": {
+              "title": "Lembretes para o dia do serviço",
+              "subtitle": "Precaução é tudo! Por isso, confirme se está tudo ok para o prestador Porto realizar seu trabalho.",
+              "reminderList": [
+                {
+                  "iconName": "icon-Air-conditioner",
+                  "title": "Especificações do aparelho",
+                  "description": "O serviço será realizado apenas em equipamentos do modelo Split Hi-wall, com potência máxima de 30 mil BTUs.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Upload",
+                  "title": "Altura",
+                  "description": "A altura máxima entre o piso e o ar-condicionado deve ser de 3 m.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-ful-screen",
+                  "title": "Distância para o teto",
+                  "description": "É necessária uma distância mínima de 20 cm entre o aprelho e o teto para acesso aos componentes.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-user",
+                  "title": "Maior responsável",
+                  "description": "É necessária a presença de um responsável maior de 18 anos no local para acompanhar o serviço.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Residence",
+                  "title": "Condomínio",
+                  "description": "Os serviços serão realizados <strong>somente no imóvel</strong> do(a) cliente que os contratou, respeitando as<strong> leis de silêncio</strong> e as <strong>regras e horários</strong> do condomínio.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Circle-dollar-sign",
+                  "title": "Evite a taxa de visita",
+                  "description": "Será cobrada um taxa de R$ 120 se houver algum impedimento para realizar o serviço no dia agendado.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": "Não concordo"
+                }
+              ],
+              "alert": {
+                "icon": "icon-Alert",
+                "title": "Não podemos prosseguir",
+                "description": "O aceite em todos os itens é fundamental para o agendamento do serviço. Se tiver alguma dúvida, converse com a gente.",
+                "textLink": "Ir para o chat",
+                "link": "https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_carousel",
+      "component": {
+        "theme": "light",
+        "banners": [
+          {
+            "title": "Limpeza de ar-condicionado",
+            "subtitle": "<p>Conte com a limpeza de ar-condicionado da Porto Serviço e garanta mais conforto, saúde e bem-estar para a sua família.</p>",
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/hero/bh-servico-limpeza-ar-condicionado-split-hi-wall.webp",
+              "srcMobile": "",
+              "alt": "Limpeza de ar-condicionado"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cep_with_card_price",
+      "component": {
+        "sectionTitle": "Onde o serviço será realizado?",
+        "buttonLabel": "Contrate agora",
+        "price": 0,
+        "priceLabel": "",
+        "benefits": [
+          {
+            "icon": "icon-Card-credit",
+            "text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+          },
+          {
+            "icon": "icon-Discount",
+            "text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_body",
+      "component": {
+        "sectionTitle": "",
+        "marginBottom": "margin-default",
+        "bannerBody": {
+          "theme": "light",
+          "image": {
+            "src": "/content/dam/vertical-servicos/conteudo/bb-servico-limpeza-ar-condicionado-split-hi-wall.webp"
+          },
+          "pretitle": "",
+          "title": "Sobre o serviço",
+          "description": "<p>O serviço inclui a limpeza de 1 aparelho de ar-condicionado dos modelos Split Hi-Wall comum e inverter com capacidade máxima de resfriamento de 30 mil BTUs. </p>\n<p>Antes de iniciar o serviço, o prestador realiza a preparação do ambiente, protegendo adequadamente o local e os objetos para evitar sujeira.\nDurante o processo, é realizada a higienização completa do aparelho, abrangendo componentes como serpentina, bandeja, turbina, filtros e máscara, utilizando-se de produtos higienizadores e bactericidas. Todo o processo é realizado sem a necessidade de remover o equipamento, garantindo uma limpeza eficaz e segura.</p>\n<p><strong>Importante:</strong> altura máxima do piso ao aparelho de ser de 3 m.</p>\n",
+          "bgColor": "white",
+          "textColor": "black75",
+          "benefits": []
+        }
+      }
+    },
+    {},
+    {
+      "name": "section_how_it_works",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "Como funciona?",
+        "cardIcons": [
+          {
+            "title": "Agendamento",
+            "description": "Escolha a data e horário desejado.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info1"
+          },
+          {
+            "title": "Aprovação",
+            "description": "Visita do prestador até sua casa para avaliar o problema.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info2"
+          },
+          {
+            "title": "Execução do serviço",
+            "description": "Realização do serviço com a qualidade Porto.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info3"
+          },
+          {
+            "title": "Aprovação do pagamento",
+            "description": "Após a realização do serviço, é efetivada a cobraça do valor reservado no cartão de crédito.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info4"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_card_content_side_by_side",
+      "component": {
+        "sectionTitle": "Por que contratar?",
+        "cardsContent": [
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-porto-servico-profissionais-qualificados.webp?appId=aemshell",
+              "alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+            },
+            "title": "Profissionais qualificados",
+            "description": "Conte com a segurança e competência de um profissional Porto treinado e uniformizado."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-garantia-porto-servico.webp",
+              "alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+            },
+            "title": "Garantia Porto",
+            "description": "Garantia de até 90 dias após a realização do serviço."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-flexibilidade-porto-servico.webp",
+              "alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+            },
+            "title": "Flexibilidade",
+            "description": "Cancelamento e reagendamento grátis até 2 horas antes do horário agendado."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_service_requirements",
+      "component": {
+        "title": "Requisitos para este serviço",
+        "requirements": [
+          {
+            "icon": "icon-Air-conditioner",
+            "title": "Especificações do aparelho",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>O serviço será realizado apenas em equipamentos do modelo Split Hi-wall, com potência máxima de 30 mil BTUs.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Upload",
+            "title": "Altura",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>A altura máxima entre o piso e o ar-condicionado deve ser de 3 m.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-ful-screen",
+            "title": "Distância para o teto",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>É necessária uma distância mínima de 20 cm entre o aprelho e o teto para acesso aos componentes.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-user",
+            "title": "Maior responsável",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>É necessário um responsável <strong>maior de 18 anos no local para acompanhamento</strong>. Caso contrário, o serviço não será realizado e haverá taxa de visita do prestador, no valor de R$ 120.</p>\n"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cards_carousel_testimonial",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "O que dizem nossos clientes",
+        "cards": [
+          {
+            "name": "Silvia Abbade",
+            "service": "24/12/2024",
+            "text": "O prestador fez uma limpeza como eu nunca tinha visto. Ficou simplesmente perfeito, impecável. Muito organizado e deixou tudo limpinho. Nota 1000."
+          },
+          {
+            "name": "Jackson Rodrigues",
+            "service": "26/09/2024",
+            "text": "Profissional muito atencioso! A limpeza foi muito bem feita e estou satisfeito."
+          },
+          {
+            "name": "Vera Pereira",
+            "service": "22/11/2024",
+            "text": "Quero elogiar o último três prestadores que me socorreram, todos muito capacitados. A higienização do ar-condicionado ficou top!"
+          },
+          {
+            "name": "Henrique Bastos",
+            "service": "12/03/2024",
+            "text": "Agradeço pela comodidade e confiabilidade do serviço. A Porto sempre mantém sua excelência."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_faq",
+      "component": {
+        "sectionTitle": "Informações importantes",
+        "questionsAndAnswers": [
+          {
+            "title": "Preparação",
+            "description": "<ul>\n<li>Não é necessário desinstalar ou remover o aparelho;</li>\n<li>O ar-condicionado deve estar instalado a uma altura máxima de 3 m em relação ao piso de apoio;</li>\n<li>O ar-condicionado necessariamente precisa estar em uma distância mínima de 20 cm do teto para acesso aos componentes;</li>\n<li>Se houver móveis ou objetos abaixo do ar-condicionado, deverão ser retirados do local. É necessário que haja espaço livre embaixo do equipamento para que nosso prestador possa realizar o serviço;</li>\n<li>É necessária a presença de um responsável maior de 18 anos no local para acompanhamento do serviço, caso contrário o serviço não será realizado e será cobrado uma taxa de R$ 120.</li>\n</ul>\n<p><strong>Importante:</strong> em condomínios, a realização dos serviços será prestada exclusivamente no imóvel do cliente contratante, desde que não acarretem no descumprimento das legislações de controle do silêncio e/ou regras dos condomínios. Verifique os horários permitidos!</p>\n"
+          },
+          {
+            "title": "O que está incluso",
+            "description": "<ul>\n<li>Antes da realização do serviço, o prestador irá preparar o ambiente, protegendo o local e os objetos para evitar sujar o ambiente;</li>\n<li>Consiste na higienização completa do aparelho (serpentina, bandeja, turbina, filtros e máscara) dos modelos Split Hi-Wall comum e inverter, por meio de produtos higienizadores e bactericidas, garantindo a limpeza completa sem retirar o equipamento;</li>\n<li>Modelo Split, aparelhos com potência máxima de 30.000 BTU’s;</li>\n<li>Altura máxima do piso ao aparelho: 3 metros.</li>\n</ul>\n"
+          },
+          {
+            "title": "Restrições",
+            "description": "<ul>\n<li>Troca e substituição de gabinetes, bandejas e componentes estéticos;</li>\n<li>Recondicionamento ou recuperação de peças ou componentes do equipamento;</li>\n<li>Reparos em controles remotos;</li>\n<li>Acabamento fino (pedreiro, gesso);</li>\n<li>Reparo da tubulação de drenagem/mangueira, de gás e cabeamento elétrico;</li>\n<li>Locais externos de difícil acesso ao prestador;</li>\n<li>Não contempla a unidade condensadora, apenas a evaporadora.</li>\n<li>Modelos portáteis, cassete (teto) e janela;</li>\n<li>Limpeza da condensadora;</li>\n<li>Manutenção reversiva ou instalação do equipamento;</li>\n<li>Aparelho acima de 3 metros de altura do piso de apoio.</li>\n</ul>\n<p><strong>Se no momento da visita houver impeditivo para realização do serviço, será cobrada uma taxa de R$ 120.</p>\n<p>Importante:</strong> o prestador está autorizado a realizar locomoções apenas no mesmo ambiente (cômodo) onde a instalação ou conserto foi solicitado.</p>\n"
+          },
+          {
+            "title": "Tempo de execução",
+            "description": "<p>Aproximadamente 2h.</p>\n"
+          },
+          {
+            "title": "Garantia",
+            "description": "<p>Não há garantia para esse serviço.</p>\n"
+          },
+          {
+            "title": "Pós-atendimento",
+            "description": "<ul>\n<li>O serviço poderá ser cancelado ou reagendado sem cobrança se a solicitação for realizada até 02 (duas) horas antes do horário agendado. Fora deste prazo, será cobrada uma taxa no valor de R$ 120;</li>\n<li><a href=\"https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html\">Central de Atendimento Online</a>, de Segunda a Sexta, das 8h às 20h.</li>\n</ul>\n"
+          }
+        ],
+        "allBorder": "any",
+        "allNegative": "boolean"
+      }
+    },
+    {
+      "name": "section_terms_of_use",
+      "component": {
+        "title": "Termos de uso e condições",
+        "text": "Consulte os termos de uso e condições deste serviço.",
+        "button": {
+          "label": "Consultar"
+        },
+        "modal": {
+          "title": "Termos de uso e condições",
+          "content": [
+            {
+              "title": "Condições",
+              "description": "\n\t\t\t\t\t\t\t<strong>Limpeza de ar-condicionado\n</strong><strong>Vigência: a partir de 18/12/2023\n<a href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2023/2023-ce-limpeza-ar-condicionado-18-12-2023.pdf\">DOWNLOAD</a></strong>\n\n\t\t\t\t\t"
+            },
+            {
+              "title": "Termos de uso",
+              "description": "<a class=\"section-terms-of-use__anchor-pdf\" href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2024/2024_termos_de_uso_porto_servico.pdf\" download=\"termos-de-uso.pdf\" target=\"blank\">DOWNLOAD</a>"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

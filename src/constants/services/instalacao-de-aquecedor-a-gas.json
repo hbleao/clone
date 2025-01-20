@@ -1,0 +1,391 @@
+{
+  "config": [
+    {
+      "breadcrumb": "Instalação de aquecedor a gás"
+    }
+  ],
+  "components": [
+    {
+      "name": "section_custom_data",
+      "component": {
+        "pageName": "porto-servicos",
+        "product": "servicos-para-casa-e-auto",
+        "subproduct": "Instalacao-de-aquecedor-a-gas",
+        "category": "produto",
+        "vertical": "servicos"
+      }
+    },
+    {
+      "name": "section_breadcrumb",
+      "component": {
+        "marginBottom": "",
+        "theme": "light",
+        "links": [
+          {
+            "url": "https://www.portoseguro.com.br",
+            "name": "Home"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/porto-servico",
+            "name": "Porto Serviço"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/servicos",
+            "name": "Serviços para Casa e Auto"
+          },
+          {
+            "name": "Instalação de aquecedor a gás"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_reminder_list",
+      "component": {
+        "steps": [
+          {
+            "stepNumber": 0,
+            "routeParam": "agendamento",
+            "label": "Agendamento",
+            "nextLink": "/loja/servicos/endereco",
+            "backLink": "/servicos/desentupimento"
+          },
+          {
+            "stepNumber": 1,
+            "routeParam": "endereco",
+            "label": "Local do serviço",
+            "nextLink": "/loja/servicos/dados-cadastrais",
+            "backLink": "/loja/servicos/agendamento"
+          },
+          {
+            "stepNumber": 2,
+            "routeParam": "dados-cadastrais",
+            "label": "Dados cadastrais",
+            "nextLink": "/loja/carrinho",
+            "backLink": "/loja/servicos/endereco",
+            "modal": {
+              "title": "Lembretes para o dia do serviço",
+              "subtitle": "Precaução é tudo! Por isso, confirme se está tudo ok para o prestador Porto realizar seu trabalho.",
+              "reminderList": [
+                {
+                  "iconName": "icon-Electrical-wire",
+                  "title": "Rede elétrica",
+                  "description": "Não realizamos reparos ou ajustes na infraestrutura elétrica do imóvel, como a substituição de fiação ou disjuntores.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Tag",
+                  "title": "Equipamentos novos",
+                  "description": "Instalamos exclusivamente equipamentos novos, não realizando a instalação de aparelhos usados ou retirados de outros locais.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Paint-roller",
+                  "title": "Acabamento na alvenaria",
+                  "description": "Se for necessário realizar a quebra de alvenaria para a instalação, o acabamento do local não está incluído no serviço.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-user",
+                  "title": "Maior responsável",
+                  "description": "É necessária a presença de um responsável maior de 18 anos no local para acompanhar o serviço.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Residence",
+                  "title": "Condomínio",
+                  "description": "Os serviços serão realizados <strong>somente no imóvel</strong> do(a) cliente que os contratou, respeitando as<strong> leis de silêncio</strong> e as <strong>regras e horários</strong> do condomínio.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Circle-dollar-sign",
+                  "title": "Evite a taxa de visita",
+                  "description": "Será cobrada um taxa de R$ 120 se houver algum impedimento para realizar o serviço no dia agendado.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": "Não concordo"
+                }
+              ],
+              "alert": {
+                "icon": "icon-Alert",
+                "title": "Não podemos prosseguir",
+                "description": "O aceite em todos os itens é fundamental para o agendamento do serviço. Se tiver alguma dúvida, converse com a gente.",
+                "textLink": "Ir para o chat",
+                "link": "https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_carousel",
+      "component": {
+        "theme": "light",
+        "banners": [
+          {
+            "title": "Instalação de aquecedor a gás",
+            "subtitle": "<p>Conte com a Porto Serviço para realizar a instalação do seu aquecedor a gás com a segurança que você precisa.</p>",
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/hero/bh-servico-instalacao-aquecedor-gas.webp",
+              "srcMobile": "",
+              "alt": "Instalação de aquecedor a gás"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cep_with_card_price",
+      "component": {
+        "sectionTitle": "Onde o serviço será realizado?",
+        "buttonLabel": "Contrate agora",
+        "price": 0,
+        "priceLabel": "",
+        "benefits": [
+          {
+            "icon": "icon-Card-credit",
+            "text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+          },
+          {
+            "icon": "icon-Discount",
+            "text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_body",
+      "component": {
+        "sectionTitle": "",
+        "marginBottom": "margin-default",
+        "bannerBody": {
+          "theme": "light",
+          "image": {
+            "src": "/content/dam/vertical-servicos/conteudo/bb-servico-instalacao-aquecedor-gas.webp"
+          },
+          "pretitle": "",
+          "title": "Sobre o serviço",
+          "description": "<p>Nosso serviço inclui a instalação de 1 aquecedor a gás, realizada de forma profissional e conforme as normas técnicas vigentes.</p>\n<p>Antes da instalação, nosso técnico avalia o ambiente para verificar se ele atende aos requisitos técnicos necessários. Caso seja necessário, também realizamos a substituição da tomada elétrica para garantir a compatibilidade com o equipamento.</p>\n<p>Durante o processo, instalamos todos os itens essenciais, como grelhas de ventilação e inspeção, flexíveis para água e gás, e o duto de exaustão, além de fixar o aquecedor de maneira segura na parede.</p>\n<p>Após a instalação, realizamos testes completos para verificar o funcionamento do equipamento, orientamos o cliente sobre o uso adequado e finalizamos com a limpeza e organização do local.</p>\n<p>Somos homologados por diversos fabricantes de aquecedores a gás, garantindo que a instalação mantenha a validade da garantia de fábrica. Isso é possível porque seguimos rigorosamente todas as condições técnicas e de segurança, oferecendo um serviço de excelência na sua residência.</p>\n<p><strong>Importante:</strong> o kit de instalação compatível com o duto e o aquecedor é de responsabilidade do cliente e deve estar disponível no local no momento da visita do técnico.</p>\n",
+          "bgColor": "white",
+          "textColor": "black75",
+          "benefits": []
+        }
+      }
+    },
+    {},
+    {
+      "name": "section_how_it_works",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "Como funciona?",
+        "cardIcons": [
+          {
+            "title": "Agendamento",
+            "description": "Escolha a data e horário desejado.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info1"
+          },
+          {
+            "title": "Aprovação",
+            "description": "Visita do prestador até sua casa para avaliar o problema.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info2"
+          },
+          {
+            "title": "Execução do serviço",
+            "description": "Realização do serviço com a qualidade Porto.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info3"
+          },
+          {
+            "title": "Aprovação do pagamento",
+            "description": "Após a realização do serviço, é efetivada a cobraça do valor reservado no cartão de crédito.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info4"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_card_content_side_by_side",
+      "component": {
+        "sectionTitle": "Por que contratar?",
+        "cardsContent": [
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-porto-servico-profissionais-qualificados.webp?appId=aemshell",
+              "alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+            },
+            "title": "Profissionais qualificados",
+            "description": "Conte com a segurança e competência de um profissional Porto treinado e uniformizado."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-garantia-porto-servico.webp",
+              "alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+            },
+            "title": "Garantia Porto",
+            "description": "Garantia de até 90 dias após a realização do serviço."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-flexibilidade-porto-servico.webp",
+              "alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+            },
+            "title": "Flexibilidade",
+            "description": "Cancelamento e reagendamento grátis até 2 horas antes do horário agendado."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_service_requirements",
+      "component": {
+        "title": "Requisitos para este serviço",
+        "requirements": [
+          {
+            "icon": "icon-Electrical-wire",
+            "title": "Rede elétrica",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>Não realizamos reparos ou ajustes na infraestrutura elétrica do imóvel, como a substituição de fiação ou disjuntores.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Tag",
+            "title": "Equipamentos novos",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>Instalamos exclusivamente equipamentos novos, não realizando a instalação de aparelhos usados ou retirados de outros locais.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Paint-roller",
+            "title": "Acabamento na alvenaria",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>Se for necessário realizar a quebra de alvenaria para a instalação, o acabamento do local não está incluído no serviço.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-user",
+            "title": "Maior responsável",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>É necessário um responsável <strong>maior de 18 anos no local para acompanhamento</strong>. Caso contrário, o serviço não será realizado e haverá taxa de visita do prestador, no valor de R$ 120.</p>\n"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cards_carousel_testimonial",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "O que dizem nossos clientes",
+        "cards": [
+          {
+            "name": "Bruno Nodomi",
+            "service": "18/02/2023",
+            "text": "Instalação de aquecedor feita com precisão e cuidado. O técnico foi super educado e eficiente."
+          },
+          {
+            "name": "Kassandra Mendes",
+            "service": "25/05/2024",
+            "text": "Agendamento rápido, e o serviço foi executado com qualidade. Profissional pontual e atencioso!"
+          },
+          {
+            "name": "Rafael Arguri",
+            "service": "30/07/2023",
+            "text": "Trabalho bem executado! O técnico era experiente, pontual e muito atencioso. Recomendo a Porto!"
+          },
+          {
+            "name": "Samia Abdalla",
+            "service": "09/11/2023",
+            "text": "A educação e competência do técnico foram impressionantes. Senti confiança em todo o processo, nota 10."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_faq",
+      "component": {
+        "sectionTitle": "Informações importantes",
+        "questionsAndAnswers": [
+          {
+            "title": "Preparação",
+            "description": "<ul>\n<li>A presença de um responsável maior de 18 anos é obrigatória durante a execução do serviço. Caso contrário, o atendimento será cancelado, e será cobrada a taxa de visita do técnico, no valor de R$ 120;</li>\n<li>O cliente deve verificar se o produto está dentro do prazo de garantia do fabricante ou assistência técnica, pois a execução do serviço por terceiros pode resultar na perda dessa garantia;</li>\n<li>A aquisição das peças necessárias para o serviço é de responsabilidade do cliente;</li>\n<li>O kit de instalação compatível com o duto e o aquecedor é de responsabilidade do cliente e deve estar disponível no local no momento da visita do técnico;</li>\n<li>Deve haver um ponto de energia a, no máximo, 90 cm de distância do local onde o aquecedor será instalado. Não será criada uma extensão elétrica; caso necessário, apenas substituímos a tomada existente;</li>\n<li>Para instalações que envolvam dutos de exaustão passando pelo forro de gesso, é obrigatória a instalação de grelhas de ventilação/inspeção. O cliente deve autorizar previamente o corte no gesso para a instalação;</li>\n<li>Caso o cliente não autorize o corte no gesso para instalação da grelha de ventilação, o serviço será interrompido, uma vez que o ambiente sem esse dispositivo de segurança não atende aos requisitos técnicos estabelecidos pela norma ABNT NBR 13.103 - Instalação de aparelhos a gás para uso residencial;</li>\n<li>É indispensável que o ambiente tenha ventilação adequada, conforme as normas técnicas;</li>\n<li>Deve haver gás disponível no local para os testes finais;</li>\n<li>É necessário que haja disponibilidade de água para a instalação.</li>\n</ul>\n<p><strong>Importante:</strong> em condomínios, a realização dos serviços será prestada exclusivamente no imóvel do cliente contratante, desde que não acarretem no descumprimento das legislações de controle do silêncio e/ou regras dos condomínios. Verifique os horários permitidos!</p>\n"
+          },
+          {
+            "title": "O que está incluso",
+            "description": "<ul>\n<li>Retirada do produto da embalagem, incluindo fitas e películas de proteção;</li>\n<li>Verificação se o ambiente atende aos requisitos estabelecidos pelas normas técnicas que regulamentam a instalação de equipamentos a gás: ABNT NBR 13103 (atualizada em 2020) e ABNT NBR 15526;</li>\n<li>Instalação de grelhas de ventilação ou inspeção, quando necessário, conforme as normas técnicas brasileiras;</li>\n<li>Substituição da tomada elétrica para garantir compatibilidade com o equipamento, caso seja necessário;</li>\n<li>Fixação segura do equipamento na parede;</li>\n<li>Instalação de flexíveis de água e gás, de acordo com a marca, modelo e tipo de gás do equipamento;</li>\n<li>Instalação do duto de exaustão conforme especificações da marca, modelo e tipo de gás do equipamento;</li>\n<li>Orientações básicas sobre o uso adequado do equipamento;</li>\n<li>Realização de testes de funcionamento para garantir a operação correta;</li>\n<li>Limpeza e organização completa do local onde o serviço foi executado.</li>\n</ul>\n"
+          },
+          {
+            "title": "Restrições",
+            "description": "<ul>\n<li>Reparos ou ajustes das instalações elétricas do imóvel (troca de fiação ou disjuntor);</li>\n<li>Adaptações/ajustes em tubulações de gás;</li>\n<li>Reinstalação de equipamentos usados/retirados de local anterior;</li>\n<li>Montagem de Ducha;</li>\n<li>Intervenção em sistemas complementares ao aquecedor: sistemas de recirculação, boilers, painéis solares e suas respectivas tubulações;</li>\n<li>Intervenção em equipamentos complementares ao aquecedor: bombas pressurizadoras, termostatos digitas, bombas de recirculação, válvulas misturadoras e trocadores de calor indiretos;</li>\n<li>Impermeabilização ou calafetação de qualquer natureza no imóvel;</li>\n<li>Intervenção em equipamentos importados, sem assistência técnica no Brasil;</li>\n<li>Acabamento fino (pedreiro, gesso);</li>\n<li>Caso seja necessário a quebra de alvenaria para fazer o reparo, não será realizado o acabamento do local.</li>\n</ul>\n<p><strong>Se no momento da visita houver impeditivo para realização do serviço, será cobrada uma taxa de R$ 120.</p>\n<p>Importante:</strong> o prestador está autorizado a realizar locomoções apenas no mesmo ambiente (cômodo) onde a instalação ou conserto foi solicitado.</p>\n"
+          },
+          {
+            "title": "Tempo de execução",
+            "description": "<p>Aproximadamente 2h.</p>\n"
+          },
+          {
+            "title": "Garantia",
+            "description": "<p>Garantia de até 90 dias da mão de obra do serviço.</p>\n<p>Não há garantia sobre qualquer intervenção e/ou reparo realizado por terceiros, nem sobre danos ocasionados por ligações fora de compatibilidade ou uso inadequado, além do recomendado pelos fabricantes e por nosso técnico no local.</p>\n"
+          },
+          {
+            "title": "Pós-atendimento",
+            "description": "<ul>\n<li>Caso precise de novas peças para a conclusão do serviço, não se preocupe, você terá 20 dias corridos para que o técnico retorne a sua casa sem custo adicional;</li>\n<li>Se não solicitar o retorno do prestador nesses 20 dias, será cobrada uma taxa de R$ 120 e deverá ser solicitado um novo serviço, que implicará sua cobrança integral;</li>\n<li>O serviço poderá ser cancelado ou reagendado sem cobrança se a solicitação for realizada até 02 (duas) horas antes do horário agendado. Fora deste prazo, será cobrada uma taxa no valor de R$ 120;</li>\n<li><a href=\"https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html\">Central de Atendimento Online</a>, de Segunda a Sexta, das 8h às 20h.</li>\n</ul>\n"
+          }
+        ],
+        "allBorder": "any",
+        "allNegative": "boolean"
+      }
+    },
+    {
+      "name": "section_terms_of_use",
+      "component": {
+        "title": "Termos de uso e condições",
+        "text": "Consulte os termos de uso e condições deste serviço.",
+        "button": {
+          "label": "Consultar"
+        },
+        "modal": {
+          "title": "Termos de uso e condições",
+          "content": [
+            {
+              "title": "Condições",
+              "description": "\n\t\t\t\t\t\t\t<strong>Instalação de aquecedor a gás\n</strong><strong>Vigência: a partir de 02/08/2023\n<a href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2023/2023-ce-instalacao-aquecedor-gas-02-08-2023.pdf\">DOWNLOAD</a></strong>\n\n\t\t\t\t\t"
+            },
+            {
+              "title": "Termos de uso",
+              "description": "<a class=\"section-terms-of-use__anchor-pdf\" href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2024/2024_termos_de_uso_porto_servico.pdf\" download=\"termos-de-uso.pdf\" target=\"blank\">DOWNLOAD</a>"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,391 @@
+{
+  "config": [
+    {
+      "breadcrumb": "Limpeza de caixa d'água"
+    }
+  ],
+  "components": [
+    {
+      "name": "section_custom_data",
+      "component": {
+        "pageName": "porto-servicos",
+        "product": "servicos-para-casa-e-auto",
+        "subproduct": "Limpeza-de-caixa-d'agua",
+        "category": "produto",
+        "vertical": "servicos"
+      }
+    },
+    {
+      "name": "section_breadcrumb",
+      "component": {
+        "marginBottom": "",
+        "theme": "light",
+        "links": [
+          {
+            "url": "https://www.portoseguro.com.br",
+            "name": "Home"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/porto-servico",
+            "name": "Porto Serviço"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/servicos",
+            "name": "Serviços para Casa e Auto"
+          },
+          {
+            "name": "Limpeza de caixa d'água"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_reminder_list",
+      "component": {
+        "steps": [
+          {
+            "stepNumber": 0,
+            "routeParam": "agendamento",
+            "label": "Agendamento",
+            "nextLink": "/loja/servicos/endereco",
+            "backLink": "/servicos/desentupimento"
+          },
+          {
+            "stepNumber": 1,
+            "routeParam": "endereco",
+            "label": "Local do serviço",
+            "nextLink": "/loja/servicos/dados-cadastrais",
+            "backLink": "/loja/servicos/agendamento"
+          },
+          {
+            "stepNumber": 2,
+            "routeParam": "dados-cadastrais",
+            "label": "Dados cadastrais",
+            "nextLink": "/loja/carrinho",
+            "backLink": "/loja/servicos/endereco",
+            "modal": {
+              "title": "Lembretes para o dia do serviço",
+              "subtitle": "Precaução é tudo! Por isso, confirme se está tudo ok para o prestador Porto realizar seu trabalho.",
+              "reminderList": [
+                {
+                  "iconName": "icon-Water-tank",
+                  "title": "Esvazie a caixa d'água",
+                  "description": "A caixa d'água deverá estar vazia quando o prestador chegar. O serviço não pode ser realizado com ela cheia.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Upload",
+                  "title": "Altura",
+                  "description": "O acesso à caixa d'água (interno via alçapão ou externo via fachada) deve ter altura máxima de 6 m em relação ao piso de apoio para o uso da escada. ",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-ful-screen",
+                  "title": "Espaço em volta",
+                  "description": "É necessário que haja um espaço de no mínimo 1 m (laje ou plataforma) no entorno da caixa d'água para que o prestador possa realizar a limpeza.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-user",
+                  "title": "Maior responsável",
+                  "description": "É necessária a presença de um responsável maior de 18 anos no local para acompanhar o serviço.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Residence",
+                  "title": "Condomínio",
+                  "description": "Os serviços serão realizados <strong>somente no imóvel</strong> do(a) cliente que os contratou, respeitando as<strong> leis de silêncio</strong> e as <strong>regras e horários</strong> do condomínio.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Circle-dollar-sign",
+                  "title": "Evite a taxa de visita",
+                  "description": "Será cobrada um taxa de R$ 120 se houver algum impedimento para realizar o serviço no dia agendado.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": "Não concordo"
+                }
+              ],
+              "alert": {
+                "icon": "icon-Alert",
+                "title": "Não podemos prosseguir",
+                "description": "O aceite em todos os itens é fundamental para o agendamento do serviço. Se tiver alguma dúvida, converse com a gente.",
+                "textLink": "Ir para o chat",
+                "link": "https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_carousel",
+      "component": {
+        "theme": "light",
+        "banners": [
+          {
+            "title": "Limpeza de caixa d'água",
+            "subtitle": "<p>Conte com a limpeza de caixa d'água da Porto Serviço e garanta mais conforto, saúde e bem-estar para a sua família.</p>",
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/hero/bh-servico-limpeza-caixa-dagua.webp",
+              "srcMobile": "",
+              "alt": "Limpeza de caixa d'água"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cep_with_card_price",
+      "component": {
+        "sectionTitle": "Onde o serviço será realizado?",
+        "buttonLabel": "Contrate agora",
+        "price": 0,
+        "priceLabel": "",
+        "benefits": [
+          {
+            "icon": "icon-Card-credit",
+            "text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+          },
+          {
+            "icon": "icon-Discount",
+            "text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_body",
+      "component": {
+        "sectionTitle": "",
+        "marginBottom": "margin-default",
+        "bannerBody": {
+          "theme": "light",
+          "image": {
+            "src": "/content/dam/vertical-servicos/conteudo/bb-servico-limpeza-caixa-dagua.webp"
+          },
+          "pretitle": "",
+          "title": "Sobre o serviço",
+          "description": "<p>O serviço contempla a limpeza de 1 caixa d&#39;água de até 4 mil litros.</p>\n<p>Nosso prestador fará a limpeza da tampa e das paredes internas da caixa d&#39;água utilizando-se de produtos próprios para este tipo de serviço. Após a limpeza, cuidamos para que o local fique limpo e organizado.</p>\n<p><strong>Importante:</strong> a caixa d&#39;água precisa estar vazia para que a limpeza seja feita.</p>\n",
+          "bgColor": "white",
+          "textColor": "black75",
+          "benefits": []
+        }
+      }
+    },
+    {},
+    {
+      "name": "section_how_it_works",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "Como funciona?",
+        "cardIcons": [
+          {
+            "title": "Agendamento",
+            "description": "Escolha a data e horário desejado.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info1"
+          },
+          {
+            "title": "Aprovação",
+            "description": "Visita do prestador até sua casa para avaliar o problema.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info2"
+          },
+          {
+            "title": "Execução do serviço",
+            "description": "Realização do serviço com a qualidade Porto.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info3"
+          },
+          {
+            "title": "Aprovação do pagamento",
+            "description": "Após a realização do serviço, é efetivada a cobraça do valor reservado no cartão de crédito.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info4"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_card_content_side_by_side",
+      "component": {
+        "sectionTitle": "Por que contratar?",
+        "cardsContent": [
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-porto-servico-profissionais-qualificados.webp?appId=aemshell",
+              "alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+            },
+            "title": "Profissionais qualificados",
+            "description": "Conte com a segurança e competência de um profissional Porto treinado e uniformizado."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-garantia-porto-servico.webp",
+              "alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+            },
+            "title": "Garantia Porto",
+            "description": "Garantia de até 90 dias após a realização do serviço."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-flexibilidade-porto-servico.webp",
+              "alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+            },
+            "title": "Flexibilidade",
+            "description": "Cancelamento e reagendamento grátis até 2 horas antes do horário agendado."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_service_requirements",
+      "component": {
+        "title": "Requisitos para este serviço",
+        "requirements": [
+          {
+            "icon": "icon-Water-tank",
+            "title": "Esvazie a caixa d'água",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>A caixa d&#39;água deverá estar vazia quando o prestador chegar. O serviço não pode ser realizado com ela cheia.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Upload",
+            "title": "Altura",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>O acesso à caixa d&#39;água (interno via alçapão ou externo via fachada) deve ter altura máxima de 6 m em relação ao piso de apoio para o uso da escada. </p>\n"
+            }
+          },
+          {
+            "icon": "icon-ful-screen",
+            "title": "Espaço em volta",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>É necessário que haja um espaço de no mínimo 1 m (laje ou plataforma) no entorno da caixa d&#39;água para que o prestador possa realizar a limpeza.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-user",
+            "title": "Maior responsável",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>É necessário um responsável <strong>maior de 18 anos no local para acompanhamento</strong>. Caso contrário, o serviço não será realizado e haverá taxa de visita do prestador, no valor de R$ 120.</p>\n"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cards_carousel_testimonial",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "O que dizem nossos clientes",
+        "cards": [
+          {
+            "name": "Luiz Marcondes",
+            "service": "17/10/2024",
+            "text": "O Sidney é um excelente profissional, extremamente competente e educado, superou minhas expectativas."
+          },
+          {
+            "name": "Josué Prado",
+            "service": "09/10/2024",
+            "text": "Excelente o atendimento. Parabéns, Porto Serviço."
+          },
+          {
+            "name": "Deuscimara Mendonça",
+            "service": "11/10/2024",
+            "text": "Prestador excelente, explicou muito bem o serviço realizado, mostrou as fotos do antes e depois."
+          },
+          {
+            "name": "Alexandre Oliveira",
+            "service": "22/11/2023",
+            "text": "Quanto ao prestador, agradeço imensamente os serviços prestado! Com muita alteridade, solidariedade e muito zelo!"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_faq",
+      "component": {
+        "sectionTitle": "Informações importantes",
+        "questionsAndAnswers": [
+          {
+            "title": "Preparação",
+            "description": "<ul>\n<li>É necessária a presença de um responsável maior de 18 anos no local para acompanhamento do serviço, caso contrário o serviço não será realizado e será cobrada a taxa de visita do prestador no valor R$ 120;</li>\n<li>Possuir acesso interno (alçapão) ou externo (fachada), limitado a 6 m de altura em relação ao piso de apoio para uso de escada;</li>\n<li>Possuir uma altura livre e mínima de 1 m entre a tampa e o telhado/cobertura;</li>\n<li>Possuir área de tráfego (laje ou plataforma) com o mínimo de 1 m no entorno da caixa d’água/ reservatório;</li>\n<li>A caixa d’água/ reservatório e sua tampa não podem conter fissuras, trincas, deformações, remendos, vazamentos ou deficiência de impermeabilização;</li>\n<li>Certifique-se que haja espaço físico para deslocamento do nosso prestador e que as conexões hidráulicas de entrada e saída da caixa d’água estejam em perfeitas condições;</li>\n<li>Caso a residência tenha pressurizador de água, você deve fechar junto com o registro;</li>\n<li>O esvaziamento do reservatório é de responsabilidade do cliente e não poderá ser executado pelo prestador.</li>\n</ul>\n<p><strong>Importante:</strong> em condomínios, a realização dos serviços será prestada exclusivamente no imóvel do cliente contratante, desde que não acarretem no descumprimento das legislações de controle do silêncio e/ou regras dos condomínios. Verifique os horários permitidos!</p>\n"
+          },
+          {
+            "title": "O que está incluso",
+            "description": "<ul>\n<li>Limpeza e higienização da tampa e das paredes internas de até 1 caixa d’água com capacidade máxima de até 4 mil litros;</li>\n<li>Produtos e acessórios para a limpeza e higienização;</li>\n<li>Limpeza e organização do local onde o serviço for realizado.</li>\n</ul>\n"
+          },
+          {
+            "title": "Restrições",
+            "description": "<ul>\n<li>Altura superior a 6 m entre piso e a laje;</li>\n<li>Caixas d’água com mais de 4 mil litros;</li>\n<li>Caixas d’água com pressurizador elétrico ou mecânico interno;</li>\n<li>Caixas d’água sem tampa;</li>\n<li>Caixas d’água com fissura, trincos ou remendos;</li>\n<li>Recorte, reparo ou substituição de manta térmica ou impermeável que interfira no acesso a caixa d’água;</li>\n<li>Substituição de telhas ou estrutura de sustentação do telhado que interfira no acesso a caixa d’água;</li>\n<li>Desmontagem de telhas do tipo fibrocimento (amianto) que interfira no acesso a caixa d’água/reservatório;</li>\n<li>Serviços de alvenaria;</li>\n<li>Limpeza, higienização e desentupimento exclusivamente nos ramais hidráulicos (rede de água);</li>\n<li>Limpeza e higienização de reservatório de acúmulo de água quente (boiler/sistema de aquecimento);</li>\n<li>Reparo, adequação ou substituição da caixa d’água;</li>\n<li>Reparo, adequação ou substituição das tubulações, conexões e registros ligados a caixa d’água.</li>\n</ul>\n<p><strong>Se no momento da visita houver impeditivo para realização do serviço, será cobrada uma taxa de R$ 120.</p>\n<p>Importante:</strong> o prestador está autorizado a realizar locomoções apenas no mesmo ambiente (cômodo) onde a instalação ou conserto foi solicitado.</p>\n"
+          },
+          {
+            "title": "Tempo de execução",
+            "description": "<p>Aproximadamente 2h.</p>\n"
+          },
+          {
+            "title": "Garantia",
+            "description": "<p>Garantia de até 90 dias da mão de obra do serviço.</p>\n"
+          },
+          {
+            "title": "Pós-atendimento",
+            "description": "<ul>\n<li>O serviço poderá ser cancelado ou reagendado sem cobrança se a solicitação for realizada até 02 (duas) horas antes do horário agendado. Fora deste prazo, será cobrada uma taxa no valor de R$ 120;</li>\n<li><a href=\"https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html\">Central de Atendimento Online</a>, de Segunda a Sexta, das 8h às 20h.</li>\n</ul>\n"
+          }
+        ],
+        "allBorder": "any",
+        "allNegative": "boolean"
+      }
+    },
+    {
+      "name": "section_terms_of_use",
+      "component": {
+        "title": "Termos de uso e condições",
+        "text": "Consulte os termos de uso e condições deste serviço.",
+        "button": {
+          "label": "Consultar"
+        },
+        "modal": {
+          "title": "Termos de uso e condições",
+          "content": [
+            {
+              "title": "Condições",
+              "description": "\n\t\t\t\t\t\t\t<strong>Limpeza de caixa d'água\n</strong><strong>Vigência: a partir de 02/08/2023\n<a href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2023/2023-ce-limpeza-caixa-dagua-02-08-2023.pdf\">DOWNLOAD</a></strong>\n\n\t\t\t\t\t"
+            },
+            {
+              "title": "Termos de uso",
+              "description": "<a class=\"section-terms-of-use__anchor-pdf\" href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2024/2024_termos_de_uso_porto_servico.pdf\" download=\"termos-de-uso.pdf\" target=\"blank\">DOWNLOAD</a>"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

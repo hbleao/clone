@@ -1,0 +1,257 @@
+[
+	{
+		"name": "section_custom_data",
+		"component": {
+			"pageName": "oficina",
+			"product": "centro-automotivo",
+			"subproduct": "palheta-de-para-brisa",
+			"category": "produto",
+			"vertical": "servicos",
+			"funnel": "short-form"
+		}
+	},
+	{
+		"name": "section_breadcrumb",
+		"component": {
+			"marginBottom": "",
+			"theme": "light",
+			"links": [
+				{
+					"url": "https://www.portoseguro.com.br",
+					"name": "Home"
+				},
+				{
+					"url": "https://servicos.portoseguro.com.br/centro-automotivo",
+					"name": "Centro Automotivo Porto"
+				},
+				{
+					"name": "Troca de palheta do para-brisa"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_banner_hero",
+		"component": {
+			"theme": "light",
+			"variant": "caps",
+			"marginBottom": "margin-default",
+			"bannerHero": {
+				"bgColor": "#D9F1FF",
+				"textColor": "black100",
+				"title": "Troca de palheta do para-brisa",
+				"description": "<p><strong>Recomendação:</strong> a cada 12 meses ou 10 mil km<br><strong>Inclui:</strong> mão de obra e substituição das palhetas dianteiras e traseira.</p>",
+				"headingTagTitle": "h1",
+
+				"button": {
+					"label": "Agende agora",
+					"variant": "insurance"
+				},
+				"subTitle": "Manutenção corretiva",
+				"image": {
+					"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/bh-servico-automotivo-palheta-parabrisa.webp",
+					"alt": "Troca de palheta do para-brisa"
+				}
+			}
+		}
+	},
+	{
+		"name": "section_card_price_with_text",
+		"component": {
+			"title": "Sobre o serviço",
+			"description": "Envolve a troca das palhetas dianteiras, que garantem a visibilidade adequada durante chuvas ou limpeza de sujeiras no vidro, melhorando a visão do motorista. Este pacote atende veículos como Palio, Gol, Uno e Sandero, para outros veículos, consulte o valor diretamente na oficina escolhida.",
+			"price": 119.9,
+			"benefits": [
+				{
+					"icon": "icon-Card-credit",
+					"text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+				},
+				{
+					"icon": "icon-Discount",
+					"text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_banner_body",
+		"component": {
+			"marginBottom": "margin-default",
+			"bannerBody": {
+				"theme": "light",
+				"image": {
+					"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/bb-servico-automotivo-palheta-parabrisa.webp",
+					"alt": "prestador porto realizando manutenção no encanamento de uma pia"
+				},
+				"pretitle": "",
+				"title": "Por que é importante?",
+				"subtitle": "",
+				"bgColor": "white",
+				"textColor": "black75",
+				"benefits": [
+					{
+						"iconName": "icon-check",
+						"text": "<p><strong>Segurança:</strong>  assegura uma visibilidade clara e sem impedimentos em condições climáticas adversas. Palhetas desgastadas ou danificadas podem deixar manchas e riscos, aumentando as chances de acidente.</p>"
+					}
+				]
+			}
+		}
+	},
+	{
+		"name": "section_how_it_works",
+		"component": {
+			"theme": "light",
+			"sectionTitle": "Como funciona?",
+			"cardIcons": [
+				{
+					"title": "Encontre uma oficina",
+					"description": "Localize a unidade do Centro Automotivo de sua preferência.",
+					"variant": "withoutLink",
+					"iconName": "icon-circle-info1"
+				},
+				{
+					"title": "Escolha o serviço",
+					"description": "Escolha um pacote de revisão ou o serviço avulso que seu carro precisa.",
+					"variant": "withoutLink",
+					"iconName": "icon-circle-info2"
+				},
+				{
+					"title": "Agendamento",
+					"description": "Escolha o melhor dia e horário para a realização do serviço.",
+					"variant": "withoutLink",
+					"iconName": "icon-circle-info3"
+				},
+				{
+					"title": "Execução do serviço",
+					"description": "Compareça na unidade no dia e horário agendado.",
+					"variant": "withoutLink",
+					"iconName": "icon-circle-info4"
+				},
+				{
+					"title": "Pagamento",
+					"description": "Feito diretamente na unidade, após aprovação do diagnóstico e orçamento.",
+					"variant": "withoutLink",
+					"iconName": "icon-circle-info5"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_card_content_side_by_side",
+		"component": {
+			"sectionTitle": "Nossos diferenciais",
+			"cardsContent": [
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-especialistas-centro-automotivo-porto.webp",
+						"alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+					},
+					"title": "Especialistas em mecânica",
+					"description": "Conte com profissionais treinados e mão de obra qualificada para cuidar do seu carro."
+				},
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-garantia-centro-automotivo-porto.webp",
+						"alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+					},
+					"title": "Garantia nacional Porto",
+					"description": "Garantia de até 90 dias após a realização do serviço."
+				},
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-flexibilidade-centro-automotivo-porto.webp",
+						"alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+					},
+					"title": "Flexibilidade",
+					"description": "Encontre a oficina mais próxima e agende serviços para seu carro no horário de sua preferência."
+				}
+			]
+		}
+	},
+	{
+		"name": "section_service_requirements",
+		"component": {
+			"title": "Informações importantes",
+			"variant": "fluid",
+			"requirements": [
+				{
+					"icon": "icon-Car-alert",
+					"title": "Diagnóstico",
+					"caption": "Todos os serviços agendados, passarão por um diagnóstico antes da execução.",
+					"details": {}
+				},
+				{
+					"icon": "icon-Circle-dollar-sign",
+					"title": "Preços",
+					"caption": "Preços podem sofrer alteração de acordo com produto e/ou marca escolhidos.",
+					"details": {}
+				},
+				{
+					"icon": "icon-Motorcycle",
+					"title": "Veículos não atendidos",
+					"caption": "Motos, vans, pesados e veículos a diesel.",
+					"details": {}
+				}
+			]
+		}
+	},
+	{
+		"name": "section_cards_carousel_testimonial",
+		"component": {
+			"theme": "light",
+			"sectionTitle": "O que dizem nossos clientes",
+			"cards": [
+				{
+					"name": "Miguel Camargo",
+					"service": "06/08/2024",
+					"text": "Muito bem atendido, profissional que prestou o serviço é muito eficiente"
+				},
+				{
+					"name": "Ana Souza",
+					"service": "15/07/2024",
+					"text": "Fui muito bem atendida e o serviço feito por excelência"
+				},
+				{
+					"name": "Heraldo Leite",
+					"service": "09/07/2024",
+					"text": "Excelente serviço e atendimento!"
+				},
+				{
+					"name": "Claudio Silva",
+					"service": "04/07/2024",
+					"text": "Equipe super bem organizada e treinada."
+				}
+			]
+		}
+	},
+	{
+		"name": "section_faq",
+		"component": {
+			"sectionTitle": "Tire suas dúvidas sobre Troca de palheta do para-brisa",
+			"questionsAndAnswers": [
+				{
+					"title": "Quais são os sinais de que as palhetas precisam ser substituídas?",
+					"description": "Sinais incluem ruídos ao acionar os limpadores, manchas na superfície do vidro, e se as palhetas não se adaptam corretamente ao contorno do para-brisa."
+				},
+				{
+					"title": "As palhetas de para-brisa são compatíveis com todos os veículos?",
+					"description": "As palhetas devem ser escolhidas de acordo com as especificações do fabricante do veículo. É importante verificar a compatibilidade antes de comprar."
+				},
+				{
+					"title": "O que pode causar o desgaste precoce das palhetas do para-brisa?",
+					"description": "Exposição a altas temperaturas, produtos químicos, sujeira acumulada e o uso excessivo em condições climáticas adversas podem contribuir para o desgaste precoce."
+				},
+				{
+					"title": "Como posso prolongar a vida útil das palhetas do para-brisa?",
+					"description": "Para prolongar a vida útil, limpe regularmente as palhetas e o vidro, evite usar os limpadores em superfícies secas e utilize produtos adequados para manter a borracha das palhetas em bom estado."
+				},
+				{
+					"title": "É necessário trocar as palhetas do para-brisa ao trocar o vidro?",
+					"description": "Sim, é uma boa prática trocar as palhetas ao trocar o vidro do para-brisa, garantindo que o sistema de limpeza esteja em boas condições para a nova superfície."
+				}
+			],
+			"allBorder": "any",
+			"allNegative": "boolean"
+		}
+	}
+]

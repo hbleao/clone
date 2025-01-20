@@ -1,0 +1,386 @@
+{
+  "config": [
+    {
+      "breadcrumb": "Instalação de cortinas e persianas"
+    }
+  ],
+  "components": [
+    {
+      "name": "section_custom_data",
+      "component": {
+        "pageName": "porto-servicos",
+        "product": "servicos-para-casa-e-auto",
+        "subproduct": "Instalacao-de-cortinas-e-persianas",
+        "category": "produto",
+        "vertical": "servicos"
+      }
+    },
+    {
+      "name": "section_breadcrumb",
+      "component": {
+        "marginBottom": "",
+        "theme": "light",
+        "links": [
+          {
+            "url": "https://www.portoseguro.com.br",
+            "name": "Home"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/porto-servico",
+            "name": "Porto Serviço"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/servicos",
+            "name": "Serviços para Casa e Auto"
+          },
+          {
+            "name": "Instalação de cortinas e persianas"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_reminder_list",
+      "component": {
+        "steps": [
+          {
+            "stepNumber": 0,
+            "routeParam": "agendamento",
+            "label": "Agendamento",
+            "nextLink": "/loja/servicos/endereco",
+            "backLink": "/servicos/desentupimento"
+          },
+          {
+            "stepNumber": 1,
+            "routeParam": "endereco",
+            "label": "Local do serviço",
+            "nextLink": "/loja/servicos/dados-cadastrais",
+            "backLink": "/loja/servicos/agendamento"
+          },
+          {
+            "stepNumber": 2,
+            "routeParam": "dados-cadastrais",
+            "label": "Dados cadastrais",
+            "nextLink": "/loja/carrinho",
+            "backLink": "/loja/servicos/endereco",
+            "modal": {
+              "title": "Lembretes para o dia do serviço",
+              "subtitle": "Precaução é tudo! Por isso, confirme se está tudo ok para o prestador Porto realizar seu trabalho.",
+              "reminderList": [
+                {
+                  "iconName": "icon-Drill",
+                  "title": "Condições para fixação",
+                  "description": "A instalação será executada exclusivamente em paredes que suportam o peso e funcionalidade do item, cuja altura não supere 3 m do piso.\nNão realizamos perfurações em acabamento de pedras ou mármores",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Gear",
+                  "title": "Cortinas e persianas",
+                  "description": "A compra dos itens que serão fixados é de <strong>responsabilidade do(a) cliente</strong>.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-user",
+                  "title": "Maior responsável",
+                  "description": "É necessária a presença de um responsável maior de 18 anos no local para acompanhar o serviço.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Residence",
+                  "title": "Condomínio",
+                  "description": "Os serviços serão realizados <strong>somente no imóvel</strong> do(a) cliente que os contratou, respeitando as<strong> leis de silêncio</strong> e as <strong>regras e horários</strong> do condomínio.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Circle-dollar-sign",
+                  "title": "Evite a taxa de visita",
+                  "description": "Será cobrada um taxa de R$ 120 se houver algum impedimento para realizar o serviço no dia agendado.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": "Não concordo"
+                }
+              ],
+              "alert": {
+                "icon": "icon-Alert",
+                "title": "Não podemos prosseguir",
+                "description": "O aceite em todos os itens é fundamental para o agendamento do serviço. Se tiver alguma dúvida, converse com a gente.",
+                "textLink": "Ir para o chat",
+                "link": "https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_carousel",
+      "component": {
+        "theme": "light",
+        "banners": [
+          {
+            "title": "Instalação de cortinas e persianas",
+            "subtitle": "<p>Conte com a Porto Serviço para a instalação de cortinas e persianas. O serviço inclui a fixação de até 3 itens por um valor único.</p>",
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/hero/bh-servico-instalacao-fixacao-cortinas-persianas.webp",
+              "srcMobile": "",
+              "alt": "Instalação de cortinas e persianas"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cep_with_card_price",
+      "component": {
+        "sectionTitle": "Onde o serviço será realizado?",
+        "buttonLabel": "Contrate agora",
+        "price": 0,
+        "priceLabel": "",
+        "benefits": [
+          {
+            "icon": "icon-Card-credit",
+            "text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+          },
+          {
+            "icon": "icon-Discount",
+            "text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_body",
+      "component": {
+        "sectionTitle": "",
+        "marginBottom": "margin-default",
+        "bannerBody": {
+          "theme": "light",
+          "image": {
+            "src": "/content/dam/vertical-servicos/conteudo/bb-servico-instalacao-fixacao-cortinas-persianas.webp"
+          },
+          "pretitle": "",
+          "title": "Sobre o serviço",
+          "description": "<p>O serviço inclui a mão de obra para instalação de até 3 cortinas ou persianas. Após o serviço, nosso prestador cuida da limpeza e organização do local. Fixação de: cortina de varão, cortina de trilho e persianas.</p>\n",
+          "bgColor": "white",
+          "textColor": "black75",
+          "benefits": []
+        }
+      }
+    },
+    {},
+    {
+      "name": "section_how_it_works",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "Como funciona?",
+        "cardIcons": [
+          {
+            "title": "Agendamento",
+            "description": "Escolha a data e horário desejado.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info1"
+          },
+          {
+            "title": "Aprovação",
+            "description": "Visita do prestador até sua casa para avaliar o problema.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info2"
+          },
+          {
+            "title": "Execução do serviço",
+            "description": "Realização do serviço com a qualidade Porto.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info3"
+          },
+          {
+            "title": "Aprovação do pagamento",
+            "description": "Após a realização do serviço, é efetivada a cobraça do valor reservado no cartão de crédito.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info4"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_card_content_side_by_side",
+      "component": {
+        "sectionTitle": "Por que contratar?",
+        "cardsContent": [
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-porto-servico-profissionais-qualificados.webp?appId=aemshell",
+              "alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+            },
+            "title": "Profissionais qualificados",
+            "description": "Conte com a segurança e competência de um profissional Porto treinado e uniformizado."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-garantia-porto-servico.webp",
+              "alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+            },
+            "title": "Garantia Porto",
+            "description": "Garantia de até 90 dias após a realização do serviço."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-flexibilidade-porto-servico.webp",
+              "alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+            },
+            "title": "Flexibilidade",
+            "description": "Cancelamento e reagendamento grátis até 2 horas antes do horário agendado."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_service_requirements",
+      "component": {
+        "title": "Requisitos para este serviço",
+        "requirements": [
+          {
+            "icon": "icon-Drill",
+            "title": "Condições para fixação",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>A instalação será executada exclusivamente em paredes que suportam o peso e funcionalidade do item, <strong>cuja altura não supere 3 m do piso</strong>.</p>\n<p>Não realizamos perfurações em acabamento de pedras ou mármores.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Gear",
+            "title": "Providencie os itens",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>As cortinas e persianas que serão instaladas devem ser <strong>disponibilizados pelo cliente</strong> no momento da realização do serviço.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Residence",
+            "title": "Espaço de trabalho",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>Cabe ao cliente ter um espaço mínimo necessário para movimentação do equipamento na execução do serviço.</p>\n",
+              "notification": {
+                "icon": "icon-Residence-alert",
+                "title": "Se você mora em condomínio",
+                "description": "Os serviços serão realizados somente no imóvel do cliente que contratou, respeitando as leis de silêncio e as regras de acesso aos prestadores."
+              }
+            }
+          },
+          {
+            "icon": "icon-user",
+            "title": "Maior responsável",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>É necessário um responsável <strong>maior de 18 anos no local para acompanhamento</strong>. Caso contrário, o serviço não será realizado e haverá taxa de visita do prestador, no valor de R$ 120.</p>\n"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cards_carousel_testimonial",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "O que dizem nossos clientes",
+        "cards": [
+          {
+            "name": "Aline Godói",
+            "service": "10/03/2024",
+            "text": "Muito satisfeita com o resultado! A instalação ficou firme e bem feita."
+          },
+          {
+            "name": "Lisandra Marques",
+            "service": "04/12/2023",
+            "text": "O serviço foi rápido e sem complicação, e as cortinas ficaram perfeitas. Vale muito a pena!"
+          },
+          {
+            "name": "Célia Figueiredo",
+            "service": "19/05/24",
+            "text": "Adorei o atendimento e a qualidade da instalação. Tudo feito com muito capricho."
+          },
+          {
+            "name": "Mauricio Santanna",
+            "service": "15/07/2024",
+            "text": "Foi tudo bem, serviços da Porto sempre excelentes, sempre são a minha primeira escolha e recomendo a todos meus conhecidos. Os prestadores são os melhores profissionais, sempre educados e competentes. Por mim vocês estão de parabéns."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_faq",
+      "component": {
+        "sectionTitle": "Informações importantes",
+        "questionsAndAnswers": [
+          {
+            "title": "Preparação",
+            "description": "<ul>\n<li>É necessária a presença de um responsável maior de 18 anos no local para acompanhamento do serviço, caso contrário o serviço não será realizado e será cobrada a taxa de visita do prestador no valor R$ 120;</li>\n<li>É importante que o item já esteja disponível para a instalação;</li>\n<li>A compra das peças para a realização do serviço será de responsabilidade do (a) cliente;</li>\n<li>A instalação será executada exclusivamente em paredes que suportam o peso e funcionalidade do item, cuja altura não supere 3 m do piso;</li>\n<li>Para as paredes que contenham tubulações hidráulicas e elétricas o cliente deverá fornecer a planta construtiva atualizada do imóvel para perfuração segura, evitando danos na tubulação existente. Caso a planta não seja apresentada, o prestador avaliará visualmente o risco de perfuração, informando ao cliente, o qual decidirá se a perfuração será realizada ou não no local.</li>\n</ul>\n<p><strong>Importante:</strong> em condomínios, a realização dos serviços será prestada exclusivamente no imóvel do cliente contratante, desde que não acarretem o descumprimento das legislações de controle do silêncio e/ou regras dos condomínios. Verifique os horários permitidos!</p>\n"
+          },
+          {
+            "title": "O que está incluso",
+            "description": "<ul>\n<li>Preparação do ambiente para realização da instalação;</li>\n<li>Serviço para fixação de até 3 cortinas ou persianas;</li>\n<li>Limpeza e organização do local onde o serviço for realizado.</li>\n</ul>\n"
+          },
+          {
+            "title": "Restrições",
+            "description": "<ul>\n<li>Desmontagem ou reinstalação dos itens, para o mesmo ambiente ou em ambientes distintos do imóvel;</li>\n<li>Instalação de itens a uma altura superior a 3 m do piso;</li>\n<li>Fixação em colunas ou vigas de madeira ou aço, forros de gesso, madeira e PVC;</li>\n<li>Execução de reforço estrutural em paredes, pisos, tetos e painel de madeira;</li>\n<li>Fixação de itens por chumbamento em alvenarias (quebra e aplicação de concreto ou chumbadores químicos);</li>\n<li>Perfurações em colunas estruturais de concreto;</li>\n<li>Perfurações em acabamento de pedras ou mármores;</li>\n<li>Realização de furos em vidros e espelhos;</li>\n<li>Acabamento no imóvel, como pintura, massa, gesso, azulejos, pisos, cerâmicas, revestimentos, peças, produtos, acessórios e/ou materiais necessários para instalação.</li>\n</ul>\n<p><strong>Se no momento da visita houver impeditivo para realização do serviço, será cobrada uma taxa de R$ 120.</p>\n<p>Importante:</strong> o prestador está autorizado a realizar locomoções apenas no mesmo ambiente (cômodo) onde a instalação ou conserto foi solicitado.</p>\n"
+          },
+          {
+            "title": "Tempo de execução",
+            "description": "<p>Aproximadamente 1h.</p>\n"
+          },
+          {
+            "title": "Garantia",
+            "description": "<p>Garantia de até 90 dias da mão de obra do serviço.</p>\n"
+          },
+          {
+            "title": "Pós-atendimento",
+            "description": "<ul>\n<li>Caso precise de novas peças para a conclusão do serviço, não se preocupe, você terá 20 dias corridos para que o técnico retorne a sua casa sem custo adicional;</li>\n<li>Se não solicitar o retorno do prestador nesses 20 dias, será cobrada uma taxa de R$ 120 e deverá ser solicitado um novo serviço, que implicará sua cobrança integral;</li>\n<li>O serviço poderá ser cancelado ou reagendado sem cobrança se a solicitação for realizada até 02 (duas) horas antes do horário agendado. Fora deste prazo, será cobrada uma taxa no valor de R$ 120;</li>\n<li><a href=\"https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html\">Central de Atendimento Online</a>, de Segunda a Sexta, das 8h às 20h.</li>\n</ul>\n"
+          }
+        ],
+        "allBorder": "any",
+        "allNegative": "boolean"
+      }
+    },
+    {
+      "name": "section_terms_of_use",
+      "component": {
+        "title": "Termos de uso e condições",
+        "text": "Consulte os termos de uso e condições deste serviço.",
+        "button": {
+          "label": "Consultar"
+        },
+        "modal": {
+          "title": "Termos de uso e condições",
+          "content": [
+            {
+              "title": "Condições",
+              "description": "\n\t\t\t\t\t\t\t<strong>Instalação de cortinas e persianas\n</strong><strong>Vigência: a partir de 03/08/2023\n<a href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2023/2023_ce_fixacoes_03-08-2023.pdf\">DOWNLOAD</a></strong>\n\n\t\t\t\t\t"
+            },
+            {
+              "title": "Termos de uso",
+              "description": "<a class=\"section-terms-of-use__anchor-pdf\" href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2024/2024_termos_de_uso_porto_servico.pdf\" download=\"termos-de-uso.pdf\" target=\"blank\">DOWNLOAD</a>"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,396 @@
+{
+  "config": [
+    {
+      "breadcrumb": "Limpeza de poltrona, chaise ou puff"
+    }
+  ],
+  "components": [
+    {
+      "name": "section_custom_data",
+      "component": {
+        "pageName": "porto-servicos",
+        "product": "servicos-para-casa-e-auto",
+        "subproduct": "Limpeza-de-poltrona-chaise-ou-puff",
+        "category": "produto",
+        "vertical": "servicos"
+      }
+    },
+    {
+      "name": "section_breadcrumb",
+      "component": {
+        "marginBottom": "",
+        "theme": "light",
+        "links": [
+          {
+            "url": "https://www.portoseguro.com.br",
+            "name": "Home"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/porto-servico",
+            "name": "Porto Serviço"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/servicos",
+            "name": "Serviços para Casa e Auto"
+          },
+          {
+            "name": "Limpeza de poltrona, chaise ou puff"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_reminder_list",
+      "component": {
+        "steps": [
+          {
+            "stepNumber": 0,
+            "routeParam": "agendamento",
+            "label": "Agendamento",
+            "nextLink": "/loja/servicos/endereco",
+            "backLink": "/servicos/desentupimento"
+          },
+          {
+            "stepNumber": 1,
+            "routeParam": "endereco",
+            "label": "Local do serviço",
+            "nextLink": "/loja/servicos/dados-cadastrais",
+            "backLink": "/loja/servicos/agendamento"
+          },
+          {
+            "stepNumber": 2,
+            "routeParam": "dados-cadastrais",
+            "label": "Dados cadastrais",
+            "nextLink": "/loja/carrinho",
+            "backLink": "/loja/servicos/endereco",
+            "modal": {
+              "title": "Lembretes para o dia do serviço",
+              "subtitle": "Precaução é tudo! Por isso, confirme se está tudo ok para o prestador Porto realizar seu trabalho.",
+              "reminderList": [
+                {
+                  "iconName": "icon-Reload-24h",
+                  "title": "Tempo de sacagem",
+                  "description": "O tempo de secagem da limpeza é de no mínimo 24 h e os itens deverão permanecer em ambiente arejado e longe da exposição do sol durante esse período.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Bandaid",
+                  "title": "Rasgos e outros danos",
+                  "description": "Não realizamos a higienização em itens com <strong>danos visíveis na estrutura e no tecido</strong>, como rasgos, cortes, furos, queimaduras e etc., que poderão ser agravados durante o procedimento de limpeza.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Water-tank",
+                  "title": "Impermeabilização",
+                  "description": "Em caso de itens com impermeabilização, a limpeza removerá 100% do produto.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-user",
+                  "title": "Maior responsável",
+                  "description": "É necessária a presença de um responsável maior de 18 anos no local para acompanhar o serviço.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Residence",
+                  "title": "Condomínio",
+                  "description": "Os serviços serão realizados <strong>somente no imóvel</strong> do(a) cliente que os contratou, respeitando as<strong> leis de silêncio</strong> e as <strong>regras e horários</strong> do condomínio.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Circle-dollar-sign",
+                  "title": "Evite a taxa de visita",
+                  "description": "Será cobrada um taxa de R$ 120 se houver algum impedimento para realizar o serviço no dia agendado.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": "Não concordo"
+                }
+              ],
+              "alert": {
+                "icon": "icon-Alert",
+                "title": "Não podemos prosseguir",
+                "description": "O aceite em todos os itens é fundamental para o agendamento do serviço. Se tiver alguma dúvida, converse com a gente.",
+                "textLink": "Ir para o chat",
+                "link": "https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_carousel",
+      "component": {
+        "theme": "light",
+        "banners": [
+          {
+            "title": "Limpeza de poltrona, chaise ou puff",
+            "subtitle": "<p>Quer renovar a aparência da sua poltrona, chaise ou puff?  A Porto Serviço faz a limpeza para você.</p>",
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/hero/bh-servico-limpeza-poltrona-chaise-puff.webp",
+              "srcMobile": "",
+              "alt": "Limpeza de poltrona, chaise ou puff"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cep_with_card_price",
+      "component": {
+        "sectionTitle": "Onde o serviço será realizado?",
+        "buttonLabel": "Contrate agora",
+        "price": 0,
+        "priceLabel": "",
+        "benefits": [
+          {
+            "icon": "icon-Card-credit",
+            "text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+          },
+          {
+            "icon": "icon-Discount",
+            "text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_body",
+      "component": {
+        "sectionTitle": "",
+        "marginBottom": "margin-default",
+        "bannerBody": {
+          "theme": "light",
+          "image": {
+            "src": "/content/dam/vertical-servicos/conteudo/bb-servico-limpeza-poltrona-chaise-puff.webp"
+          },
+          "pretitle": "",
+          "title": "Sobre o serviço",
+          "description": "<p>Realizamos a higienização da sua poltrona, puff ou chaise utilizando um produto à base de água e uma máquina extratora especializada, removendo de forma eficaz sujeiras e resíduos. Em itens de couro, também é realizada a hidratação do tecido. Antes de iniciar o serviço, nosso técnico prepara o ambiente protegendo-o com lona plástica e realiza uma avaliação detalhada do tecido, manchas e odores, orientando sobre a viabilidade da limpeza. Após o serviço, cuidamos para que tudo fique limpo e organizado.</p>\n<p>O serviço contempla a higienização de até duas unidades dos itens abaixo:</p>\n<ul>\n<li>Cadeira</li>\n<li>Puff</li>\n<li>Chaise</li>\n</ul>\n",
+          "bgColor": "white",
+          "textColor": "black75",
+          "benefits": []
+        }
+      }
+    },
+    {},
+    {
+      "name": "section_how_it_works",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "Como funciona?",
+        "cardIcons": [
+          {
+            "title": "Agendamento",
+            "description": "Escolha a data e horário desejado.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info1"
+          },
+          {
+            "title": "Aprovação",
+            "description": "Visita do prestador até sua casa para avaliar o problema.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info2"
+          },
+          {
+            "title": "Execução do serviço",
+            "description": "Realização do serviço com a qualidade Porto.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info3"
+          },
+          {
+            "title": "Aprovação do pagamento",
+            "description": "Após a realização do serviço, é efetivada a cobraça do valor reservado no cartão de crédito.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info4"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_card_content_side_by_side",
+      "component": {
+        "sectionTitle": "Por que contratar?",
+        "cardsContent": [
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-porto-servico-profissionais-qualificados.webp?appId=aemshell",
+              "alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+            },
+            "title": "Profissionais qualificados",
+            "description": "Conte com a segurança e competência de um profissional Porto treinado e uniformizado."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-garantia-porto-servico.webp",
+              "alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+            },
+            "title": "Garantia Porto",
+            "description": "Garantia de até 90 dias após a realização do serviço."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-flexibilidade-porto-servico.webp",
+              "alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+            },
+            "title": "Flexibilidade",
+            "description": "Cancelamento e reagendamento grátis até 2 horas antes do horário agendado."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_service_requirements",
+      "component": {
+        "title": "Requisitos para este serviço",
+        "requirements": [
+          {
+            "icon": "icon-Reload-24h",
+            "title": "Tempo de secagem",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p><strong>O tempo de secagem da limpeza é de no mínimo 24 h</strong> e os itens deverão permanecer em ambiente arejado e longe da exposição do sol durante esse período.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Bandaid",
+            "title": "Rasgos e outros danos",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>Não realizamos a higienização em <strong>itens com danos visíveis na estrutura e no tecido, como rasgos, cortes, furos, queimaduras</strong> e etc., que poderão ser agravados durante o procedimento de limpeza.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Residence",
+            "title": "Espaço de trabalho",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>Cabe ao cliente ter um espaço mínimo necessário para movimentação do equipamento na execução do serviço.</p>\n",
+              "notification": {
+                "icon": "icon-Residence-alert",
+                "title": "Se você mora em condomínio",
+                "description": "Os serviços serão realizados somente no imóvel do cliente que contratou, respeitando as leis de silêncio e as regras de acesso aos prestadores."
+              }
+            }
+          },
+          {
+            "icon": "icon-user",
+            "title": "Maior responsável",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>É necessário um responsável <strong>maior de 18 anos no local para acompanhamento</strong>. Caso contrário, o serviço não será realizado e haverá taxa de visita do prestador, no valor de R$ 120.</p>\n"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cards_carousel_testimonial",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "O que dizem nossos clientes",
+        "cards": [
+          {
+            "name": "Eugenio Lopes",
+            "service": "28/10/2023",
+            "text": "O prestador João que me atendeu foi extremamente profissional e competente."
+          },
+          {
+            "name": "Carina Andrade",
+            "service": "01/09/2023",
+            "text": "O técnico foi muito profissional e educado com a minha mãe, que é idosa e tem de 70 anos."
+          },
+          {
+            "name": "Fausto Vasconcelos",
+            "service": "21/12/2023",
+            "text": "Gostei do serviço, o atendimento do técnico foi bom e o processo de agendamento bastante rápido."
+          },
+          {
+            "name": "Antonia Silva",
+            "service": "03/02/2024",
+            "text": "Fui muito bem atendida e o serviço foi realizado de forma rápida e com eficiência."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_faq",
+      "component": {
+        "sectionTitle": "Informações importantes",
+        "questionsAndAnswers": [
+          {
+            "title": "Preparação",
+            "description": "<ul>\n<li>É necessária a presença de um responsável maior de 18 anos no local para acompanhamento do serviço, caso contrário o serviço não será realizado e será cobrada a taxa de visita do prestador no valor de R$ 120;</li>\n<li>Os odores e manchas serão analisados no local se são passíveis ou não de remoção. A intensidade de cada mancha varia de acordo com o tipo de tecido, tipo de substância e pigmento derramados e o tempo decorrido desde o incidente;</li>\n<li>Não há garantia para retirada de manchas e odores de urina;</li>\n<li>Em caso de itens com impermeabilização, a limpeza removerá 100% do produto;</li>\n<li>O serviço não é indicado para poltronas, puffs ou chaises rasgados ou com desgastes;</li>\n<li>O tempo de secagem da limpeza é de no mínimo 24h e o item deverá permanecer em ambiente arejado e longe da exposição do sol durante esse período;</li>\n</ul>\n<strong>\nImportante: em condomínios, a realização dos serviços será prestada exclusivamente no imóvel do cliente contratante, desde que não acarretem no descumprimento das legislações de controle do silêncio e/ou regras dos condomínios. Verifique os horários permitidos!</strong>"
+          },
+          {
+            "title": "O que está incluso",
+            "description": "<ul>\n<li>Na data agendada, o prestador avalia o(s) item(ns) e segue os procedimentos para a execução do serviço:</li>\n<li>Proteção do local e dos objetos com lona plástica para evitar sujar os itens acomodados no ambiente; </li>\n<li>Aplicação o produto de limpeza (feito à base de água) no(s) item(ns) e extração com o uso de máquina extratora (nesse processo o produto e a sujeira são eliminados); </li>\n<li>Limpeza e organização do local onde o serviço for realizado; </li>\n<li>A contratação de 01 (um) serviço abrange a limpeza de até 2 itens, de acordo com a necessidade do cliente.</li>\n</ul>\n"
+          },
+          {
+            "title": "Restrições",
+            "description": "<ul>\n<li>Limpeza de itens provenientes de enchentes ou alagamentos;</li>\n<li>Serviços de tapeçaria ou de recuperação;</li>\n<li>Limpeza/higienização em itens com danos estruturais visíveis na estrutura e no tecido, como rasgos, cortes, furos, queimaduras e etc., que poderão ser agravados durante o procedimento de limpeza;</li>\n<li>Se no momento da visita houver impeditivo para realização do serviço, será cobrada uma taxa de R$ 120;</li>\n<li>O serviço não é realizado em poltronas, puffs ou chaises de linho, pois o tecido pode desfiar.</li>\n</ul>\n<p><strong>Importante: o prestador não está autorizado a realizar locomoções de móveis e objetos para executar a limpeza.</strong></p>\n"
+          },
+          {
+            "title": "Tempo de execução",
+            "description": "<p>Aproximadamente 2h.</p>\n"
+          },
+          {
+            "title": "Garantia",
+            "description": "<p>Garantia de até 24 h da mão de obra do serviço.</p>\n"
+          },
+          {
+            "title": "Pós-atendimento",
+            "description": "<ul>\n<li>O serviço poderá ser cancelado ou reagendado sem cobrança se a solicitação for realizada até 02 (duas) horas antes do horário agendado. Fora deste prazo, será cobrada uma taxa no valor de R$ 120;</li>\n<li><a href=\"https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html\">Central de Atendimento Online</a>, de Segunda a Sexta, das 8h às 20h.</li>\n</ul>\n"
+          }
+        ],
+        "allBorder": "any",
+        "allNegative": "boolean"
+      }
+    },
+    {
+      "name": "section_terms_of_use",
+      "component": {
+        "title": "Termos de uso e condições",
+        "text": "Consulte os termos de uso e condições deste serviço.",
+        "button": {
+          "label": "Consultar"
+        },
+        "modal": {
+          "title": "Termos de uso e condições",
+          "content": [
+            {
+              "title": "Condições",
+              "description": "\n\t\t\t\t\t\t\t<strong>Limpeza de poltrona, chaise ou puff\n</strong><strong>Vigência: a partir de 23/02/2022\n<a href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2022/2022-ce-limpeza-poltrona-chaise-puff-23-02-2022.pdf\">DOWNLOAD</a></strong>\n\n\t\t\t\t\t"
+            },
+            {
+              "title": "Termos de uso",
+              "description": "<a class=\"section-terms-of-use__anchor-pdf\" href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2024/2024_termos_de_uso_porto_servico.pdf\" download=\"termos-de-uso.pdf\" target=\"blank\">DOWNLOAD</a>"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,386 @@
+{
+  "config": [
+    {
+      "breadcrumb": "Instalação de fogão, cooktop ou forno"
+    }
+  ],
+  "components": [
+    {
+      "name": "section_custom_data",
+      "component": {
+        "pageName": "porto-servicos",
+        "product": "servicos-para-casa-e-auto",
+        "subproduct": "Instalacao-de-fogao-cooktop-ou-forno",
+        "category": "produto",
+        "vertical": "servicos"
+      }
+    },
+    {
+      "name": "section_breadcrumb",
+      "component": {
+        "marginBottom": "",
+        "theme": "light",
+        "links": [
+          {
+            "url": "https://www.portoseguro.com.br",
+            "name": "Home"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/porto-servico",
+            "name": "Porto Serviço"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/servicos",
+            "name": "Serviços para Casa e Auto"
+          },
+          {
+            "name": "Instalação de fogão, cooktop ou forno"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_reminder_list",
+      "component": {
+        "steps": [
+          {
+            "stepNumber": 0,
+            "routeParam": "agendamento",
+            "label": "Agendamento",
+            "nextLink": "/loja/servicos/endereco",
+            "backLink": "/servicos/desentupimento"
+          },
+          {
+            "stepNumber": 1,
+            "routeParam": "endereco",
+            "label": "Local do serviço",
+            "nextLink": "/loja/servicos/dados-cadastrais",
+            "backLink": "/loja/servicos/agendamento"
+          },
+          {
+            "stepNumber": 2,
+            "routeParam": "dados-cadastrais",
+            "label": "Dados cadastrais",
+            "nextLink": "/loja/carrinho",
+            "backLink": "/loja/servicos/endereco",
+            "modal": {
+              "title": "Lembretes para o dia do serviço",
+              "subtitle": "Precaução é tudo! Por isso, confirme se está tudo ok para o prestador Porto realizar seu trabalho.",
+              "reminderList": [
+                {
+                  "iconName": "icon-Package-Box",
+                  "title": "Produto",
+                  "description": "O produto já deverá estar disponível para a instalação, bem como os pontos elétricos e hidráulicos compatíveis de acordo com as recomendações do fabricante.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Gear",
+                  "title": "Peças",
+                  "description": "Se for constatada a necessidade de aquisição de peças, caberá ao cliente providenciá-las.\n",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-user",
+                  "title": "Maior responsável",
+                  "description": "É necessária a presença de um responsável maior de 18 anos no local para acompanhar o serviço.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Residence",
+                  "title": "Condomínio",
+                  "description": "Os serviços serão realizados <strong>somente no imóvel</strong> do(a) cliente que os contratou, respeitando as<strong> leis de silêncio</strong> e as <strong>regras e horários</strong> do condomínio.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Circle-dollar-sign",
+                  "title": "Evite a taxa de visita",
+                  "description": "Será cobrada um taxa de R$ 120 se houver algum impedimento para realizar o serviço no dia agendado.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": "Não concordo"
+                }
+              ],
+              "alert": {
+                "icon": "icon-Alert",
+                "title": "Não podemos prosseguir",
+                "description": "O aceite em todos os itens é fundamental para o agendamento do serviço. Se tiver alguma dúvida, converse com a gente.",
+                "textLink": "Ir para o chat",
+                "link": "https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_carousel",
+      "component": {
+        "theme": "light",
+        "banners": [
+          {
+            "title": "Instalação de fogão, cooktop ou forno",
+            "subtitle": "<p>Conte com a Porto Serviço para instalar de forma rápida e segura seu fogão, cooktop ou forno.</p>",
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/hero/bh-servico-instalacao-fogao-cooktop-forno.webp",
+              "srcMobile": "",
+              "alt": "Instalação de fogão, cooktop ou forno"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cep_with_card_price",
+      "component": {
+        "sectionTitle": "Onde o serviço será realizado?",
+        "buttonLabel": "Contrate agora",
+        "price": 0,
+        "priceLabel": "",
+        "benefits": [
+          {
+            "icon": "icon-Card-credit",
+            "text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+          },
+          {
+            "icon": "icon-Discount",
+            "text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_body",
+      "component": {
+        "sectionTitle": "",
+        "marginBottom": "margin-default",
+        "bannerBody": {
+          "theme": "light",
+          "image": {
+            "src": "/content/dam/vertical-servicos/conteudo/bb-servico-instalacao-fogao-cooktop-forno.webp"
+          },
+          "pretitle": "",
+          "title": "Sobre o serviço",
+          "description": "<p>O serviço inclui a instalação de 1 fogão, cooktop ou forno.</p>\n<p>Nosso técnico fará uma avaliação do local, posicionando o equipamento de acordo com os pontos elétricos e de gás já disponíveis no ambiente. O serviço inclui também a conexão da mangueira de gás, plug da tomada\nmais próxima, bem como a fixação do suporte/haste lateral quando fogão de embutir. Após a instalação, realizamos todos os testes de funcionamento, além da limpeza e organização do local onde o serviço for feito.</p>\n<p><strong>Importante</strong>: os pontos elétricos e de gás já devem estar disponíveis no momento da instalação e devem ser compatíveis com as especificações do fabricante.</p>\n",
+          "bgColor": "white",
+          "textColor": "black75",
+          "benefits": []
+        }
+      }
+    },
+    {},
+    {
+      "name": "section_how_it_works",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "Como funciona?",
+        "cardIcons": [
+          {
+            "title": "Agendamento",
+            "description": "Escolha a data e horário desejado.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info1"
+          },
+          {
+            "title": "Aprovação",
+            "description": "Visita do prestador até sua casa para avaliar o problema.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info2"
+          },
+          {
+            "title": "Execução do serviço",
+            "description": "Realização do serviço com a qualidade Porto.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info3"
+          },
+          {
+            "title": "Aprovação do pagamento",
+            "description": "Após a realização do serviço, é efetivada a cobraça do valor reservado no cartão de crédito.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info4"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_card_content_side_by_side",
+      "component": {
+        "sectionTitle": "Por que contratar?",
+        "cardsContent": [
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-porto-servico-profissionais-qualificados.webp?appId=aemshell",
+              "alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+            },
+            "title": "Profissionais qualificados",
+            "description": "Conte com a segurança e competência de um profissional Porto treinado e uniformizado."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-garantia-porto-servico.webp",
+              "alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+            },
+            "title": "Garantia Porto",
+            "description": "Garantia de até 90 dias após a realização do serviço."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-flexibilidade-porto-servico.webp",
+              "alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+            },
+            "title": "Flexibilidade",
+            "description": "Cancelamento e reagendamento grátis até 2 horas antes do horário agendado."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_service_requirements",
+      "component": {
+        "title": "Requisitos para este serviço",
+        "requirements": [
+          {
+            "icon": "icon-Check",
+            "title": "Produto",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>O produto já deverá estar disponível para a instalação, bem como os pontos elétricos e de gás compatíveis, de acordo com as recomendações do fabricante.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Gear",
+            "title": "Peças",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>Se for constatada a necessidade de<strong> aquisição de peças</strong>, caberá ao cliente providenciá-las.</p>\n<p>Após a primeira visita, o <strong>retorno gratuito pode ser solicitado em até 20 dias</strong>.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Residence",
+            "title": "Espaço de trabalho",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>Cabe ao cliente ter um espaço mínimo necessário para movimentação do equipamento na execução do serviço.</p>\n",
+              "notification": {
+                "icon": "icon-Residence-alert",
+                "title": "Se você mora em condomínio",
+                "description": "Os serviços serão realizados somente no imóvel do cliente que contratou, respeitando as leis de silêncio e as regras de acesso aos prestadores."
+              }
+            }
+          },
+          {
+            "icon": "icon-user",
+            "title": "Maior responsável",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>É necessário um responsável <strong>maior de 18 anos no local para acompanhamento</strong>. Caso contrário, o serviço não será realizado e haverá taxa de visita do prestador, no valor de R$ 120.</p>\n"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cards_carousel_testimonial",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "O que dizem nossos clientes",
+        "cards": [
+          {
+            "name": "Maiara Rocha",
+            "service": "29/01/2024",
+            "text": " Conseguiu instalar meu forno com muita precisão e rapidez. Profissional excelente e muito educado!"
+          },
+          {
+            "name": "Lucas Martoreli",
+            "service": "09/01/2024",
+            "text": "O serviço foi muito bem feito, valeu a pena ter chamado a Porto para ficar mais seguro de que tudo seria bem feito."
+          },
+          {
+            "name": "Regina Cardoso",
+            "service": "12/11/2024",
+            "text": "O técnico mostrou habilidade e experiência, ajustando tudo com precisão. Obrigada!"
+          },
+          {
+            "name": "Michel Olivetti",
+            "service": "11/02/2024",
+            "text": "Adorei o serviço, meu cooktop ficou top!"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_faq",
+      "component": {
+        "sectionTitle": "Informações importantes",
+        "questionsAndAnswers": [
+          {
+            "title": "Preparação",
+            "description": "<ul>\n<li>É importante que o produto já esteja disponível para a instalação, bem como o ponto elétrico e/ou hidráulico compatível com o produto;</li>\n<li>Não transporte ou movimento o produto num período de 2 horas antes de ligá-lo à rede elétrica;</li>\n<li>É necessária a presença de um responsável maior de 18 anos no local para acompanhamento do serviço, caso contrário o serviço não será realizado e será cobrada a taxa de visita do prestador no valor de R$ 120;</li>\n<li>O cliente deve verificar se o eletrodoméstico está dentro do prazo de garantia do fabricante ou assistência técnica, sob risco de perda de garantia caso execute o serviço com terceiros;</li>\n<li>Certifique-se que o espaço desejado para a acomodação do produto possui as medidas de segurança exigidas pelo fabricante e que a tomada elétrica esteja fora do nicho/vão de instalação, para evitar possíveis riscos de acidente;</li>\n<li>Para modelo de embutir, avalie se não há nenhum outro aparelho (exemplo: forno) instalado abaixo da bancada/nicho, pois pode oferecer riscos. - Utilize peças originais para garantir melhor segurança, qualidade e durabilidade do produto.</li>\n</ul>\n<p>Importante: em condomínios, a realização dos serviços será prestada exclusivamente no imóvel do cliente contratante, desde que não acarretem no descumprimento das legislações de controle do silêncio e/ou regras dos condomínios. Verifique os horários permitidos!</p>\n"
+          },
+          {
+            "title": "O que está incluso",
+            "description": "<ul>\n<li>Avaliação técnica do local e instalação de fogão, cooktop ou forno (a gás ou elétrico);</li>\n<li>Conexão dos cabos de energia;</li>\n<li>Todos os testes de funcionamento;</li>\n<li>Limpeza e organização do local onde o serviço for realizado.</li>\n</ul>\n"
+          },
+          {
+            "title": "Restrições",
+            "description": "<ul>\n<li>Instalação de fogão ou cooktop cujo aquecimento é por indução;</li>\n<li>Peças, produtos, acessórios e/ou materiais necessários para instalação;</li>\n<li>Equipamentos de uso industrial ou semi-industrial;</li>\n<li>Equipamentos importados;</li>\n<li>Reparos ou ajustes em marcenaria e nichos, furação/adequação para encaixe em bancadas de pedra, granito, mármore e madeira;</li>\n<li>Reparos ou ajustes das instalações elétricas (troca de fiação, tomada ou disjuntor);</li>\n<li>Adaptações/ajustes em tubulações de gás;</li>\n<li>Transporte do produto de/para outro pavimento do local de instalação;</li>\n<li>Conversão de gás GLP para GN (vice-versa). Necessário o serviço de Conversão de Gás.</li>\n</ul>\n<p><strong>Se no momento da visita houver impeditivo para realização do serviço, será cobrada uma taxa de R$ 120.</p>\n<p>Importante:</strong> o prestador está autorizado a realizar locomoções apenas no mesmo ambiente (cômodo) onde a instalação ou conserto foi solicitado.</p>\n"
+          },
+          {
+            "title": "Tempo de execução",
+            "description": "<p>Aproximadamente 1h.</p>\n"
+          },
+          {
+            "title": "Garantia",
+            "description": "<p>Garantia de até 90 dias da mão de obra do serviço.</p>\n<p>Não há garantia sobre qualquer intervenção e/ou reparo realizado por terceiros, nem sobre danos ocasionados por ligações fora de compatibilidade ou uso inadequado, além do recomendado pelos fabricantes e por nosso técnico no local.</p>\n"
+          },
+          {
+            "title": "Pós-atendimento",
+            "description": "<ul>\n<li>Caso precise de novas peças para a conclusão do serviço, não se preocupe, você terá 20 dias corridos para que o técnico retorne a sua casa sem custo adicional;</li>\n<li>Se não solicitar o retorno do prestador nesses 20 dias, será cobrada uma taxa de R$ 120 e deverá ser solicitado um novo serviço, que implicará sua cobrança integral;</li>\n<li>O serviço poderá ser cancelado ou reagendado sem cobrança se a solicitação for realizada até 02 (duas) horas antes do horário agendado. Fora deste prazo, será cobrada uma taxa no valor de R$ 120;</li>\n<li><a href=\"https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html\">Central de Atendimento Online</a>, de Segunda a Sexta, das 8h às 20h.</li>\n</ul>\n"
+          }
+        ],
+        "allBorder": "any",
+        "allNegative": "boolean"
+      }
+    },
+    {
+      "name": "section_terms_of_use",
+      "component": {
+        "title": "Termos de uso e condições",
+        "text": "Consulte os termos de uso e condições deste serviço.",
+        "button": {
+          "label": "Consultar"
+        },
+        "modal": {
+          "title": "Termos de uso e condições",
+          "content": [
+            {
+              "title": "Condições",
+              "description": "\n\t\t\t\t\t\t\t<strong>Instalação de fogão, cooktop ou forno\n</strong><strong>Vigência: a partir de 02/08/2023\n<a href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2023/2023-ce-instalacao-eletrodomesticos-02-08-2023.pdf\">DOWNLOAD</a></strong>\n\n\t\t\t\t\t"
+            },
+            {
+              "title": "Termos de uso",
+              "description": "<a class=\"section-terms-of-use__anchor-pdf\" href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2024/2024_termos_de_uso_porto_servico.pdf\" download=\"termos-de-uso.pdf\" target=\"blank\">DOWNLOAD</a>"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

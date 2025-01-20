@@ -1,0 +1,386 @@
+{
+  "config": [
+    {
+      "breadcrumb": "Instalação de ventilador"
+    }
+  ],
+  "components": [
+    {
+      "name": "section_custom_data",
+      "component": {
+        "pageName": "porto-servicos",
+        "product": "servicos-para-casa-e-auto",
+        "subproduct": "Instalacao-de-ventilador",
+        "category": "produto",
+        "vertical": "servicos"
+      }
+    },
+    {
+      "name": "section_breadcrumb",
+      "component": {
+        "marginBottom": "",
+        "theme": "light",
+        "links": [
+          {
+            "url": "https://www.portoseguro.com.br",
+            "name": "Home"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/porto-servico",
+            "name": "Porto Serviço"
+          },
+          {
+            "url": "https://www.portoseguro.com.br/servicos",
+            "name": "Serviços para Casa e Auto"
+          },
+          {
+            "name": "Instalação de ventilador"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_reminder_list",
+      "component": {
+        "steps": [
+          {
+            "stepNumber": 0,
+            "routeParam": "agendamento",
+            "label": "Agendamento",
+            "nextLink": "/loja/servicos/endereco",
+            "backLink": "/servicos/desentupimento"
+          },
+          {
+            "stepNumber": 1,
+            "routeParam": "endereco",
+            "label": "Local do serviço",
+            "nextLink": "/loja/servicos/dados-cadastrais",
+            "backLink": "/loja/servicos/agendamento"
+          },
+          {
+            "stepNumber": 2,
+            "routeParam": "dados-cadastrais",
+            "label": "Dados cadastrais",
+            "nextLink": "/loja/carrinho",
+            "backLink": "/loja/servicos/endereco",
+            "modal": {
+              "title": "Lembretes para o dia do serviço",
+              "subtitle": "Precaução é tudo! Por isso, confirme se está tudo ok para o prestador Porto realizar seu trabalho.",
+              "reminderList": [
+                {
+                  "iconName": "icon-Package-Box",
+                  "title": "Produto",
+                  "description": "O produto já deverá estar disponível para a instalação, bem como o ponto elétrico compatível, de acordo com as recomendações do fabricante.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Upload",
+                  "title": "Altura",
+                  "description": "A altura máxima do local para a instalação do ventilador deve ser de 3 m.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-user",
+                  "title": "Maior responsável",
+                  "description": "É necessária a presença de um responsável maior de 18 anos no local para acompanhar o serviço.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Residence",
+                  "title": "Condomínio",
+                  "description": "Os serviços serão realizados <strong>somente no imóvel</strong> do(a) cliente que os contratou, respeitando as<strong> leis de silêncio</strong> e as <strong>regras e horários</strong> do condomínio.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": ""
+                },
+                {
+                  "iconName": "icon-Circle-dollar-sign",
+                  "title": "Evite a taxa de visita",
+                  "description": "Será cobrada um taxa de R$ 120 se houver algum impedimento para realizar o serviço no dia agendado.",
+                  "required": true,
+                  "accepted": false,
+                  "refused": false,
+                  "acceptLabel": "Ok",
+                  "refuseLabel": "Não concordo"
+                }
+              ],
+              "alert": {
+                "icon": "icon-Alert",
+                "title": "Não podemos prosseguir",
+                "description": "O aceite em todos os itens é fundamental para o agendamento do serviço. Se tiver alguma dúvida, converse com a gente.",
+                "textLink": "Ir para o chat",
+                "link": "https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_carousel",
+      "component": {
+        "theme": "light",
+        "banners": [
+          {
+            "title": "Instalação de ventilador",
+            "subtitle": "<p>Precisando instalar um ventilador de teto ou de parede? Conte com a instalação completa e especializada da Porto Serviço.</p>",
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/hero/bh-servico-instalacao-ventilador-teto.webp",
+              "srcMobile": "",
+              "alt": "Instalação de ventilador"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cep_with_card_price",
+      "component": {
+        "sectionTitle": "Onde o serviço será realizado?",
+        "buttonLabel": "Contrate agora",
+        "price": 0,
+        "priceLabel": "",
+        "benefits": [
+          {
+            "icon": "icon-Card-credit",
+            "text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+          },
+          {
+            "icon": "icon-Discount",
+            "text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_banner_body",
+      "component": {
+        "sectionTitle": "",
+        "marginBottom": "margin-default",
+        "bannerBody": {
+          "theme": "light",
+          "image": {
+            "src": "/content/dam/vertical-servicos/conteudo/bb-servico-instalacao-ventilador-teto.webp"
+          },
+          "pretitle": "",
+          "title": "Sobre o serviço",
+          "description": "<p>O serviço inclui a instalação de 1 ventilador de parede ou de teto.</p>\n<p>Nosso técnico fará uma avaliação do local, posicionando o equipamento de acordo com os pontos elétricos e de luz disponíveis no ambiente. Após a instalação, realizamos todos os testes de funcionamento, além da limpeza e organização do local onde o serviço for feito.</p>\n",
+          "bgColor": "white",
+          "textColor": "black75",
+          "benefits": []
+        }
+      }
+    },
+    {},
+    {
+      "name": "section_how_it_works",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "Como funciona?",
+        "cardIcons": [
+          {
+            "title": "Agendamento",
+            "description": "Escolha a data e horário desejado.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info1"
+          },
+          {
+            "title": "Aprovação",
+            "description": "Visita do prestador até sua casa para avaliar o problema.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info2"
+          },
+          {
+            "title": "Execução do serviço",
+            "description": "Realização do serviço com a qualidade Porto.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info3"
+          },
+          {
+            "title": "Aprovação do pagamento",
+            "description": "Após a realização do serviço, é efetivada a cobraça do valor reservado no cartão de crédito.",
+            "variant": "withoutLink",
+            "iconName": "icon-circle-info4"
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_card_content_side_by_side",
+      "component": {
+        "sectionTitle": "Por que contratar?",
+        "cardsContent": [
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-porto-servico-profissionais-qualificados.webp?appId=aemshell",
+              "alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+            },
+            "title": "Profissionais qualificados",
+            "description": "Conte com a segurança e competência de um profissional Porto treinado e uniformizado."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-garantia-porto-servico.webp",
+              "alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+            },
+            "title": "Garantia Porto",
+            "description": "Garantia de até 90 dias após a realização do serviço."
+          },
+          {
+            "image": {
+              "src": "/content/dam/vertical-servicos/conteudo/cc-flexibilidade-porto-servico.webp",
+              "alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+            },
+            "title": "Flexibilidade",
+            "description": "Cancelamento e reagendamento grátis até 2 horas antes do horário agendado."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_service_requirements",
+      "component": {
+        "title": "Requisitos para este serviço",
+        "requirements": [
+          {
+            "icon": "icon-Package-Box",
+            "title": "Produto",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>O produto já deverá estar disponível para a instalação, bem como o ponto elétrico compatível, de acordo com as recomendações do fabricante.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Upload",
+            "title": "Altura",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>A altura máxima do local para a instalação do ventilador deve ser de 3 m.</p>\n<p>Não realizamos a instalação de ventilador em forro, estuque ou qualquer cobertura ou parede que não apresente condições técnicas de sustentação e não realizamos reforços e estruturas nesses locais.</p>\n"
+            }
+          },
+          {
+            "icon": "icon-Residence",
+            "title": "Espaço de trabalho",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>Cabe ao cliente ter um espaço mínimo necessário para movimentação do equipamento na execução do serviço.</p>\n",
+              "notification": {
+                "icon": "icon-Residence-alert",
+                "title": "Se você mora em condomínio",
+                "description": "Os serviços serão realizados somente no imóvel do cliente que contratou, respeitando as leis de silêncio e as regras de acesso aos prestadores."
+              }
+            }
+          },
+          {
+            "icon": "icon-user",
+            "title": "Maior responsável",
+            "caption": "Saiba mais",
+            "details": {
+              "content": "<p>É necessário um responsável <strong>maior de 18 anos no local para acompanhamento</strong>. Caso contrário, o serviço não será realizado e haverá taxa de visita do prestador, no valor de R$ 120.</p>\n"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_cards_carousel_testimonial",
+      "component": {
+        "theme": "light",
+        "sectionTitle": "O que dizem nossos clientes",
+        "cards": [
+          {
+            "name": "Daniel Araújo",
+            "service": "09/12/2024",
+            "text": "Serviço de qualidade, técnico competente e cordial. Muito satisfeito com o resultado final do trabalho."
+          },
+          {
+            "name": "Eduardo Moura",
+            "service": "05/05/2024",
+            "text": "O ventilador foi bem instalado, ficou firme e seguro. Recomendo."
+          },
+          {
+            "name": "Rafael Antunes",
+            "service": "21/12/2023",
+            "text": "O prestador Marcos executou o serviço de forma primorosa, além de ser extremamente gentil."
+          },
+          {
+            "name": "Uelber Rodrigues",
+            "service": "18/01/2024",
+            "text": "Foi ótima a experiência com o serviço da Porto. Tudo foi perfeito, profissional capacitado e atencioso."
+          }
+        ]
+      }
+    },
+    {
+      "name": "section_faq",
+      "component": {
+        "sectionTitle": "Informações importantes",
+        "questionsAndAnswers": [
+          {
+            "title": "Preparação",
+            "description": "<ul>\n<li>A instalação do ventilador será executada exclusivamente em tetos/lajes que suportarem o peso e funcionalidade do equipamento, cuja altura não supere 3 m do piso;</li>\n<li>O ambiente deve ter a altura livre igual ou superior a 2,30 m das pás ao piso e uma distância mínima de 0,50m das pás a parede ou mobiliários;</li>\n<li>O local do atendimento deve assegurar condições adequadas de segurança pessoal do técnico, conforme parâmetros das Normas Técnicas de Segurança do Trabalho – Trabalho em Altura.</li>\n<li>É necessária a presença de um responsável maior de 18 anos no local para acompanhamento do serviço, caso contrário o serviço não será realizado e será cobrada a taxa de visita do prestador no valor R$ 120;</li>\n<li>É importante que o produto esteja disponível para a instalação, assim como o suporte escolhido pelo cliente e o ponto elétrico compatível com a voltagem do aparelho;</li>\n<li>A compra das peças para a realização do serviço será de responsabilidade do (a) cliente;</li>\n<li>A instalação será executada exclusivamente em paredes que suportarem o peso e funcionalidade do item.</li>\n</ul>\n<p>Importante: em condomínios, a realização dos serviços será prestada exclusivamente no imóvel do cliente contratante, desde que não acarretem no descumprimento das legislações de controle do silêncio e/ou regras dos condomínios. Verifique os horários permitidos!</p>\n"
+          },
+          {
+            "title": "O que está incluso",
+            "description": "<ul>\n<li>Preparação do local antes da execução do serviço;</li>\n<li>Montagem e instalação do ventilador de teto ou do ventilador de parede;</li>\n<li>Realização de todos testes de funcionamento;</li>\n<li>Limpeza e organização do local em que o serviço foi realizado.</li>\n</ul>\n"
+          },
+          {
+            "title": "Restrições",
+            "description": "<ul>\n<li>Execução de reforço estrutural em laje/teto;</li>\n<li>Instalação de ventilador em: forro, estuque ou qualquer cobertura que não apresente condições técnicas de sustentação;</li>\n<li>Substituição, desmontagem ou reinstalação de luminárias e ventiladores de teto entre ambientes distintos do imóvel;</li>\n<li>Reparo em controles remoto, no conjunto elétrico-mecânico, nas pás ou luminárias acopladas ao equipamento;</li>\n<li>Desmontagem, montagem ou deslocamento de mobiliários entre os ambientes do imóvel;</li>\n<li>Instalação de ventiladores de teto em desacordo com a norma ABNT;</li>\n<li>Mão de obra para serviços em alvenaria (quebra de paredes, passagem de conduítes ou fiação elétrica ou aterramento, realização de reforço estrutural para teto, substituição de caixas de passagem elétrica) além de qualquer aplicação de\nacabamento após ou durante o atendimento como pintura, massa, gesso;</li>\n<li>Instalação de equipamentos de linha semi-industrial ou linha industrial, equipamentos denominados centrífugos ou exaustores, destinados a uso em imóveis de amplos espaços como indústrias, galpões entre outros.</li>\n</ul>\n<p><strong>Se no momento da visita houver impeditivo para realização do serviço, será cobrada uma taxa de R$ 120.</p>\n<p>Importante:</strong> o prestador está autorizado a realizar locomoções apenas no mesmo ambiente (cômodo) onde a instalação ou conserto foi solicitado.</p>\n"
+          },
+          {
+            "title": "Tempo de execução",
+            "description": "<p>Aproximadamente 2h.</p>\n"
+          },
+          {
+            "title": "Garantia",
+            "description": "<p>Garantia de até 90 dias da mão de obra do serviço.</p>\n<p>Não há garantia sobre qualquer intervenção e/ou reparo realizado por terceiros, nem sobre danos ocasionados por ligações fora de compatibilidade ou uso inadequado, além do recomendado pelos fabricantes e por nosso técnico no local.</p>\n"
+          },
+          {
+            "title": "Pós-atendimento",
+            "description": "<ul>\n<li>O serviço poderá ser cancelado ou reagendado sem cobrança se a solicitação for realizada até 02 (duas) horas antes do horário agendado. Fora deste prazo, será cobrada uma taxa no valor de R$ 120;</li>\n<li><a href=\"https://prime.altubots.com/chats/portoassistencia/e67490dac9a657589b41411700ce378c/index.html\">Central de Atendimento Online</a>, de Segunda a Sexta, das 8h às 20h.</li>\n</ul>\n"
+          }
+        ],
+        "allBorder": "any",
+        "allNegative": "boolean"
+      }
+    },
+    {
+      "name": "section_terms_of_use",
+      "component": {
+        "title": "Termos de uso e condições",
+        "text": "Consulte os termos de uso e condições deste serviço.",
+        "button": {
+          "label": "Consultar"
+        },
+        "modal": {
+          "title": "Termos de uso e condições",
+          "content": [
+            {
+              "title": "Condições",
+              "description": "\n\t\t\t\t\t\t\t<strong>Instalação de ventilador\n</strong><strong>Vigência: a partir de 05/11/2024\n<a href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2024/2024-ce-fixacao-ventilador-teto-parede-05-11-2024.pdf\">DOWNLOAD</a></strong>\n\n\t\t\t\t\t"
+            },
+            {
+              "title": "Termos de uso",
+              "description": "<a class=\"section-terms-of-use__anchor-pdf\" href=\"https://www.portoseguro.com.br/content/dam/documentos/condicoes_gerais/porto_servico/2024/2024_termos_de_uso_porto_servico.pdf\" download=\"termos-de-uso.pdf\" target=\"blank\">DOWNLOAD</a>"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

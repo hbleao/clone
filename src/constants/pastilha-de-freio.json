@@ -1,0 +1,261 @@
+[
+	{
+		"name": "section_custom_data",
+		"component": {
+			"pageName": "oficina",
+			"product": "centro-automotivo",
+			"subproduct": "pastilha-de-freio",
+			"category": "produto",
+			"vertical": "servicos",
+			"funnel": "short-form"
+		}
+	},
+	{
+		"name": "section_breadcrumb",
+		"component": {
+			"marginBottom": "",
+			"theme": "light",
+			"links": [
+				{
+					"url": "https://www.portoseguro.com.br",
+					"name": "Home"
+				},
+				{
+					"url": "https://servicos.portoseguro.com.br/centro-automotivo",
+					"name": "Centro Automotivo Porto"
+				},
+				{
+					"name": "Troca de pastilha de freio"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_banner_hero",
+		"component": {
+			"theme": "light",
+			"variant": "caps",
+			"marginBottom": "margin-default",
+			"bannerHero": {
+				"bgColor": "#D9F1FF",
+				"textColor": "black100",
+				"title": "Troca de pastilha de freio",
+				"description": "<p><strong>Recomendação:</strong> a cada 20 mil km ou conforme desgaste verificado na inspeção do carro<br><strong>Inclui:</strong> mão de obra e substituição da pastilha de freios dianteiros ou traseiros</p>",
+				"headingTagTitle": "h1",
+
+				"button": {
+					"label": "Agende agora",
+					"variant": "insurance"
+				},
+				"subTitle": "Manutenção corretiva",
+				"image": {
+					"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/bh-servico-automotivo-pastilha-freio.webp",
+					"alt": "Troca de pastilha de freio"
+				}
+			}
+		}
+	},
+	{
+		"name": "section_card_price_with_text",
+		"component": {
+			"title": "Sobre o serviço",
+			"description": "Envolve a troca de componentes essenciais do sistema de frenagem, responsáveis por gerar atrito com o disco de freio e desacelerar o veículo de forma eficaz. Este pacote atende veículos como Palio, Gol, Uno e Sandero, para outros veículos, consulte o valor diretamente na oficina escolhida. Serão utilizadas as marcas SYL e Ecopads para este pacote.",
+			"price": 179.9,
+			"benefits": [
+				{
+					"icon": "icon-Card-credit",
+					"text": "<strong>Em até 6x</strong> no Cartão Porto Bank (parcela mínima de R$ 100)"
+				},
+				{
+					"icon": "icon-Discount",
+					"text": "<strong>Até 20% de desconto</strong> na mão de obra para segurados"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_banner_body",
+		"component": {
+			"marginBottom": "margin-default",
+			"bannerBody": {
+				"theme": "light",
+				"image": {
+					"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/bb-servico-automotivo-pastilha-freio.webp",
+					"alt": "prestador porto realizando manutenção no encanamento de uma pia"
+				},
+				"pretitle": "",
+				"title": "Por que é importante?",
+				"subtitle": "",
+				"bgColor": "white",
+				"textColor": "black75",
+				"benefits": [
+					{
+						"iconName": "icon-check",
+						"text": "<p><strong>Segurança:</strong>  as boas condições das pastilhas garantem uma frenagem eficiente e segura, evitando falhas em momentos críticos.</p>"
+					},
+					{
+						"iconName": "icon-check",
+						"text": "<p><strong>Prolonga a vida útil dos discos de freios:</strong>  pastilhas desgastadas aumentam a distância de frenagem e podem danificar os discos de freio, resultando em reparos mais caros. </p>"
+					}
+				]
+			}
+		}
+	},
+	{
+		"name": "section_how_it_works",
+		"component": {
+			"theme": "light",
+			"sectionTitle": "Como funciona?",
+			"cardIcons": [
+				{
+					"title": "Encontre uma oficina",
+					"description": "Localize a unidade do Centro Automotivo de sua preferência.",
+					"variant": "withoutLink",
+					"iconName": "icon-circle-info1"
+				},
+				{
+					"title": "Escolha o serviço",
+					"description": "Escolha um pacote de revisão ou o serviço avulso que seu carro precisa.",
+					"variant": "withoutLink",
+					"iconName": "icon-circle-info2"
+				},
+				{
+					"title": "Agendamento",
+					"description": "Escolha o melhor dia e horário para a realização do serviço.",
+					"variant": "withoutLink",
+					"iconName": "icon-circle-info3"
+				},
+				{
+					"title": "Execução do serviço",
+					"description": "Compareça na unidade no dia e horário agendado.",
+					"variant": "withoutLink",
+					"iconName": "icon-circle-info4"
+				},
+				{
+					"title": "Pagamento",
+					"description": "Feito diretamente na unidade, após aprovação do diagnóstico e orçamento.",
+					"variant": "withoutLink",
+					"iconName": "icon-circle-info5"
+				}
+			]
+		}
+	},
+	{
+		"name": "section_card_content_side_by_side",
+		"component": {
+			"sectionTitle": "Nossos diferenciais",
+			"cardsContent": [
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-especialistas-centro-automotivo-porto.webp",
+						"alt": "Um homen branco vestindo o uniforme da porto seguro na cor azul marinho e um boné também na cor azul marinho com o logo da porto seguro."
+					},
+					"title": "Especialistas em mecânica",
+					"description": "Conte com profissionais treinados e mão de obra qualificada para cuidar do seu carro."
+				},
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-garantia-centro-automotivo-porto.webp",
+						"alt": "Um mulher branca de cabelos pretos, ela está vestindo uma jaquela de jeans com uma blusa de cor branca e bolinhas pretas por baixo e uma calça jeans, está deitada em um sofá de cor cinza com uma expressão de tranquilidade no rosto"
+					},
+					"title": "Garantia nacional Porto",
+					"description": "Garantia de até 90 dias após a realização do serviço."
+				},
+				{
+					"image": {
+						"src": "/content/dam/vertical-servicos/centro-automotivo-porto/conteudo/cc-flexibilidade-centro-automotivo-porto.webp",
+						"alt": "Um senhor de cabelos e barba branca sorrindo e olhando para o celular vestindo uma camisa azul com botões"
+					},
+					"title": "Flexibilidade",
+					"description": "Encontre a oficina mais próxima e agende serviços para seu carro no horário de sua preferência."
+				}
+			]
+		}
+	},
+	{
+		"name": "section_service_requirements",
+		"component": {
+			"title": "Informações importantes",
+			"variant": "fluid",
+			"requirements": [
+				{
+					"icon": "icon-Car-alert",
+					"title": "Diagnóstico",
+					"caption": "Todos os serviços agendados, passarão por um diagnóstico antes da execução.",
+					"details": {}
+				},
+				{
+					"icon": "icon-Circle-dollar-sign",
+					"title": "Preços",
+					"caption": "Preços podem sofrer alteração de acordo com produto e/ou marca escolhidos.",
+					"details": {}
+				},
+				{
+					"icon": "icon-Motorcycle",
+					"title": "Veículos não atendidos",
+					"caption": "Motos, vans, pesados e veículos a diesel.",
+					"details": {}
+				}
+			]
+		}
+	},
+	{
+		"name": "section_cards_carousel_testimonial",
+		"component": {
+			"theme": "light",
+			"sectionTitle": "O que dizem nossos clientes",
+			"cards": [
+				{
+					"name": "Bruno Alves",
+					"service": "17/09/2024",
+					"text": "Tudo muito bom, não vejo pontos a melhorar. Estão de parabéns!"
+				},
+				{
+					"name": "Luiz Renato",
+					"service": "21/07/2024",
+					"text": "Diagnóstico mostrou necessidade de troca do disco e pastilhas traseiro. Só autorizei por ser oficina credenciada Porto, caso contrário pediria outra avaliação antes de fazer a troca."
+				},
+				{
+					"name": "Carlos Neto",
+					"service": "30/06/2024",
+					"text": "Prestatividade, gentileza, educação e competência de toda equipe, sem excessão"
+				},
+				{
+					"name": "João de Deus",
+					"service": "27/06/2024",
+					"text": "Excelente em tudo principalmente no atendimento."
+				}
+			]
+		}
+	},
+	{
+		"name": "section_faq",
+		"component": {
+			"sectionTitle": "Tire suas dúvidas sobre Troca de pastilha de freio",
+			"questionsAndAnswers": [
+				{
+					"title": "Quando devo trocar as pastilhas de freio do meu carro?",
+					"description": "As pastilhas de freio devem ser trocadas quando estão desgastadas, o que pode ser identificado por ruídos ao frear, redução na eficácia da frenagem ou pelo indicador de desgaste no próprio sistema."
+				},
+				{
+					"title": "Quais são os sinais de que as pastilhas de freio precisam ser substituídas?",
+					"description": "Sinais incluem barulhos de raspagem ou chiados ao acionar os freios, vibrações no pedal ao frear, e uma distância de parada maior do que o normal."
+				},
+				{
+					"title": "Quais são os riscos de não trocar as pastilhas de freio a tempo?",
+					"description": "Não trocar as pastilhas desgastadas pode levar a danos nos discos de freio, comprometendo a segurança e aumentando os custos de reparo."
+				},
+				{
+					"title": "As pastilhas de freio podem ser trocadas junto com outros serviços?",
+					"description": "Sim, a troca das pastilhas de freio pode ser realizada junto com outros serviços de manutenção, como troca de óleo ou revisão de suspensão, facilitando a visita à oficina."
+				},
+				{
+					"title": "O que pode causar o desgaste prematuro das pastilhas de freio?",
+					"description": "Desgaste prematuro pode ser causado por vários fatores, incluindo condução agressiva, falta de manutenção, qualidade das pastilhas e condições das estradas."
+				}
+			],
+			"allBorder": "any",
+			"allNegative": "boolean"
+		}
+	}
+]
