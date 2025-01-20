@@ -196,25 +196,3 @@ form {
     margin-top: 1.6rem;
   }
 }
-
-// Estilos para o modal de confirmação de exclusão
-.delete-confirmation {
-  padding: 2.4rem;
-  text-align: center;
-
-  p {
-    font-size: 1.6rem;
-    color: $gray7;
-    margin-bottom: 1.6rem;
-
-    &.warning {
-      color: $red5;
-      font-size: 1.4rem;
-    }
-
-    strong {
-      color: $gray8;
-      font-weight: $semi;
-    }
-  }
-}

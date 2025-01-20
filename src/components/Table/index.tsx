@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
 	ChevronLeft,
 	ChevronRight,
@@ -10,6 +10,7 @@ import {
 
 import s from "./styles.module.scss";
 import type { TableProps } from "./types";
+import { InputSearch } from "../InputSearch";
 
 export function Table<T>({
 	data,
@@ -20,6 +21,7 @@ export function Table<T>({
 	onRowClick,
 }: TableProps<T>) {
 	const [currentPage, setCurrentPage] = useState(1);
+	const [searchTerm, setSearchTerm] = useState("");
 
 	const totalPages = Math.ceil(data.length / itemsPerPage);
 	const startIndex = (currentPage - 1) * itemsPerPage;
@@ -29,6 +31,13 @@ export function Table<T>({
 	const goToPage = (page: number) => {
 		setCurrentPage(Math.max(1, Math.min(page, totalPages)));
 	};
+
+	const filteredPages = useMemo(() => {
+		if (!searchTerm) return data;
+		return data.filter((page: any) =>
+			page.title.toLowerCase().includes(searchTerm.toLowerCase()),
+		);
+	}, [data, searchTerm]);
 
 	if (isLoading) {
 		return (
@@ -55,6 +64,13 @@ export function Table<T>({
 
 	return (
 		<div className={s.tableWrapper}>
+			<div className={s.inputSearch}>
+				<InputSearch
+					placeholder="Buscar páginas..."
+					value={searchTerm}
+					onChange={(value) => setSearchTerm(value)}
+				/>
+			</div>
 			<table className={s.table}>
 				<thead>
 					<tr>
@@ -71,7 +87,7 @@ export function Table<T>({
 							</td>
 						</tr>
 					) : (
-						currentData.map((item, index) => (
+						filteredPages.map((item, index) => (
 							<tr
 								key={index}
 								className={onRowClick ? s.clickable : ""}
@@ -92,11 +108,11 @@ export function Table<T>({
 
 			<div className={s.pagination}>
 				<div className={s.info}>
-					{data.length > 0 && (
+					{filteredPages.length > 0 && (
 						<>
 							Mostrando {currentPage * itemsPerPage + 1} -{" "}
-							{Math.min((currentPage + 1) * itemsPerPage, data.length)} de{" "}
-							{data.length} itens
+							{Math.min((currentPage + 1) * itemsPerPage, filteredPages.length)}{" "}
+							de {data.length} itens
 						</>
 					)}
 				</div>

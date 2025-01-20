@@ -53,3 +53,37 @@ button {
 	color: #3b82f6;
 	background-color: rgba(59, 130, 246, 0.2);
 }
+
+.actions {
+	display: flex;
+}
+
+.action-button {
+	border: none;
+	border-radius: 6px 4px 4px;
+	padding: 0.5rem;
+	background-color: transparent;
+	display: flex;
+	align-items: center;
+}
+
+.edit {
+	margin-right: 0.4rem;
+}
+.edit:hover {
+	background-color: rgba(59, 130, 246, 0.3);
+	color: #3b82f6;
+}
+
+.duplicate {
+	margin-right: 0.4rem;
+}
+.duplicate:hover {
+	background: rgba(245, 158, 11, 0.3);
+	color: rgb(245, 158, 11);
+}
+
+.delete:hover {
+	background: rgba(239, 68, 68, 0.3);
+	color: #ef4444;
+}

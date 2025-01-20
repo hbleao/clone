@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import s from "./styles.module.scss";
 
-import { Button, Input } from "@/components";
+import { Button, Input, Spinner } from "@/components";
 import { authenticateUser } from "@/actions/auth";
 
 interface LoginForm {
@@ -20,6 +20,7 @@ export default function LoginPage() {
 		password: "",
 	});
 	const [error, setError] = useState<string>("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleChange = (field: keyof LoginForm, value: string) => {
 		setFormData((prev) => ({
@@ -30,6 +31,7 @@ export default function LoginPage() {
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
+		setIsLoading(true);
 		setError("");
 
 		try {
@@ -37,6 +39,8 @@ export default function LoginPage() {
 			router.push("/apps");
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "Erro ao fazer login");
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -71,7 +75,7 @@ export default function LoginPage() {
 					{error && <p className={s["error-message"]}>{error}</p>}
 
 					<Button type="submit" size="lg">
-						Entrar
+						{isLoading ? <Spinner size="sm" /> : "Entrar"}
 					</Button>
 				</form>
 			</div>

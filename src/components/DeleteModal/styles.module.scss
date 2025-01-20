@@ -1,0 +1,27 @@
+.delete-confirmation {
+  padding: 2.4rem;
+  text-align: center;
+
+  p {
+    font-size: 1.6rem;
+    color: $gray7;
+    margin-bottom: 1.6rem;
+
+    span {
+      color: $gray8;
+      font-weight: $semi;
+    }
+
+    strong {
+      color: $gray8;
+      font-weight: $semi;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.2rem;
+  margin-top: 3.2rem;
+}

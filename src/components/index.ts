@@ -3,6 +3,7 @@ export * from "./Button";
 export * from "./Dialog";
 export * from "./Header";
 export * from "./Input";
+export * from "./InputSearch";
 export * from "./Link";
 export * from "./Skeleton";
 export * from "./Spinner";
@@ -10,6 +11,7 @@ export * from "./Switch";
 export * from "./Textarea";
 export * from "./Table";
 export * from "./Select";
+export * from "./DeleteModal";
 
 // Layout
 export * from "./DashboardLayout";
