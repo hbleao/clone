@@ -4,27 +4,40 @@ import type { DialogProps } from "./types";
 
 export const Dialog = ({
 	handleCloseModal,
-	title = "Título do dialog",
+	title = "Título do dialog",
 	children,
 }: DialogProps) => {
+	const handleOverlayClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+		e.preventDefault();
+		handleCloseModal();
+	};
+
+	const handleModalClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+	};
+
 	return (
 		<div
 			className={s["modal-overlay"]}
-			onClick={handleCloseModal}
-			onKeyDown={handleCloseModal}
+			onClick={handleOverlayClick}
+			onKeyDown={handleOverlayClick}
 		>
 			<div
 				className={s.modal}
-				onClick={(e) => e.stopPropagation()}
-				onKeyDown={(e) => e.stopPropagation()}
+				onClick={handleModalClick}
+				onKeyDown={handleModalClick}
 			>
 				<div className={s["modal-header"]}>
 					<h2>{title}</h2>
 					<button
 						type="button"
 						className={s["close-button"]}
-						onClick={handleCloseModal}
-						onKeyDown={handleCloseModal}
+						onClick={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							handleCloseModal();
+						}}
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +53,13 @@ export const Dialog = ({
 						</svg>
 					</button>
 				</div>
-				<div className={s["modal-content"]}>{children}</div>
+				<div 
+					className={s["modal-content"]}
+					onClick={(e) => e.stopPropagation()}
+					onKeyDown={(e) => e.stopPropagation()}
+				>
+					{children}
+				</div>
 			</div>
 		</div>
 	);

@@ -287,13 +287,23 @@ export async function deletePage(pageId: string) {
 
 export async function deletePageById(id: string) {
 	try {
+		// Primeiro, deletamos o SEO relacionado (se existir)
+		await prisma.seo.deleteMany({
+			where: { pageId: id }
+		});
+
+		// Depois, deletamos a página
 		await prisma.page.delete({
-			where: { id },
+			where: { id }
 		});
 
 		return { success: true };
 	} catch (error) {
-		return { success: false, error: "Falha ao deletar página" };
+		console.error('Erro ao deletar página:', error);
+		return { 
+			success: false, 
+			error: error instanceof Error ? error.message : "Falha ao deletar página" 
+		};
 	}
 }
 

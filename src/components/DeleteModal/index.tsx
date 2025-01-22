@@ -18,9 +18,19 @@ export const DeleteModal = ({
 	handleClose,
 	handleDelete,
 }: DeleteModalProps) => {
+	const handleDeleteClick = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+		handleDelete(e);
+	};
+
 	return (
 		<Dialog handleCloseModal={handleClose} title={title}>
-			<div className={s["delete-confirmation"]}>
+			<div 
+				className={s["delete-confirmation"]}
+				onClick={(e) => e.stopPropagation()}
+				onKeyDown={(e) => e.stopPropagation()}
+			>
 				<p>
 					Tem certeza que deseja excluir a página <span>"{itemName}"</span>?
 					Esta ação não pode ser desfeita.
@@ -31,7 +41,10 @@ export const DeleteModal = ({
 						variant="disabled"
 						size="lg"
 						width="contain"
-						onClick={handleClose}
+						onClick={(e) => {
+							e.stopPropagation();
+							handleClose();
+						}}
 					>
 						Cancelar
 					</Button>
@@ -40,7 +53,7 @@ export const DeleteModal = ({
 						variant="danger"
 						size="lg"
 						width="contain"
-						onClick={handleDelete}
+						onClick={handleDeleteClick}
 					>
 						Excluir
 					</Button>

@@ -151,9 +151,8 @@ export default function AppDetailsPage({ params }) {
 		try {
 			const result = await deletePageById(pageToDelete.id);
 			if (result.success) {
-				setIsDeleteModalOpen(false);
-				setPageToDelete(null);
-
+				toast.success("Página excluída com sucesso!");
+				
 				// Reload pages
 				if (app) {
 					const pagesResult = await getPagesByAppId(app.id);
@@ -161,9 +160,16 @@ export default function AppDetailsPage({ params }) {
 						setPages(pagesResult.pages);
 					}
 				}
+				
+				// Fechar modal apenas depois de confirmar que a página foi excluída
+				setIsDeleteModalOpen(false);
+				setPageToDelete(null);
+			} else {
+				toast.error(result.error || "Erro ao excluir página");
 			}
 		} catch (error) {
 			console.error("Error deleting page:", error);
+			toast.error("Erro ao excluir página");
 		}
 	};
 
