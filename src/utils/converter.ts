@@ -151,7 +151,7 @@ const COMPONENT_STRUCTURE_MAP: Record<
 			title: data.component.title,
 			variant: data.component.variant,
 			sectionTitle: data.component.sectionTitle,
-			cardIcons: data.component.cardIcons || [],
+			cardIcons: data.component.cardIcons.map() || [],
 		},
 	}),
 	CardContent: (data: any) => ({
