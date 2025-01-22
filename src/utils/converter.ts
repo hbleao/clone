@@ -24,7 +24,7 @@ interface ComponentData {
 const COMPONENT_NAME_MAP: Record<string, string> = {
 	section_custom_data: "CustomData",
 	section_breadcrumb: "Breadcrumb",
-	section_banner_hero: "bannerhero",
+	section_banner_hero: "BannerHero",
 	section_card_price_with_text: "CardPrice",
 	section_banner_body: "BannerBody",
 	section_how_it_works: "CardIcon",
@@ -69,10 +69,35 @@ const COMPONENT_STRUCTURE_MAP: Record<
 			links: data.component.links || [],
 		},
 	}),
-	bannerhero: (data: any) => ({
-		defaultData: {},
-		content: data.component || {},
-	}),
+	BannerHero: (data: any) => {
+		const bannerHero = data.component.bannerHero || {};
+		const button = bannerHero.button || {};
+
+		return {
+			defaultData: {
+				theme: "light",
+				variant: "caps",
+				marginBottom: "margin-default",
+			},
+			content: {
+				name: "bannerhero",
+				theme: data.component.theme,
+				title: bannerHero.title,
+				label: bannerHero.subTitle,
+				description: bannerHero.description,
+				bgColor: bannerHero.bgColor,
+				textColor: bannerHero.textColor,
+				headingTagTitle: bannerHero.headingTagTitle,
+				buttons: [
+					{
+						label: button.label,
+						variant: button.variant,
+					},
+				],
+				image: bannerHero.image,
+			},
+		};
+	},
 	CardPrice: (data: any) => ({
 		defaultData: {
 			title: "",
@@ -84,13 +109,34 @@ const COMPONENT_STRUCTURE_MAP: Record<
 			title: data.component.title,
 			description: data.component.description,
 			price: data.component.price,
-			benefits: data.component.benefits || [],
+			benefits:
+				data.component.benefits.map((benefit) => ({
+					...benefit,
+					iconName: benefit.icon,
+				})) || [],
 		},
 	}),
-	BannerBody: (data: any) => ({
-		defaultData: {},
-		content: data.component || {},
-	}),
+	BannerBody: (data: any) => {
+		const bannerBody = data.component.bannerBody || {};
+
+		return {
+			defaultData: {
+				marginBottom: "margin-default",
+			},
+			content: {
+				name: "bannerbody",
+				theme: bannerBody.theme,
+				marginBottom: data.component.marginBottom,
+				image: bannerBody.image,
+				pretitle: bannerBody.pretitle,
+				title: bannerBody.title,
+				subtitle: bannerBody.subtitle,
+				bgColor: bannerBody.bgColor,
+				textColor: bannerBody.textColor,
+				benefits: bannerBody.benefits,
+			},
+		};
+	},
 	CardIcon: (data: any) => ({
 		defaultData: {
 			theme: "light",
@@ -106,7 +152,6 @@ const COMPONENT_STRUCTURE_MAP: Record<
 			variant: data.component.variant,
 			sectionTitle: data.component.sectionTitle,
 			cardIcons: data.component.cardIcons || [],
-			requirements: data.component.requirements || [],
 		},
 	}),
 	CardContent: (data: any) => ({
