@@ -2,6 +2,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { PrismaClient } from "@prisma/client";
+import { nanoid } from "nanoid";
 
 const prisma = new PrismaClient();
 
@@ -19,7 +20,7 @@ interface ComponentData {
   appId: string;
 }
 
-// Mapeamento de nomes de componentes
+// Mapeamento de nomes de componentes JSON para nomes de componentes do sistema
 const COMPONENT_NAME_MAP: Record<string, string> = {
   "section_custom_data": "CustomData",
   "section_breadcrumb": "Breadcrumb",
@@ -31,6 +32,116 @@ const COMPONENT_NAME_MAP: Record<string, string> = {
   "section_service_requirements": "CardIcon",
   "section_cards_carousel_testimonial": "CardsTestimonial",
   "section_faq": "Accordion"
+};
+
+// Mapeamento de estrutura de dados para cada tipo de componente
+const COMPONENT_STRUCTURE_MAP: Record<string, (data: any) => { defaultData: any; content: any }> = {
+  CustomData: (data: any) => ({
+    defaultData: {
+      pageName: "",
+      product: "",
+      subproduct: "",
+      category: "",
+      vertical: "",
+      funnel: ""
+    },
+    content: {
+      pageName: data.component.pageName,
+      product: data.component.product,
+      subproduct: data.component.subproduct,
+      category: data.component.category,
+      vertical: data.component.vertical,
+      funnel: data.component.funnel
+    }
+  }),
+  Breadcrumb: (data: any) => ({
+    defaultData: {
+      marginBottom: "",
+      theme: "light",
+      links: []
+    },
+    content: {
+      marginBottom: data.component.marginBottom || "",
+      theme: data.component.theme || "light",
+      links: data.component.links || []
+    }
+  }),
+  bannerhero: (data: any) => ({
+    defaultData: {},
+    content: data.component || {}
+  }),
+  CardPrice: (data: any) => ({
+    defaultData: {
+      title: "",
+      description: "",
+      price: 0,
+      benefits: []
+    },
+    content: {
+      title: data.component.title,
+      description: data.component.description,
+      price: data.component.price,
+      benefits: data.component.benefits || []
+    }
+  }),
+  BannerBody: (data: any) => ({
+    defaultData: {},
+    content: data.component || {}
+  }),
+  CardIcon: (data: any) => ({
+    defaultData: {
+      theme: "light",
+      title: "",
+      variant: "",
+      sectionTitle: "",
+      cardIcons: [],
+      requirements: []
+    },
+    content: {
+      theme: data.component.theme || "light",
+      title: data.component.title,
+      variant: data.component.variant,
+      sectionTitle: data.component.sectionTitle,
+      cardIcons: data.component.cardIcons || [],
+      requirements: data.component.requirements || []
+    }
+  }),
+  CardContent: (data: any) => ({
+    defaultData: {
+      sectionTitle: "",
+      cardsContent: []
+    },
+    content: {
+      sectionTitle: data.component.sectionTitle,
+      cardsContent: data.component.cardsContent || []
+    }
+  }),
+  CardsTestimonial: (data: any) => ({
+    defaultData: {
+      theme: "light",
+      sectionTitle: "",
+      cards: []
+    },
+    content: {
+      theme: data.component.theme || "light",
+      sectionTitle: data.component.sectionTitle,
+      cards: data.component.cards || []
+    }
+  }),
+  Accordion: (data: any) => ({
+    defaultData: {
+      sectionTitle: "",
+      questionsAndAnswers: [],
+      allBorder: "",
+      allNegative: false
+    },
+    content: {
+      sectionTitle: data.component.sectionTitle,
+      questionsAndAnswers: data.component.questionsAndAnswers || [],
+      allBorder: data.component.allBorder,
+      allNegative: data.component.allNegative
+    }
+  })
 };
 
 export const listFilesAndFolders = async (
@@ -103,8 +214,8 @@ export const convertAndSaveComponents = async (
     const existingPage = await prisma.page.findFirst({
       where: {
         appId,
-        slug: convertToSlug(pageName),
-      },
+        slug: convertToSlug(pageName)
+      }
     });
 
     if (existingPage) {
@@ -116,91 +227,144 @@ export const convertAndSaveComponents = async (
     // Busca todos os componentes registrados no Prisma
     const registeredComponents = await prisma.component.findMany({
       where: { appId },
-      select: { name: true, id: true },
+      select: { 
+        id: true,
+        name: true,
+        type: true,
+        schema: true
+      }
+    });
+
+    console.log('\nComponentes registrados no app:');
+    registeredComponents.forEach(c => {
+      console.log(`- ${c.name} (${c.id})`);
+      console.log('  Schema:', c.schema);
     });
 
     // Cria um mapa de nomes de componentes para fácil acesso
-    const componentMap = new Map(
-      registeredComponents.map((c) => [c.name.toLowerCase(), c.id]),
-    );
+    const componentMap = new Map(registeredComponents.map(c => [c.name.toLowerCase(), c]));
 
     // Array para armazenar os componentes convertidos
     const convertedComponents = [];
 
     // Analisa cada seção do JSON
+    console.log('\nProcessando seções do JSON:');
     for (const section of jsonContent) {
       const sectionName = section.name?.toLowerCase();
-      const mappedName = sectionName ? COMPONENT_NAME_MAP[sectionName] : null;
+      console.log(`\nProcessando seção: "${sectionName}"`);
+      console.log('Dados da seção:', JSON.stringify(section, null, 2));
 
       if (!sectionName) {
-        console.warn("Seção sem nome encontrada, pulando...");
+        console.warn('❌ Seção sem nome encontrada, pulando...');
         continue;
       }
 
+      const mappedName = COMPONENT_NAME_MAP[sectionName];
+      console.log(`Mapeamento encontrado: "${sectionName}" -> "${mappedName || 'não encontrado'}"`);
+
       if (!mappedName) {
-        console.warn(`Mapeamento não encontrado para o componente "${sectionName}"`);
+        console.warn(`❌ Mapeamento não encontrado para o componente "${sectionName}"`);
         continue;
       }
 
       // Verifica se o nome mapeado do componente está registrado
-      if (componentMap.has(mappedName.toLowerCase())) {
-        // Prepara os dados do componente
-        const componentData = {
-          name: mappedName,
-          type: "section",
-          schema: JSON.stringify(section.schema || {}),
-          content: JSON.stringify(section.content || section.component || {}),
-          appId,
-        };
+      const mappedNameLower = mappedName.toLowerCase();
+      const component = componentMap.get(mappedNameLower);
+      
+      if (component) {
+        console.log(`Componente encontrado no banco:`, component);
 
-        convertedComponents.push(componentData);
-        console.log(`✓ Componente "${sectionName}" mapeado para "${mappedName}" e convertido com sucesso`);
+        // Usa o mapeador de estrutura específico para o componente ou um mapeador padrão
+        const structureMapper = COMPONENT_STRUCTURE_MAP[mappedName] || ((data: any) => ({ defaultData: {}, content: data.component || {} }));
+        const mappedData = structureMapper(section);
+
+        console.log(`Dados mapeados:`, JSON.stringify(mappedData, null, 2));
+
+        try {
+          // Tenta fazer o parse do schema do componente
+          let schema = {};
+          try {
+            schema = JSON.parse(component.schema);
+          } catch (e) {
+            console.warn(`Erro ao fazer parse do schema do componente ${mappedName}:`, e);
+          }
+
+          // Prepara os dados do componente no formato esperado pelo PageBuilder
+          const componentData = {
+            id: nanoid(), // Gera um ID único para a seção
+            type: "section",
+            template: {
+              id: component.id,
+              name: component.name,
+              type: component.type || "section",
+              schema: schema,
+              defaultData: mappedData.defaultData
+            },
+            content: mappedData.content
+          };
+
+          console.log(`Componente final:`, JSON.stringify(componentData, null, 2));
+
+          convertedComponents.push(componentData);
+          console.log(`✓ Componente "${sectionName}" mapeado para "${mappedName}" e convertido com sucesso`);
+        } catch (error) {
+          console.error(`Erro ao processar schema do componente:`, error);
+          continue;
+        }
       } else {
-        console.warn(`Componente mapeado "${mappedName}" não encontrado no app ${appId}`);
+        console.warn(`❌ Componente mapeado "${mappedName}" não encontrado no app ${appId}`);
+        console.log('Componentes disponíveis:', Array.from(componentMap.keys()));
       }
     }
 
     // Cria ou atualiza a página
+    const pageContent = {
+      sections: convertedComponents
+    };
+
+    console.log('\nConteúdo final da página:', JSON.stringify(pageContent, null, 2));
+
     const page = await prisma.page.upsert({
       where: {
         appId_slug: {
           appId,
-          slug: convertToSlug(pageName),
-        },
+          slug: convertToSlug(pageName)
+        }
       },
       create: {
         title: pageName,
         slug: convertToSlug(pageName),
-        content: JSON.stringify(convertedComponents),
-        type: "page",
-        author: "system",
+        content: JSON.stringify(pageContent),
+        type: 'page',
+        author: 'system',
         appId,
-        status: "draft",
+        status: 'draft',
         seo: {
           create: {
             title: pageName,
             description: `Página ${pageName}`,
-            robots: "index, follow",
-          },
-        },
+            robots: 'index, follow'
+          }
+        }
       },
       update: {
-        content: JSON.stringify(convertedComponents),
-        updatedAt: new Date(),
-      },
+        content: JSON.stringify(pageContent),
+        updatedAt: new Date()
+      }
     });
 
     return {
       success: true,
       pageId: page.id,
       componentsConverted: convertedComponents.length,
-      isNewPage: !existingPage,
+      isNewPage: !existingPage
     };
+
   } catch (error) {
-    console.error("Erro ao converter e salvar componentes:", error);
+    console.error('Erro ao converter e salvar componentes:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Erro desconhecido",
+      error: error instanceof Error ? error.message : 'Erro desconhecido'
     };
   }
 };

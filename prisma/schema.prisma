@@ -15,8 +15,8 @@ model User {
   registration  String          @unique
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
-  apps          App[]
   AppMembership AppMembership[]
+  apps          App[]
   PageChange    PageChange[]
 
   @@map("users")
@@ -32,11 +32,11 @@ model App {
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   userId        String
+  AppMembership AppMembership[]
   user          User            @relation(fields: [userId], references: [id])
-  Page          Page[]
   Component     Component[]
   PageTemplate  PageTemplate[]
-  AppMembership AppMembership[]
+  Page          Page[]
 
   @@map("apps")
 }
@@ -53,11 +53,11 @@ model Page {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   publishedAt DateTime?
-  app         App           @relation(fields: [appId], references: [id])
-  seo         Seo?
+  templateId  String?
   PageChange  PageChange[]
   template    PageTemplate? @relation(fields: [templateId], references: [id])
-  templateId  String?
+  app         App           @relation(fields: [appId], references: [id])
+  seo         Seo?
 
   @@unique([appId, slug])
   @@map("pages")
@@ -83,8 +83,8 @@ model Component {
   name                  String
   type                  String
   description           String?
-  schema                String // JSON string
-  content               String? // JSON string
+  schema                String
+  content               String?
   createdAt             DateTime                @default(now())
   updatedAt             DateTime                @updatedAt
   appId                 String
@@ -101,9 +101,9 @@ model PageTemplate {
   createdAt   DateTime                @default(now())
   updatedAt   DateTime                @updatedAt
   appId       String
+  components  PageTemplateComponent[]
   app         App                     @relation(fields: [appId], references: [id])
   pages       Page[]
-  components  PageTemplateComponent[]
 
   @@map("page_templates")
 }
@@ -112,12 +112,12 @@ model PageTemplateComponent {
   id          String       @id @default(uuid())
   templateId  String
   componentId String
-  position    Int // Ordem do componente no template
-  initialData String? // JSON string com dados iniciais do componente
-  template    PageTemplate @relation(fields: [templateId], references: [id])
-  component   Component    @relation(fields: [componentId], references: [id])
+  position    Int
+  initialData String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  component   Component    @relation(fields: [componentId], references: [id])
+  template    PageTemplate @relation(fields: [templateId], references: [id])
 
   @@unique([templateId, position])
   @@map("page_template_components")
@@ -128,12 +128,9 @@ model AppMembership {
   userId String
   appId  String
   role   String @default("AUTHOR")
+  app    App    @relation(fields: [appId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 
-  // Relacionamentos
-  user User @relation(fields: [userId], references: [id])
-  app  App  @relation(fields: [appId], references: [id])
-
-  // Garante que um usuário tenha apenas um papel por app
   @@unique([userId, appId])
   @@map("app_memberships")
 }
@@ -146,11 +143,11 @@ model PageChange {
   userId     String
   userName   String
   action     String
-  changeData String // JSON string
+  changeData String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  page       Page     @relation(fields: [pageId], references: [id])
   user       User     @relation(fields: [userId], references: [id])
+  page       Page     @relation(fields: [pageId], references: [id])
 
   @@index([timestamp])
   @@index([userId])
