@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { logger } from "@/utils";
 import type { Page, Seo } from "@/actions/page";
 import {
 	getPageById,
@@ -53,7 +52,6 @@ export const usePageStore = create<PageStore>((set) => ({
 				set({ error: result.error });
 			}
 		} catch (error) {
-			logger.error("Erro ao buscar página:", error);
 			set({
 				error: error instanceof Error ? error.message : "Erro desconhecido",
 			});
@@ -85,7 +83,6 @@ export const usePageStore = create<PageStore>((set) => ({
 				set({ error: result.error });
 			}
 		} catch (error) {
-			logger.error("Erro ao atualizar página:", error);
 			set({
 				error: error instanceof Error ? error.message : "Erro desconhecido",
 			});
@@ -117,7 +114,6 @@ export const usePageStore = create<PageStore>((set) => ({
 				set({ error: result.error });
 			}
 		} catch (error) {
-			logger.error("Erro ao atualizar página completa:", error);
 			set({
 				error: error instanceof Error ? error.message : "Erro desconhecido",
 			});

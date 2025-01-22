@@ -1,6 +1,6 @@
 [
 	{
-		"name": "section_custom_data",
+		"name": "customdata",
 		"component": {
 			"pageName": "oficina",
 			"product": "centro-automotivo",
@@ -11,7 +11,7 @@
 		}
 	},
 	{
-		"name": "section_breadcrumb",
+		"name": "breadcrumb",
 		"component": {
 			"marginBottom": "",
 			"theme": "light",
@@ -31,7 +31,7 @@
 		}
 	},
 	{
-		"name": "section_banner_hero",
+		"name": "bannerhero",
 		"component": {
 			"theme": "light",
 			"variant": "caps",
@@ -56,7 +56,7 @@
 		}
 	},
 	{
-		"name": "section_card_price_with_text",
+		"name": "card_price",
 		"component": {
 			"title": "Sobre o serviço",
 			"description": "Consiste na substituição de todo o óleo lubrificante, filtro de óleo e anel de vedação do bujão do cárter.\nDisponível para todos os clientes, segurados Porto ou não.\nA garantia de fábrica não é alterada. Este pacote atende veículos como Palio, Gol, Uno, Ka e Sandero, para outros veículos, consulte o valor diretamente na oficina escolhida.",
@@ -74,7 +74,7 @@
 		}
 	},
 	{
-		"name": "section_banner_body",
+		"name": "bannerbody",
 		"component": {
 			"marginBottom": "margin-default",
 			"bannerBody": {
@@ -106,7 +106,7 @@
 		}
 	},
 	{
-		"name": "section_how_it_works",
+		"name": "cardicons",
 		"component": {
 			"theme": "light",
 			"sectionTitle": "Como funciona?",
@@ -145,7 +145,7 @@
 		}
 	},
 	{
-		"name": "section_card_content_side_by_side",
+		"name": "cardcontent",
 		"component": {
 			"sectionTitle": "Nossos diferenciais",
 			"cardsContent": [
@@ -177,7 +177,7 @@
 		}
 	},
 	{
-		"name": "section_service_requirements",
+		"name": "cardicons",
 		"component": {
 			"title": "Informações importantes",
 			"variant": "fluid",
@@ -204,7 +204,7 @@
 		}
 	},
 	{
-		"name": "section_cards_carousel_testimonial",
+		"name": "cardstestimonial",
 		"component": {
 			"theme": "light",
 			"sectionTitle": "O que dizem nossos clientes",
@@ -233,7 +233,7 @@
 		}
 	},
 	{
-		"name": "section_faq",
+		"name": "accordion",
 		"component": {
 			"sectionTitle": "Tire suas dúvidas sobre Troca de óleo",
 			"questionsAndAnswers": [

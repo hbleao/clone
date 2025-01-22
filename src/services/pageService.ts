@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import { logger } from "@/utils";
 import type { Page, Seo } from "@/actions/page";
 
 type ServicePage = Omit<Page, "seo"> & {
@@ -20,13 +19,11 @@ export async function getPageById(id: string): Promise<{
 		});
 
 		if (!page) {
-			logger.warn(`Página não encontrada para o ID: ${id}`);
 			return { success: false, error: "Página não encontrada" };
 		}
 
 		return { success: true, page };
 	} catch (error) {
-		logger.error("Erro ao buscar página:", error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : "Erro ao buscar página",
@@ -68,8 +65,6 @@ export async function updatePage(
 			content: data.content ? JSON.stringify(data.content) : undefined,
 		};
 
-		logger.info("Updating page:", { pageId, data });
-
 		const page = await prisma.page.update({
 			where: { id: pageId },
 			data: processedData,
@@ -78,10 +73,8 @@ export async function updatePage(
 			},
 		});
 
-		logger.info(`Página atualizada com sucesso: ${page.id}`);
 		return { success: true, page };
 	} catch (error) {
-		logger.error("Erro ao atualizar página:", error);
 		return {
 			success: false,
 			error:
@@ -101,7 +94,6 @@ export async function updatePageFull(
 }> {
 	try {
 		const content = JSON.stringify(currentPage.content);
-		logger.info("currentPage", currentPage);
 
 		const page = await prisma.page.update({
 			where: { id: currentPage.id },
@@ -137,10 +129,8 @@ export async function updatePageFull(
 			},
 		});
 
-		logger.info(`Página atualizada completamente: ${page.id}`);
 		return { success: true, page };
 	} catch (error) {
-		logger.error("Erro ao atualizar página:", error);
 		return { success: false, error: "Falha ao atualizar página" };
 	}
 }

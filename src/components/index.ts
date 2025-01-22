@@ -12,6 +12,7 @@ export * from "./Textarea";
 export * from "./Table";
 export * from "./Select";
 export * from "./DeleteModal";
+export { Breadcrumb } from './Breadcrumb';
 
 // Layout
 export * from "./DashboardLayout";

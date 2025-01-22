@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-import { generateSlug, logger } from "@/utils";
+import { generateSlug } from "@/utils";
 
 interface CreateAppData {
 	name: string;
@@ -48,12 +48,9 @@ export async function createApp(data: CreateAppData) {
 			},
 		});
 
-		logger.info(`Criado app com os dados: ${data}`);
-
 		revalidatePath("/meus-aplicativos");
 		return { app };
 	} catch (error) {
-		logger.error("Erro ao criar app:", error);
 		return { error: "Erro ao criar o app" };
 	}
 }
@@ -66,10 +63,8 @@ export async function getAllApps() {
 				user: true,
 			},
 		});
-		logger.info("Páginas todos os aplicativos");
 		return { apps };
 	} catch (error) {
-		logger.error("Erro ao buscar todos os apps:", error);
 		return { error: "Erro ao buscar os apps" };
 	}
 }
@@ -90,7 +85,6 @@ export async function getAppBySlug(slug: string) {
 
 		return { success: true, app };
 	} catch (error) {
-		logger.error("Erro ao buscar appBySlug:", error);
 		return { success: false, error: "Erro ao buscar o app" };
 	}
 }
@@ -129,12 +123,9 @@ export async function updateApp(id: string, data: UpdateAppData) {
 			data: updateData,
 		});
 
-		logger.info("Atualizado app com os dados:", app);
-
 		revalidatePath("/meus-aplicativos");
 		return { app };
 	} catch (error) {
-		logger.error("Erro ao buscar páginas:", error);
 		return { error: "Erro ao atualizar o app" };
 	}
 }
@@ -146,12 +137,9 @@ export async function deleteApp(id: string) {
 			where: { id },
 		});
 
-		logger.info("Deletado aplicativo com o id:", id);
-
 		revalidatePath("/meus-aplicativos");
 		return { success: true };
 	} catch (error) {
-		logger.error("Erro ao deletar app:", error);
 		return { error: "Erro ao deletar o app" };
 	}
 }

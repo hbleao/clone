@@ -179,6 +179,80 @@ export const SectionTemplateRenderField = ({
 		);
 	};
 
+	const renderNestedField = (
+		field: any,
+		path: string,
+		value: any,
+		onChange: (value: any) => void
+	) => {
+		switch (field.type) {
+			case "text":
+				return (
+					<input
+						type="text"
+						value={value || ""}
+						onChange={(e) => onChange(e.target.value)}
+						className={s.input}
+					/>
+				);
+
+			case "textarea":
+				return (
+					<textarea
+						value={value || ""}
+						onChange={(e) => onChange(e.target.value)}
+						className={s.textarea}
+					/>
+				);
+
+			case "wysiwyg":
+				return (
+					<WysiwygEditor
+						value={value || ""}
+						onChange={(content) => onChange(content)}
+					/>
+				);
+
+			case "number":
+				return (
+					<input
+						type="number"
+						value={value || ""}
+						onChange={(e) => onChange(e.target.value)}
+						className={s.input}
+					/>
+				);
+
+			case "select":
+				return (
+					<Select
+						options={
+							field.selectOptions?.map((opt: any) => ({
+								value: opt.value,
+								label: opt.label,
+							})) || []
+						}
+						value={value || ""}
+						onChange={(value) => onChange(value)}
+					/>
+				);
+
+			case "boolean":
+				return (
+					<div className={s.switchContainer}>
+						<Switch
+							checked={value || false}
+							onCheckedChange={(checked) => onChange(checked)}
+						/>
+						<label className={s.switchLabel}>{field.label}</label>
+					</div>
+				);
+
+			default:
+				return null;
+		}
+	};
+
 	const renderField = () => {
 		switch (field.type) {
 			case "text":

@@ -1,0 +1,39 @@
+.breadcrumb {
+  font-size: $text-sm;
+  color: $gray6;
+  margin-bottom: $spacing-4;
+
+  ol {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+  }
+
+  .link {
+    color: $blue5;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $blue6;
+      text-decoration: underline;
+    }
+  }
+
+  .current {
+    color: $gray9;
+    font-weight: $semi;
+  }
+
+  .separator {
+    margin: 0 $spacing-2;
+    color: $gray5;
+  }
+}

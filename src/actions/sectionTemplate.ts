@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { logger } from "@/utils";
 
 export type SectionTemplateFormData = {
 	name: string;
@@ -19,17 +18,14 @@ function validateFields(data: SectionTemplateFormData): {
 	];
 } {
 	if (!data.name || data.name.trim() === "") {
-		logger.warn("O campo name é obrigatório", data);
 		return { success: false, error: [{ message: "Nome é obrigatório" }] };
 	}
 
 	if (!data.type || data.type.trim() === "") {
-		logger.warn("O campo type é obrigatório", data);
 		return { success: false, error: [{ message: "Tipo é obrigatório" }] };
 	}
 
 	if (!data.description || data.description.trim() === "") {
-		logger.warn("O campo description é obrigatório", data);
 		return {
 			success: false,
 			error: [{ message: "Descrição é obrigatória" }],
@@ -37,7 +33,6 @@ function validateFields(data: SectionTemplateFormData): {
 	}
 
 	if (!data.schema) {
-		logger.warn("O campo schema é obrigatório", data);
 		return { success: false, error: [{ message: "Schema inválido" }] };
 	}
 
@@ -67,12 +62,9 @@ export async function createSectionTemplate(
 			},
 		});
 
-		logger.error("Criado novo template de seção:", template);
-
 		revalidatePath(`/apps/${appId}/templates`);
 		return { success: true, data: template };
 	} catch (error) {
-		logger.error("Erro ao criar novo template de sessão:", error);
 		return { success: false, error: "Erro ao criar template" };
 	}
 }
@@ -95,7 +87,6 @@ export async function updateSectionTemplate(
 		revalidatePath(`/apps/${appId}/templates`);
 		return { success: true, data: template };
 	} catch (error) {
-		logger.error("Erro ao atualizar o template de sessão:", error);
 		return { success: false, error: "Erro ao atualizar template" };
 	}
 }
@@ -105,11 +96,9 @@ export async function deleteSectionTemplate(appId: string, templateId: string) {
 		await prisma.sectionTemplate.delete({
 			where: { id: templateId },
 		});
-		logger.error("Erro ao atualizar o template de sessão:", templateId);
 		revalidatePath(`/apps/${appId}/templates`);
 		return { success: true };
 	} catch (error) {
-		console.error("Erro ao excluir template de seção:", error);
 		return { success: false, error: "Erro ao excluir template" };
 	}
 }
@@ -135,7 +124,6 @@ export async function getSectionTemplateById(templateId: string) {
 			},
 		};
 	} catch (error) {
-		console.error("Erro ao buscar template:", error);
 		return { success: false, error: "Erro ao buscar template" };
 	}
 }
@@ -158,7 +146,6 @@ export async function getSectionTemplates(appId: string) {
 			})),
 		};
 	} catch (error) {
-		console.error("Erro ao buscar templates:", error);
 		return { success: false, error: "Erro ao buscar templates" };
 	}
 }
