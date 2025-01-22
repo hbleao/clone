@@ -183,7 +183,7 @@ export const SectionTemplateRenderField = ({
 		field: any,
 		path: string,
 		value: any,
-		onChange: (value: any) => void
+		onChange: (value: any) => void,
 	) => {
 		switch (field.type) {
 			case "text":
@@ -314,6 +314,25 @@ export const SectionTemplateRenderField = ({
 							onCheckedChange={(checked) => handleChange(checked)}
 						/>
 						<label className={s.switchLabel}>{field.label}</label>
+					</div>
+				);
+
+			case "object":
+				return (
+					<div className={s.arrayItem}>
+						{Object.entries(field.fields || {}).map(
+							([key, nestedField]: [string, any]) => (
+								<div key={key} className={s.field}>
+									<label>{nestedField.label}</label>
+									{renderNestedField(
+										nestedField,
+										`${field.name}.${key}`,
+										value?.[key],
+										(newValue) => handleChange({ ...value, [key]: newValue }),
+									)}
+								</div>
+							),
+						)}
 					</div>
 				);
 

@@ -1,6 +1,5 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { PrismaClient } from "@prisma/client";
 import { nanoid } from "nanoid";
 
@@ -10,14 +9,6 @@ interface FileOrFolder {
 	name: string;
 	isDirectory: boolean;
 	path: string;
-}
-
-interface ComponentData {
-	name: string;
-	type: string;
-	schema?: string;
-	content?: string;
-	appId: string;
 }
 
 // Mapeamento de nomes de componentes JSON para nomes de componentes do sistema
@@ -127,7 +118,11 @@ const COMPONENT_STRUCTURE_MAP: Record<
 				name: "bannerbody",
 				theme: bannerBody.theme,
 				marginBottom: data.component.marginBottom,
-				image: bannerBody.image,
+				image: {
+					type: "object",
+					src: bannerBody.image?.src || "",
+					alt: bannerBody.image?.alt || "",
+				},
 				pretitle: bannerBody.pretitle,
 				title: bannerBody.title,
 				subtitle: bannerBody.subtitle,
@@ -144,14 +139,26 @@ const COMPONENT_STRUCTURE_MAP: Record<
 			variant: "",
 			sectionTitle: "",
 			cardIcons: [],
-			requirements: [],
 		},
 		content: {
 			theme: data.component.theme || "light",
 			title: data.component.title,
 			variant: data.component.variant,
 			sectionTitle: data.component.sectionTitle,
-			cardIcons: data.component.cardIcons.map() || [],
+			cardIcons:
+				data.component.cardIcons?.map((cardIcon) => ({
+					title: cardIcon.title,
+					description: cardIcon?.description || cardIcon?.caption,
+					variant: cardIcon.variant,
+					iconName: cardIcon.iconName,
+				})) ||
+				data.component.requirements?.map((cardIcon) => ({
+					title: cardIcon.title,
+					description: cardIcon?.description || cardIcon?.caption,
+					variant: cardIcon.variant,
+					iconName: cardIcon.iconName,
+				})) ||
+				[],
 		},
 	}),
 	CardContent: (data: any) => ({
@@ -173,7 +180,12 @@ const COMPONENT_STRUCTURE_MAP: Record<
 		content: {
 			theme: data.component.theme || "light",
 			sectionTitle: data.component.sectionTitle,
-			cards: data.component.cards || [],
+			testimonials:
+				data.component.cards?.map((testmonial) => ({
+					name: testmonial.name,
+					text: testmonial.text,
+					date: testmonial.service,
+				})) || [],
 		},
 	}),
 	Accordion: (data: any) => ({
@@ -185,7 +197,7 @@ const COMPONENT_STRUCTURE_MAP: Record<
 		},
 		content: {
 			sectionTitle: data.component.sectionTitle,
-			questionsAndAnswers: data.component.questionsAndAnswers || [],
+			accordions: data.component.questionsAndAnswers || [],
 			allBorder: data.component.allBorder,
 			allNegative: data.component.allNegative,
 		},
