@@ -6,6 +6,7 @@ export const Button = ({
 	type = "button",
 	width = "fluid",
 	disabled = false,
+	className,
 	variant = "insurance",
 	size = "md",
 	onClick,
@@ -16,7 +17,7 @@ export const Button = ({
 	return (
 		<button
 			type={type}
-			className={`${s.button} ${s[width]} ${s[variant]} ${s[size]} ${isDisabled}`}
+			className={`${s.button} ${s[width]} ${s[variant]} ${s[size]} ${isDisabled} ${className}`}
 			onClick={onClick}
 			{...props}
 		>
