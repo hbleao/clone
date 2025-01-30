@@ -1,0 +1,29 @@
+.toggleContent {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px dashed #e2e8f0;
+  border-radius: 0.5rem;
+}
+
+.activeComponent {
+  min-height: 100px;
+}
+
+.placeholder {
+  background-color: #f7fafc;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  text-align: center;
+
+  h4 {
+    margin: 0 0 0.5rem;
+    color: #2d3748;
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 0;
+    color: #718096;
+    font-size: 0.875rem;
+  }
+}

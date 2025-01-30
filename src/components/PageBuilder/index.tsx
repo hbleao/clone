@@ -2,11 +2,15 @@
 import { DndContext } from "@dnd-kit/core";
 import { nanoid } from "nanoid";
 
+import { PageBuilderProps } from "./types";
+import { PageBuilderContent } from "./content";
 import { Header } from "@/components";
 import { PageBuilderContextProvider } from "@/context";
+import { ElementWrapper } from '@/components/PageBuilderElement/ElementWrapper';
+import { ToggleableElement } from '@/interfaces/ToggleComponent';
+import s from "./styles.module.scss";
 
 import type { PageBuilderProps } from "./types";
-import { PageBuilderContent } from "./content";
 
 export function PageBuilder({ page }: PageBuilderProps) {
 	// Tenta fazer o parse do conteúdo se for string
@@ -36,32 +40,15 @@ export function PageBuilder({ page }: PageBuilderProps) {
 					return item;
 				}
 
-				// Se o item estiver no formato SectionField
-				if (item.type === "SectionField") {
-					// Valida campos obrigatórios
-					if (!item.id || !item.extraAttributes?.templateId) {
-						console.warn("Item inválido:", item);
-						return null;
-					}
-
-					return {
-						id: item.id || nanoid(),
-						type: "section",
-						template: {
-							id: item.extraAttributes?.templateId,
-							name: item.extraAttributes?.name,
-							type: item.extraAttributes?.type,
-							schema: item.extraAttributes?.schema,
-						},
-						content: item.extraAttributes?.content || {},
-					};
-				}
-
-				// Formato desconhecido
-				console.warn("Formato desconhecido:", item);
-				return null;
+				// Se for um item antigo, converte para o novo formato
+				return {
+					id: item.id || nanoid(),
+					type: "section",
+					template: item,
+					content: {},
+				};
 			} catch (error) {
-				console.error("Erro ao processar item:", error);
+				console.error("Error converting item:", error);
 				return null;
 			}
 		})
@@ -70,8 +57,9 @@ export function PageBuilder({ page }: PageBuilderProps) {
 	return (
 		<PageBuilderContextProvider initialElements={initialElements}>
 			<DndContext>
-				<Header />
-				<PageBuilderContent page={page} />
+				<div className={s.pageBuilder}>
+					<PageBuilderContent page={page} />
+				</div>
 			</DndContext>
 		</PageBuilderContextProvider>
 	);

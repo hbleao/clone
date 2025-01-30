@@ -1,0 +1,18 @@
+.container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+
+  h2 {
+    color: #2d3748;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+  }
+}
+
+.toggleContainer {
+  background-color: #f8fafc;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

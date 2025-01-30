@@ -1,6 +1,7 @@
 import { getPageById } from "@/actions/page";
 import { PageBuilder } from "@/components";
 import type { PageWithParsedContent } from "@/components/PageBuilder/types";
+import { ToggleExample } from './toggle-example';
 
 interface PageBuilderProps {
 	params: {
@@ -15,5 +16,10 @@ export default async function PageBuilderById({ params }: PageBuilderProps) {
 		throw new Error("Page not found!");
 	}
 
-	return <PageBuilder page={result.page as PageWithParsedContent} />;
+	return (
+		<div>
+			<ToggleExample />
+			<PageBuilder page={result.page as PageWithParsedContent} />
+		</div>
+	);
 }

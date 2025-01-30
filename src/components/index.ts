@@ -23,8 +23,9 @@ export * from "./FormCreateApp";
 
 // Page builder
 export * from "./PageBuilder";
-export * from "./PageBuilderCanvas";
+export * from "./PageBuilderElement/ElementWrapper";
 export * from "./PageBuilderSidebar";
+export * from "./PageBuilderCanvas";
 export * from "./PageBuilderElement";
 
 // SectionTemplate

@@ -8,12 +8,13 @@ import s from "./styles.module.scss";
 
 import { updatePage } from "@/actions";
 import { Button, PageBuilderCanvas, PageBuilderSidebar } from "@/components";
+import { ElementWrapper } from '@/components/PageBuilderElement/ElementWrapper';
 import { usePageBuilder } from "@/hooks";
 
 export const PageBuilderContent = ({ page }) => {
 	const params = useParams();
 	const router = useRouter();
-	const { elements } = usePageBuilder();
+	const { elements, setElements } = usePageBuilder();
 	const pageId = params.pageId as string;
 	const [isSaving, setIsSaving] = useState(false);
 
@@ -21,17 +22,16 @@ export const PageBuilderContent = ({ page }) => {
 		try {
 			setIsSaving(true);
 
-			// Converte os elementos para o formato esperado pela API
+			// Mantém todos os elementos no JSON, incluindo a flag isEnabled
 			const formattedContent = {
-				sections: elements.map((element) => ({
+				sections: elements.map(element => ({
 					...element,
-					content: element.content || {},
-				})),
+					isEnabled: element.isEnabled ?? true // Se não existir, considera como true
+				}))
 			};
 
-			// Salva os elementos formatados
 			const result = await updatePage(pageId, {
-				content: formattedContent,
+				content: formattedContent
 			});
 
 			if (!result.success) {
@@ -46,6 +46,13 @@ export const PageBuilderContent = ({ page }) => {
 		} finally {
 			setIsSaving(false);
 		}
+	};
+
+	const handleElementUpdate = (elementId: string, updates: any) => {
+		const newElements = elements.map(element => 
+			element.id === elementId ? { ...element, ...updates } : element
+		);
+		setElements(newElements);
 	};
 
 	return (
@@ -77,7 +84,19 @@ export const PageBuilderContent = ({ page }) => {
 						</Button>
 					</div>
 				</div>
-				<PageBuilderCanvas />
+				<div className={s.content}>
+					{elements.map((element) => (
+						<ElementWrapper
+							key={element.id}
+							element={element}
+							onEdit={(updates) => handleElementUpdate(element.id, updates)}
+							onRemove={() => {
+								const newElements = elements.filter(e => e.id !== element.id);
+								setElements(newElements);
+							}}
+						/>
+					))}
+				</div>
 			</div>
 		</div>
 	);
