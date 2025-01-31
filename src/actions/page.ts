@@ -76,7 +76,7 @@ export async function createPage(data: CreatePageData) {
 
 		if (existingPage) {
 			throw new Error("Já existe uma página com este slug neste app");
-		}
+		}		
 
 		const content = data.content
 			? typeof data.content === "string"

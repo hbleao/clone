@@ -1,20 +1,23 @@
 "use client";
-import { useState } from "react";
 import { ExternalLink, Loader2, Save } from "lucide-react";
-import { toast } from "sonner";
 import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 import s from "./styles.module.scss";
 
 import { updatePage } from "@/actions";
 import { Button, PageBuilderCanvas, PageBuilderSidebar } from "@/components";
 import { usePageBuilder } from "@/hooks";
+import { carbonOnSaveDatabaseService } from "@/services";
+import { formatJSONContent } from "@/utils";
 
 export const PageBuilderContent = ({ page }) => {
 	const params = useParams();
 	const router = useRouter();
 	const { elements } = usePageBuilder();
 	const pageId = params.pageId as string;
+	const pageSlug = params.slug as string;
 	const [isSaving, setIsSaving] = useState(false);
 
 	const handleSave = async () => {
@@ -28,6 +31,9 @@ export const PageBuilderContent = ({ page }) => {
 					content: element.content || {},
 				})),
 			};
+
+			const jsonContent = formatJSONContent(formattedContent)
+			await carbonOnSaveDatabaseService(jsonContent, pageSlug)
 
 			// Salva os elementos formatados
 			const result = await updatePage(pageId, {
