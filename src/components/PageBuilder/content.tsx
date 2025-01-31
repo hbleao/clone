@@ -1,21 +1,24 @@
 "use client";
-import { useState } from "react";
 import { ExternalLink, Loader2, Save } from "lucide-react";
-import { toast } from "sonner";
 import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 import s from "./styles.module.scss";
 
 import { updatePage } from "@/actions";
 import { Button, PageBuilderCanvas, PageBuilderSidebar } from "@/components";
-import { ElementWrapper } from '@/components/PageBuilderElement/ElementWrapper';
+import { ElementWrapper } from "@/components/PageBuilderElement/ElementWrapper";
 import { usePageBuilder } from "@/hooks";
+import { carbonOnSaveDatabaseService } from "@/services";
+import { formatJSONContent } from "@/utils";
 
 export const PageBuilderContent = ({ page }) => {
 	const params = useParams();
 	const router = useRouter();
 	const { elements, setElements } = usePageBuilder();
 	const pageId = params.pageId as string;
+	const pageSlug = params.slug as string;
 	const [isSaving, setIsSaving] = useState(false);
 
 	const handleSave = async () => {
@@ -24,14 +27,17 @@ export const PageBuilderContent = ({ page }) => {
 
 			// Mantém todos os elementos no JSON, incluindo a flag isEnabled
 			const formattedContent = {
-				sections: elements.map(element => ({
+				sections: elements.map((element) => ({
 					...element,
-					isEnabled: element.isEnabled ?? true // Se não existir, considera como true
-				}))
+					isEnabled: element.isEnabled ?? true, // Se não existir, considera como true
+				})),
 			};
 
+			const jsonContent = formatJSONContent(formattedContent);
+			await carbonOnSaveDatabaseService(jsonContent, pageSlug);
+
 			const result = await updatePage(pageId, {
-				content: formattedContent
+				content: formattedContent,
 			});
 
 			if (!result.success) {
@@ -49,8 +55,8 @@ export const PageBuilderContent = ({ page }) => {
 	};
 
 	const handleElementUpdate = (elementId: string, updates: any) => {
-		const newElements = elements.map(element => 
-			element.id === elementId ? { ...element, ...updates } : element
+		const newElements = elements.map((element) =>
+			element.id === elementId ? { ...element, ...updates } : element,
 		);
 		setElements(newElements);
 	};
@@ -91,7 +97,7 @@ export const PageBuilderContent = ({ page }) => {
 							element={element}
 							onEdit={(updates) => handleElementUpdate(element.id, updates)}
 							onRemove={() => {
-								const newElements = elements.filter(e => e.id !== element.id);
+								const newElements = elements.filter((e) => e.id !== element.id);
 								setElements(newElements);
 							}}
 						/>

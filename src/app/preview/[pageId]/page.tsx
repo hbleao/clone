@@ -7,6 +7,8 @@ import { toast } from "sonner";
 
 import s from "../styles.module.scss";
 
+import { formatJSONContent } from "@/utils";
+
 export default function PreviewPage() {
 	const params = useParams();
 	const [pageContent, setPageContent] = useState<any>(null);
@@ -36,27 +38,7 @@ export default function PreviewPage() {
 		}
 	}, [params.pageId]);
 
-	const formattedContent =
-		pageContent?.content?.sections?.map((item, index) => {
-			const pageName =
-				pageContent.content.sections[index].template.name.toLowerCase();
-			return {
-				name: pageName,
-				component: { ...item.content },
-			};
-		}) || [];
-	const jsonContent = JSON.stringify(
-		{
-			seo: {
-				title: pageContent?.seo?.title || "",
-				description: pageContent?.seo?.description || "",
-				canonical: pageContent?.seo?.canonical || "",
-			},
-			data: formattedContent,
-		},
-		null,
-		2,
-	);
+	const jsonContent = formatJSONContent(pageContent);
 
 	const handleCopyContent = () => {
 		navigator.clipboard
